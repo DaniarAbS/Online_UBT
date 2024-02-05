@@ -1,8 +1,19 @@
 import { Button } from 'antd'
+import styled from 'styled-components'
+import css from 'styled-components'
+import { ButtonSizeStyles } from './ButtonTemplate'
 
-export const CustomButton = ({ type, text, onClick, width, height }) => {
+const SimpleButton = styled.button`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    ${({ sizeType }) => ButtonSizeStyles[sizeType]}
+`
+
+export const CustomButton = ({ sizeType, children, onClick, color, bgColor }) => {
     return (
-        <Button 
-        style={{height: `${height}`, width: `${width}`, display: 'flex', alignItems: 'center', justifyContent: 'center'}} type={type} onClick={onClick}>{ text }</Button>
+        <SimpleButton 
+        sizeType={sizeType} onClick={onClick} style={{backgroundColor: `${bgColor}`, color: `${color}`}}>{ children }</SimpleButton>
     )
 }
