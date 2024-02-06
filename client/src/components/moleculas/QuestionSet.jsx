@@ -1,5 +1,5 @@
 import React from 'react';
-import ButtonGrid from '../ButtonGrid/ButtonGrid'
+import ButtonGrid from './ButtonGrid'
 import styled from 'styled-components';
 
 const QuestionSetContainer = styled.div`

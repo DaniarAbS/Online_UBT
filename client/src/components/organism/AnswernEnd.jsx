@@ -1,11 +1,11 @@
 import { Button, Input } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import { CustomButton } from '../../atoms/CustomButton/CustomButton';
+import { CustomButton } from '../atoms/CustomButton/CustomButton';
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
-import { Text } from '../../atoms/CustomText/CustomText';
-import { colors } from '../../../base/colors';
-import { RadioExample } from '../../atoms/CustomRadio/CustomRadio';
+import { Text } from '../atoms/CustomText/CustomText';
+import { colors } from '../../base/colors';
+import { RadioExample } from '../atoms/CustomRadio/CustomRadio';
 
 const AnswerPartContainer = styled.div`
     display: flex;

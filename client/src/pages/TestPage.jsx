@@ -4,9 +4,9 @@ import RadioImg1 from '../../assets/img/radioImage_1.png'
 import RadioImg2 from '../../assets/img/radioImage_2.png'
 import RadioImg3 from '../../assets/img/radioImage_3.png'
 import RadioImg4 from '../../assets/img/radioImage_4.png'
-import { QuestionBar } from "../../components/organism/QuestionsBar/QuestionsBar";
-import { AnswerPart } from "../../components/organism/AnswernEnd/AnswernEnd";
-import { QuestionContent } from "../../components/organism/QuestionContent/QuestionContent";
+import { QuestionBar } from "../components/organism/QuestionsBar";
+import { AnswerPart } from "../components/organism/AnswernEnd";
+import { QuestionContent } from "../components/organism/QuestionContent";
 
 
 const TestContainer = styled.div`

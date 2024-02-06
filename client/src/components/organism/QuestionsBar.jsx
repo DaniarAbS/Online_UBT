@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Text } from '../../atoms/CustomText/CustomText';
-import { ChooseSubject } from '../../atoms/CustomSelect'
-import QuestionSet from '../../moleculas/QuestionSet/QuestionSet';
-import { TextWithBg } from '../../atoms/TextBg';
+import { Text } from '../atoms/CustomText/CustomText';
+import { ChooseSubject } from '../atoms/CustomSelect'
+import QuestionSet from '../moleculas/QuestionSet';
+import { TextWithBg } from '../atoms/TextBg';
 
 const Container = styled.div`
     display: flex;

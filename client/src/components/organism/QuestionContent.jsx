@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Text } from '../../atoms/CustomText/CustomText';
+import { Text } from '../atoms/CustomText/CustomText';
 import { ClockCircleOutlined } from "@ant-design/icons";
 
 const QuestionContainer = styled.div`
