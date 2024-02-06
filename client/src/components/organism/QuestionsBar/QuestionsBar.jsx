@@ -2,10 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Text } from '../../atoms/CustomText/CustomText';
-import { ChooseSubject } from '../../atoms/CustomSelect/CustomSelect'
+import { ChooseSubject } from '../../atoms/CustomSelect'
 import QuestionSet from '../../moleculas/QuestionSet/QuestionSet';
-import { colors } from '../../../base/colors';
-import { TextWithBg } from '../../atoms/TextBg/TextBg';
+import { TextWithBg } from '../../atoms/TextBg';
 
 const Container = styled.div`
     display: flex;
@@ -18,8 +17,8 @@ const Container = styled.div`
 const TextnSelectContainer = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: start;
-    margin-top: 20px;
+    align-items: start; 
+    width: 100%;
     gap: 20px;
 `
 
@@ -27,8 +26,9 @@ const AnsweredContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    padding: 20px;
+    padding: 20px 0;
     width: 100%;
+
 `
 
 const subjects = [

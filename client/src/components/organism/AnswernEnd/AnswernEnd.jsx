@@ -24,10 +24,13 @@ const PrevNextBtnsContainer = styled.div`
 
 const IconButton = styled.button`
     background-color: ${colors.black_green};
+    /* width: 220px; */
+    height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
+
 `
 
 const AnswerBlock = styled.div`
@@ -38,15 +41,15 @@ const AnswerBlock = styled.div`
 `
 
 
-export const AnswerPart = ({ btnWidth, btnHeight, image1, image2, image3, image4}) => {
+export const AnswerPart = ({ image1, image2, image3, image4}) => {
     return (
         <AnswerPartContainer>
             <PrevNextBtnsContainer>
-                <IconButton style={{width: `${btnWidth}`, height: `${btnHeight}`}}>
+                <IconButton>
                     <LeftCircleOutlined style={{color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center'}}/>
                     <Text type='medium' color={colors.white} fontWeight='500'>Предыдущий</Text>
                 </IconButton>
-                <IconButton style={{width: `${btnWidth}`, height: `${btnHeight}`}}>
+                <IconButton>
                     <Text type='medium' color={colors.white} fontWeight='500'>Следующий</Text>
                     <RightCircleOutlined style={{color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center'}}/>
                 </IconButton>

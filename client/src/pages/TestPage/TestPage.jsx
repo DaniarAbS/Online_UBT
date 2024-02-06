@@ -15,7 +15,8 @@ const TestContainer = styled.div`
     align-items: start;
     justify-content: center;
     /* width: 80%; */
-    max-width: 1200px;
+    width: 100%;
+    gap: 1.5rem;
 `
 
 export const TestPage = () => {
@@ -23,7 +24,7 @@ export const TestPage = () => {
     <TestContainer>
         <QuestionBar text='3'/>
         <QuestionContent text='Математика. Вопрос 4 из 40' text2='03.11.57' text3='Суретте көрсетілген параболаның формуласын табыңыз'></QuestionContent>
-        <AnswerPart btnWidth='220px' btnHeight='48px' image1={RadioImg1} image2={RadioImg2} image3={RadioImg3} image4={RadioImg4}/>
+        <AnswerPart image1={RadioImg1} image2={RadioImg2} image3={RadioImg3} image4={RadioImg4}/>
     </TestContainer>
     )
 }

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const QuestionSetContainer = styled.div`
     overflow: auto; /* Enable scrolling if content exceeds the container */
-    //max-height: 200px; //Adjust the maximum height as needed
+    width: 100%;
     
 `;
 

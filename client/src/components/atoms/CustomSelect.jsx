@@ -1,10 +1,14 @@
 import React from 'react';
 import { Select } from 'antd';
 import styled from 'styled-components';
-import { SelectStyles } from './SelectTemplate';
 
 const StyledSelect = styled(Select)`
-  ${({ type }) => SelectStyles[type]}
+  width: 100%;
+  height: 100%;
+
+  @media screen and (width: 1540px){
+    
+  }
 `;
 
 const handleChange = (value) => {
