@@ -16,7 +16,7 @@ const MainInfo = styled.div`
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0;
     width: 100%;
     background-color: white;
 `
@@ -37,7 +37,7 @@ const GivenTaskContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: start;
-    padding: 2rem;
+    padding: 2rem 0;
     gap: 1.5rem;
     border-radius: 20px;
 `

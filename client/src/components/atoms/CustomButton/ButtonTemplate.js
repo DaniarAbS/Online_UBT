@@ -17,8 +17,6 @@ export const ButtonSizeStyles = {
         font-weight: 500;
     `,
     endButton: css`
-        width: 288px;
-        height: 69px;
         font-size: ${sizes.xLarge};
         font-weight: 500;
     `,

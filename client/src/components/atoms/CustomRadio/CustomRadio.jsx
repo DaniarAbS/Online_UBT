@@ -30,7 +30,7 @@ const ChoicesContainer = styled.div`
   align-items: start;
   width: 428px;
   border-radius: 10px;
-  padding: 24px;
+  padding: 10px;
 `
 
 const RadioLabel = styled.label`
@@ -42,7 +42,7 @@ const RadioLabel = styled.label`
 const RadioImage = styled.img`
   width: 157px; // Adjust the width as needed
   height: 90px; // Adjust the height as needed
-  margin-left: 10px;
+  /* margin-left: 10px; */
 `;
 
 export const RadioExample = ({option1, option2, option3, option4, image1, image2, image3, image4}) => {
