@@ -20,6 +20,11 @@ export const TextStyles = {
     /* font-weight: 500; */
     font-size: ${sizes.xxLarge};
   `,
+  large2xPlus: css`
+    text-align: center;
+    /* font-weight: 500; */
+    font-size: ${sizes.xxLarge};
+  `,
   notFoundTitle: css`
     text-align: center;
     /* font-weight: 500; */

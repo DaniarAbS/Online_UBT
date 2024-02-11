@@ -11,7 +11,6 @@ const Container = styled.div`
     background-color: #f7f7f7;
     flex-direction: column;
     align-items: center;
-    width: 100%;
 `;
 
 const TextnSelectContainer = styled.div`
@@ -28,7 +27,6 @@ const AnsweredContainer = styled.div`
     justify-content: space-evenly;
     padding: 20px 0;
     width: 100%;
-
 `
 
 const subjects = [
@@ -45,7 +43,6 @@ const PreQuestionBar = ({text, text2}) => {
                 <Text type='chooseSubject'>Выберите предмет:</Text>
                 <ChooseSubject type='subjectsSelect' options={subjects}></ChooseSubject>
             </TextnSelectContainer>
-                {/* <ContainerAnswer text='Отвеченные вопросы' text2='3'></ContainerAnswer> */}
             <AnsweredContainer>
                 <Text>{text}</Text>
                 <TextWithBg bgColor='#009172' color='#ffffff'>{text2}</TextWithBg>

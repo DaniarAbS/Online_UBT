@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 const QuestionSetContainer = styled.div`
     overflow: auto; /* Enable scrolling if content exceeds the container */
-    width: 100%;
     
 `;
 
