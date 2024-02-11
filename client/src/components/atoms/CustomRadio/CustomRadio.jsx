@@ -28,9 +28,13 @@ const ChoicesContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
-  width: 428px;
+  width: 452px;
   border-radius: 10px;
   padding: 10px;
+
+  @media screen and (max-width: 900px){
+    width: 100%;
+  }
 `
 
 const RadioLabel = styled.label`

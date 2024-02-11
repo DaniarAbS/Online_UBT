@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import css from 'styled-components';
-import { sizes } from '../../../base/sizes';
+import { sizes } from '../../base/sizes';
 import { useState } from 'react';
 
 const GridContainer = styled.div`
@@ -29,11 +29,15 @@ const GridButton = styled.button`
       background-color: #ff5722;
     `
   }
+
+  @media screen and (max-width: 1000px){
+    width: 20px;
+    height: 40px;
+  }
 `;
 
 const Wrapper = styled.div`
   padding: 20px;
-  margin: 10px;
   background-color: #009172;
 `;
 
