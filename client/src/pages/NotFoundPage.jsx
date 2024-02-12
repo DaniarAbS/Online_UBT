@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "../../components/atoms/index";
+import { Text } from "../components/atoms/CustomText/CustomText";
 import styled from "styled-components";
 
 const NotFoundWrapper = styled.div`

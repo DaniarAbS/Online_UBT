@@ -2,17 +2,18 @@ import React from "react";
 import styled from "styled-components";
 
 const BgTextWrapper = styled.div`
-    background-color: #009172;
+    /* background-color: #009172; */
     display: flex;
     justify-content: space-between;
     padding: 3px 25px;
     border-radius: 7px;
     /* gap: 10px; */
+    
 `
 
-export const TextWithBg = ({bgColor, children, color}) => {
+export const TextWithBg = ({bgColor, children, color, padding}) => {
     return (
-        <BgTextWrapper style={{backgroundColor: `${bgColor}`, color: `${color}`}}>
+        <BgTextWrapper style={{backgroundColor: `${bgColor}`, color: `${color}`, padding: `${padding}`}}>
             {children}
         </BgTextWrapper>
     )
