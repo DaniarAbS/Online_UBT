@@ -10,6 +10,11 @@ export const TextStyles = {
     text-align: start;
     /* font-weight: 700; */
   `,
+  largePlus: css`
+    font-size: ${sizes.largePlus};
+    text-align: start;
+    /* font-weight: 700; */
+  `,
   largex: css`
     font-size: ${sizes.xLarge};
     /* font-weight: 600; */
