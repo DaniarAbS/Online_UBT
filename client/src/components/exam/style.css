@@ -1,0 +1,70 @@
+/* ============================= EXAMS ============================== */
+
+
+.exams {
+	margin: 50px 0 0 0;
+}
+.exams__container {
+}
+.exams__title {
+	margin: 0 0 40px 0;
+}
+.exams__list {
+	display: grid;
+	grid-gap: 20px 20px;
+	flex-direction: row;
+	grid-template-columns: 280px 280px 280px 280px 280px 280px 280px 280px;
+
+}
+.exams__card {
+	min-width: 280px;
+	background-color: #F0F0F0;
+	border-radius: 20px;
+	min-height: 250px;
+	padding: 24px;
+	max-width: 300px;
+}
+.exams__card-title {
+	font-size: 36px;
+	font-weight: var(--font-semi-bold);
+}
+.exams__card__list {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.exams__card__list{
+	padding: 35px 0 0 0;
+}
+
+.exams__card__button{
+	padding: 35px 0 0 0;
+}
+.exams__card__list-text {
+	font-weight: var(--font-semi-bold);
+}
+.exams_card__list-time {
+	display: flex;
+	align-items: center;
+}
+.exams__card__list-img{
+	margin-right: 10px;
+}
+
+.exams_card__list-day {
+	display: flex;
+	align-items: center;
+}
+
+.exams__card__button {
+	display: flex;
+	justify-content: center;
+}
+
+.exams__card__button-btn {
+	padding: 10px 50px;
+	background-color: #009172;
+	border-radius: 10px;
+	color: #fff;
+}

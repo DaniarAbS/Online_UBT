@@ -139,7 +139,6 @@ const IconButton = styled.button`
     }
 
 `
-
 const PopupContainer = styled.div`
     position: fixed;
     display: flex;
@@ -156,87 +155,87 @@ const PopupContainer = styled.div`
     z-index: 999;
 `;
 
-const TextIcon = ({bgColor, text, color}) => {
-    return (
-        <IconTextContainer style={{backgroundColor: `${bgColor}`, color: `${color}`}}>
-            <ClockCircleOutlined height='30px' width='30px'/>
-            <Text>{text}</Text>
-        </IconTextContainer>
-    )
+const TextIcon = ({ bgColor, text, color }) => {
+	return (
+		<IconTextContainer style={{ backgroundColor: `${bgColor}`, color: `${color}` }}>
+			<ClockCircleOutlined height='30px' width='30px' />
+			<Text>{text}</Text>
+		</IconTextContainer>
+	)
 }
 
-export const TestPage = ({text, text2, text3, image1, image2, image3, image4 }) => {
-    const [popupVisible, setPopupVisible] = useState(false);
-    const [buttonClicked, setButtonClicked] = useState(false);
-    const [popupVisible2, setPopupVisible2] = useState(false);
+export const TestPage = ({ text, text2, text3, image1, image2, image3, image4 }) => {
+	const [popupVisible, setPopupVisible] = useState(false);
+	const [buttonClicked, setButtonClicked] = useState(false);
+	const [popupVisible2, setPopupVisible2] = useState(false);
 
-    const togglePopup = () => {
-      setPopupVisible(!popupVisible);
-      setButtonClicked(!buttonClicked);
-    };
+	const togglePopup = () => {
+		setPopupVisible(!popupVisible);
+		setButtonClicked(!buttonClicked);
+	};
 
-    const togglePopup2 = () => {
-        setPopupVisible2(!popupVisible2)
-    }
-    
-    return (
-    <TestContainer>
-        <div className="main-container">
-            <div className={`responsive-container ${popupVisible ? 'hidden' : ''}`}>
-                <QuestionBar />
-            </div>
+	const togglePopup2 = () => {
+		setPopupVisible2(!popupVisible2)
+	}
 
-            {popupVisible && (
-                <div className="popup-container">
-                    <QuestionBar />
-                    <button onClick={togglePopup}>Close</button>
-                </div>
-            )}
+	return (
+		<TestContainer>
+			<div className="main-container">
+				<div className={`responsive-container ${popupVisible ? 'hidden' : ''}`}>
+					<QuestionBar />
+				</div>
 
-            {popupVisible2 && (
-                <PopupContainer>
-                    <WarningOutlined  style={{ fontSize: '40px' }}/>
-                    <Text >Вы хотите завершить экзамен сейчас?</Text>
-                    <div style={{display: 'flex', flexDirection: 'row', gap: '.5rem'}}>
-                        <CustomButton sizeType='popupButton' color={colors.white} bgColor={colors.black_green} onClick={togglePopup2}>Отмена</CustomButton>
-                        <CustomButton sizeType='popupButton' color={colors.white} bgColor={colors.black_green} onClick={togglePopup2}>Завершить</CustomButton>
-                    </div>
-                </PopupContainer>
-            )}
+				{popupVisible && (
+					<div className="popup-container">
+						<QuestionBar />
+						<button onClick={togglePopup}>Close</button>
+					</div>
+				)}
 
-        </div>
-        <AcceptContent>
-            <MainContent>
-                <GivenTaskContainer>
-                    <MainInfo>
-                        <Text weight='700'>{text}</Text>
-                        <TextIcon bgColor='#f7f7f7' color='#000000' text={text2}/>
-                    </MainInfo>
-                    <Text type='large' weight='400'>{text3}</Text>
-                    <img width='299px' height='394px' src="https://s3-alpha-sig.figma.com/img/2a00/682d/90b4330c798cd76f14e805bbd56b4c8f?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZSS1WKr~mzu6oeAwBBVHMWXK6Mt86sDSGa-oJ5ZjSxcnJNxCIwuu6ywpVAsNQg6R9Qgbl5NtSr~vfy2-MXKkr9fgMa3h5ruvcizZzVEXBfkU56RVCz1StZ1~86ghjLW6NhQGSLkXSPpxWGoJnbfID9Iy8qaZqm9bItEj~~jXlXWTKzYKohRNVuy~TCUOTqvpmOWWy-W0zqxywfFP~LBE1CqjbXo-bG3H31mLwPq399X3wYykyaHmsKtwsQ41FdMJuLsODWRPEJD1eqNtTsfB3R8Uc2~90QeZ6CSt0jr12hpZzE~GBRt6c3Gbif9cocRtB-NUCJHrJ4ckBzsQPzkazw__" alt="Task" />
-                </GivenTaskContainer>
-                <AnswerBlock>
-                    <PrevNextBtnsContainer>
-                        <IconButton>
-                            <LeftCircleOutlined style={{color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center'}}/>
-                            <Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Предыдущий</Text>
-                        </IconButton>
-                        <button className={`popup-button`}
-                        onClick={togglePopup}>
-                            <AppstoreOutlined className={`${buttonClicked ? 'clicked' : ''}`}/>
-                        </button>
-                        <IconButton>
-                            <Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Следующий</Text>
-                            <RightCircleOutlined style={{color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center'}}/>
-                        </IconButton>
-                    </PrevNextBtnsContainer>
-                    <RadioExample option1='A' option2='B' option3='C' option4='D' image1={image1} image2={image2} image3={image3} image4={image4}/>
-                </AnswerBlock>   
-            </MainContent>
-            <CustomButton onClick={togglePopup2} bgColor={colors.black_green} color={colors.white}>
-                Завершить тест
-            </CustomButton>
-        </AcceptContent>
-    </TestContainer>
-    )
+				{popupVisible2 && (
+					<PopupContainer>
+						<WarningOutlined style={{ fontSize: '40px' }} />
+						<Text >Вы хотите завершить экзамен сейчас?</Text>
+						<div style={{ display: 'flex', flexDirection: 'row', gap: '.5rem' }}>
+							<CustomButton sizeType='popupButton' color={colors.white} bgColor={colors.black_green} onClick={togglePopup2}>Отмена</CustomButton>
+							<CustomButton sizeType='popupButton' color={colors.white} bgColor={colors.black_green} onClick={togglePopup2}>Завершить</CustomButton>
+						</div>
+					</PopupContainer>
+				)}
+
+			</div>
+			<AcceptContent>
+				<MainContent>
+					<GivenTaskContainer>
+						<MainInfo>
+							<Text weight='700'>{text}</Text>
+							<TextIcon bgColor='#f7f7f7' color='#000000' text={text2} />
+						</MainInfo>
+						<Text type='large' weight='400'>{text3}</Text>
+						<img width='299px' height='394px' src="https://s3-alpha-sig.figma.com/img/2a00/682d/90b4330c798cd76f14e805bbd56b4c8f?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZSS1WKr~mzu6oeAwBBVHMWXK6Mt86sDSGa-oJ5ZjSxcnJNxCIwuu6ywpVAsNQg6R9Qgbl5NtSr~vfy2-MXKkr9fgMa3h5ruvcizZzVEXBfkU56RVCz1StZ1~86ghjLW6NhQGSLkXSPpxWGoJnbfID9Iy8qaZqm9bItEj~~jXlXWTKzYKohRNVuy~TCUOTqvpmOWWy-W0zqxywfFP~LBE1CqjbXo-bG3H31mLwPq399X3wYykyaHmsKtwsQ41FdMJuLsODWRPEJD1eqNtTsfB3R8Uc2~90QeZ6CSt0jr12hpZzE~GBRt6c3Gbif9cocRtB-NUCJHrJ4ckBzsQPzkazw__" alt="Task" />
+					</GivenTaskContainer>
+					<AnswerBlock>
+						<PrevNextBtnsContainer>
+							<IconButton>
+								<LeftCircleOutlined style={{ color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center' }} />
+								<Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Предыдущий</Text>
+							</IconButton>
+							<button className={`popup-button`}
+								onClick={togglePopup}>
+								<AppstoreOutlined className={`${buttonClicked ? 'clicked' : ''}`} />
+							</button>
+							<IconButton>
+								<Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Следующий</Text>
+								<RightCircleOutlined style={{ color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center' }} />
+							</IconButton>
+						</PrevNextBtnsContainer>
+						<RadioExample option1='A' option2='B' option3='C' option4='D' image1={image1} image2={image2} image3={image3} image4={image4} />
+					</AnswerBlock>
+				</MainContent>
+				<CustomButton onClick={togglePopup2} bgColor={colors.black_green} color={colors.white}>
+					Завершить тест
+				</CustomButton>
+			</AcceptContent>
+		</TestContainer>
+	)
 }
