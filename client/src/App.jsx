@@ -6,6 +6,7 @@ import {NotFoundPage} from './pages/NotFoundPage'
 import { useState, useRef, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { TaskAdding } from './pages/TaskAdding/TaskAdding'
+import RegistrationForm from './pages/RegisterForTeacher/registerTeacher'
 
 const ROLES = {
   'User': 2001,
@@ -30,6 +31,7 @@ function App() {
           <Route path='/test' element={<TestPage />}/>
           <Route path='/new_task' element={<TaskAdding theme1='Основные свойства логарифма'/>}/>
           <Route path='*' element={<NotFoundPage />}/>
+          <Route path='/register_teacher' element={<RegistrationForm />}/>
         </Routes>
       </BrowserRouter>
     </div>
