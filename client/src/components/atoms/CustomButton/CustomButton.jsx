@@ -11,9 +11,9 @@ const SimpleButton = styled.button`
     ${({ sizeType }) => ButtonSizeStyles[sizeType]}
 `
 
-export const CustomButton = ({ sizeType, children, onClick, color, bgColor }) => {
+export const CustomButton = ({ sizeType, children, onClick, color, bgColor, width, fontWeight }) => {
     return (
         <SimpleButton 
-        sizeType={sizeType} onClick={onClick} style={{backgroundColor: `${bgColor}`, color: `${color}`}}>{ children }</SimpleButton>
+        sizeType={sizeType} onClick={onClick} style={{backgroundColor: `${bgColor}`, color: `${color}`, width: `${width}`, fontWeight: `${fontWeight}`}}>{ children }</SimpleButton>
     )
 }

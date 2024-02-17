@@ -69,11 +69,12 @@ const SubjectEstimateContainer = styled.div`
     flex-direction: column;
     padding: 1rem;
     width: 100%;
+    gap: .8rem;
 `
 const InfoRow = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     gap: 3rem;
 
     & > *:first-child {
@@ -221,19 +222,19 @@ export const ExamResults = ({text1, text2, text3, text4, name, school, startDate
                 </InfoRow>
                 <InfoRow>
                     <Text>Математическая грамотность</Text>
-                    <Text>2</Text>
+                    <Text>{point2}</Text>
                 </InfoRow>
                 <InfoRow>
                     <Text>История Казахстана</Text>
-                    <Text>2</Text>
+                    <Text>{point3}</Text>
                 </InfoRow>
                 <InfoRow>
                     <Text>Математика</Text>
-                    <Text>2</Text>
+                    <Text>{point4}</Text>
                 </InfoRow>
                 <InfoRow>
                     <Text>Информатика</Text>
-                    <Text>2</Text>
+                    <Text>{point5}</Text>
                 </InfoRow>
             </SubjectEstimateContainer>
         </ContainerInfo>

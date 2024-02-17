@@ -7,7 +7,7 @@ const QuestionSetContainer = styled.div`
     
 `;
 
-const QuestionSet = () => {
+const QuestionSet = ({numberOfButtons}) => {
   const handleButtonClick = (index) => {
     // Handle button click in the parent component
     console.log(`Button ${index + 1} clicked.`);
@@ -17,7 +17,7 @@ const QuestionSet = () => {
   return (
     <QuestionSetContainer>
       {/* Specify the number of buttons you want */}
-      <ButtonGrid numberOfButtons={40} onButtonClick={handleButtonClick} />
+      <ButtonGrid numberOfButtons={numberOfButtons} onButtonClick={handleButtonClick} />
     </QuestionSetContainer>
   );
 };

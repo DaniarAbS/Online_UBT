@@ -11,18 +11,16 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-const handleChange = (value) => {
-  console.log(`${value}`);
+export const ChooseSubject = ({ type, options, onChange }) => {
+    return(
+      <StyledSelect
+        type={type}
+        defaultValue={options[0]?.value}
+        onChange={onChange}
+        options={options.map((item, index) => ({
+          value: item.value,
+          label: item.label,
+        }))}
+      />
+    )
 };
-
-export const ChooseSubject = ({ type, options }) => (
-    <StyledSelect
-      type={type}
-      defaultValue={options[0]?.value}
-      onChange={handleChange}
-      options={options.map((item, index) => ({
-        value: item.value,
-        label: item.label,
-      }))}
-    />
-);

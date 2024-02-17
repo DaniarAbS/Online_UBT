@@ -13,7 +13,8 @@ import { useState } from "react";
 import './TestPage.css'
 import { AppstoreOutlined, WarningOutlined } from "@ant-design/icons";
 import { CustomButton } from "../../components/atoms/CustomButton/CustomButton";
-
+import { subjects } from "../../components/organism/QuestionsBar";
+import CountDownTimer from '../../components/atoms/CountDown'
 
 
 const TestContainer = styled.div`
@@ -44,13 +45,11 @@ const AcceptContent = styled.div`
     flex-direction: column;
     align-items: end;
 `
-
 const MainContent = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
     /* justify-content: space-between; */
-    flex-wrap: wrap;
     width: 100%;
     gap: 1.5;
 
@@ -58,9 +57,9 @@ const MainContent = styled.div`
         flex-direction: column;
         width: 100%;
         order: 2;
+        flex-wrap: wrap;
     }
 `
-
 const MainInfo = styled.div`
     display: flex;
     flex-direction: row;
@@ -76,12 +75,11 @@ const MainInfo = styled.div`
         font-size: 15px;
     }
 `
-
 const IconTextContainer = styled.div`
     background-color: #F7F7F7;
     display: flex;
     justify-content: space-evenly;
-    width: 60%;
+    width: 100%;
     align-items: center;
     padding: 10px;
     border-radius: 10px;
@@ -93,7 +91,6 @@ const IconTextContainer = styled.div`
         padding: 5px;
     }
 `
-
 const GivenTaskContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -102,14 +99,12 @@ const GivenTaskContainer = styled.div`
     gap: 1.5rem;
     border-radius: 20px;
 `
-
 const AnswerBlock = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
 `
-
 const PrevNextBtnsContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -122,7 +117,6 @@ const PrevNextBtnsContainer = styled.div`
         justify-content: space-evenly;
     }
 `
-
 const IconButton = styled.button`
     background-color: ${colors.black_green};
     width: 40%;
@@ -139,7 +133,6 @@ const IconButton = styled.button`
     }
 
 `
-
 const PopupContainer = styled.div`
     position: fixed;
     display: flex;
@@ -155,12 +148,11 @@ const PopupContainer = styled.div`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 999;
 `;
-
-const TextIcon = ({bgColor, text, color}) => {
+const TextIcon = ({bgColor, text, color, isActive}) => {
     return (
         <IconTextContainer style={{backgroundColor: `${bgColor}`, color: `${color}`}}>
             <ClockCircleOutlined height='30px' width='30px'/>
-            <Text>{text}</Text>
+            <CountDownTimer initialTime='01:30:00' isActive={isActive}/>
         </IconTextContainer>
     )
 }
@@ -169,6 +161,24 @@ export const TestPage = ({text, text2, text3, image1, image2, image3, image4 }) 
     const [popupVisible, setPopupVisible] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
     const [popupVisible2, setPopupVisible2] = useState(false);
+    const [selectedSubject, setSelectedSubject] = useState(subjects[0]?.value);
+    const [timerActive, setTimerActive] = useState(true);
+
+    const handleChange = (value) => {
+      console.log(`${value}`); 
+      setSelectedSubject(value);
+    };
+
+    const findLabelByValue = (value) => {
+        const subject = subjects.find((subject) => subject.value === value);
+      
+        if (subject) {
+          return subject.questionNum;
+        }
+      
+        return null; // Return null or handle the case when the value is not found
+      };
+
 
     const togglePopup = () => {
       setPopupVisible(!popupVisible);
@@ -177,18 +187,19 @@ export const TestPage = ({text, text2, text3, image1, image2, image3, image4 }) 
 
     const togglePopup2 = () => {
         setPopupVisible2(!popupVisible2)
+        setTimerActive(false);
     }
     
     return (
     <TestContainer>
         <div className="main-container">
             <div className={`responsive-container ${popupVisible ? 'hidden' : ''}`}>
-                <QuestionBar />
+                <QuestionBar numberOfButtons={findLabelByValue(selectedSubject)} onchange={handleChange} />
             </div>
 
             {popupVisible && (
                 <div className="popup-container">
-                    <QuestionBar />
+                    <QuestionBar numberOfButtons={findLabelByValue(selectedSubject)} onchange={handleChange}/>
                     <button onClick={togglePopup}>Close</button>
                 </div>
             )}
@@ -205,15 +216,15 @@ export const TestPage = ({text, text2, text3, image1, image2, image3, image4 }) 
             )}
 
         </div>
-        <AcceptContent>
+        <AcceptContent>  
             <MainContent>
                 <GivenTaskContainer>
                     <MainInfo>
-                        <Text weight='700'>{text}</Text>
-                        <TextIcon bgColor='#f7f7f7' color='#000000' text={text2}/>
+                        <Text weight='700'>{selectedSubject}. Вопрос {4} из {findLabelByValue(selectedSubject)}</Text>
+                        <TextIcon bgColor='#f7f7f7' color='#000000' isActive={timerActive}/>
                     </MainInfo>
                     <Text type='large' weight='400'>{text3}</Text>
-                    <img width='299px' height='394px' src="https://s3-alpha-sig.figma.com/img/2a00/682d/90b4330c798cd76f14e805bbd56b4c8f?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZSS1WKr~mzu6oeAwBBVHMWXK6Mt86sDSGa-oJ5ZjSxcnJNxCIwuu6ywpVAsNQg6R9Qgbl5NtSr~vfy2-MXKkr9fgMa3h5ruvcizZzVEXBfkU56RVCz1StZ1~86ghjLW6NhQGSLkXSPpxWGoJnbfID9Iy8qaZqm9bItEj~~jXlXWTKzYKohRNVuy~TCUOTqvpmOWWy-W0zqxywfFP~LBE1CqjbXo-bG3H31mLwPq399X3wYykyaHmsKtwsQ41FdMJuLsODWRPEJD1eqNtTsfB3R8Uc2~90QeZ6CSt0jr12hpZzE~GBRt6c3Gbif9cocRtB-NUCJHrJ4ckBzsQPzkazw__" alt="Task" />
+                    <img width='299px' height='394px' src="https://s3-alpha-sig.figma.com/img/2a00/682d/90b4330c798cd76f14e805bbd56b4c8f?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZSS1WKr~mzu6oeAwBBVHMWXK6Mt86sDSGa-oJ5ZjSxcnJNxCIwuu6ywpVAsNQg6R9Qgbl5NtSr~vfy2-MXKkr9fgMa3h5ruvcizZzVEXBfkU56RVCz1StZ1~86ghjLW6NhQGSLkXSPpxWGoJnbfID9Iy8qaZqm9bItEj~~jXlXWTKzYKohRNVuy~TCUOTqvpmOWWy-W0zqxywfFP~LBE1CqjbXo-bG3H31mLwPq399X3wYykyaHmsKtwsQ41FdMJuLsODWRPEJD1eqNtTsfB3R8Uc2~90QeZ6CSt0jr12hpZzE~GBRt6c3Gbif9cocRtB-NUCJHrJ4ckBzsQPzkazw__" alt="" />
                 </GivenTaskContainer>
                 <AnswerBlock>
                     <PrevNextBtnsContainer>

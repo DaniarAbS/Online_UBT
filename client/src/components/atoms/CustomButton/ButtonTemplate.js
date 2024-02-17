@@ -32,4 +32,7 @@ export const ButtonSizeStyles = {
         font-size: ${sizes.mediumPlus};
         font-weight: 500;
     `,
+    universalButton: css`
+        width: 100%;
+    `
 };

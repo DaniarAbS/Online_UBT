@@ -8,8 +8,8 @@ import { sizes } from '../../base/sizes';
 import { TextWithBg } from '../../components/atoms/TextBg';
 import { colors } from '../../base/colors';
 import Input from 'antd/es/input/Input';
-import AddImage from '../../assets/icons/add_image_icon.png'
 import { Button, Upload } from 'antd';
+import { CustomButton } from '../../components/atoms/CustomButton/CustomButton';
 
 const WholeContainer = styled.div`
     display: flex;
@@ -31,6 +31,7 @@ const PointContainer = styled.div`
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
+    gap: 2rem;
 `
 const ThemesContainer = styled.div`
     display: flex;
@@ -97,6 +98,20 @@ const ApproveCancelContent = styled.div`
     justify-content: space-between;
     width: 60px;
 `
+const FileInputContainer = styled.div`
+  position: relative;
+  width: 30rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`
+const AnswersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1rem;
+
+`
 
 const props = {
     action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
@@ -115,113 +130,189 @@ const props = {
     ],
   };
 
-export const TaskAdding = ({theme1}) => {   
-    const [visibleItemIndex, setVisibleItemIndex] = useState(-1);
-    const items = [
-        {
-            topic: 'Основные свойства логарифма',
-            subtopics: [
-                'Суретте көрсетілген параболаның формуласын табыңыз', 
-                'Суретте көрсетілген параболаның формуласын табыңыз', 
-                'Суретте көрсетілген параболаның формуласын табыңыз'
-            ]
-        },
-        {
-            topic: 'Линейные уравнения',
-            subtopics: [
-                'Основные понятия', 
-                'Решение уравнений', 
-                'Примеры'
-            ]
-        },
-        {
-            topic: 'Линейные уравнения',
-            subtopics: ['Основные понятия', 'Решение уравнений', 'Примеры']
-        },
-        {
-            topic: 'Линейные уравнения',
-            subtopics: ['Основные понятия', 'Решение уравнений', 'Примеры']
-        },
-        // Add more topics and subtopics as needed
-    ];
-
-    const fileInputRef = useRef(null);
+const FileInput = () => {
+  const fileInputRef = useRef(null);
   const graduateDisplayRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [inputText, setInputText] = useState('');
+  const [isCheckIcon, setCheckIcon] = useState(false);
 
   const updateFileInput = () => {
     const fileInput = fileInputRef.current;
     if (fileInput.files.length > 1) {
       // Reset the file input if more than one file is selected
       fileInput.value = '';
-      graduateDisplayRef.current.value = '';
+      setSelectedFile(null);
     } else if (fileInput.files.length === 1) {
-      graduateDisplayRef.current.value = fileInput.files[0].name;
+      setSelectedFile(fileInput.files[0]);
+      setInputText('');
     } else {
-      graduateDisplayRef.current.value = '';
+      setSelectedFile(null);
     }
   };
 
+  const clearFileInput = () => {
+    const fileInput = fileInputRef.current;
+    fileInput.value = '';
+    setSelectedFile(null);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Backspace' && !graduateDisplayRef.current.value.trim()) {
+      clearFileInput();
+    }
+  };
+
+  const handleTextChange = (e) => {
+    setInputText(e.target.value);
+    setSelectedFile(null); // Clear selected file when typing
+  };
+
+  const handleIconClick = () => {
+    setCheckIcon(!isCheckIcon);
+    // Additional logic or actions can be added here based on the click event
+  };
+
+  const inputId = `graduationInput_${Math.random().toString(36).substr(2, 9)}`;
+
+  return(
+    <FileInputContainer>
+          {isCheckIcon ? (
+            <CheckOutlined onClick={handleIconClick} style={{fontSize: '1.5rem'}}/>
+          ) : (
+            <CloseOutlined onClick={handleIconClick} style={{fontSize: '1.5rem'}}/>
+          )}
+          <input
+            className='graduation file-input'
+            type='text'
+            placeholder='Введите текст'
+            value={selectedFile ? selectedFile.name : inputText}
+            ref={graduateDisplayRef}
+            onKeyDown={handleKeyDown}
+            onChange={handleTextChange} 
+          />
+          <input
+            id={inputId}
+            className='file-input'
+            type='file'
+            style={{ display: 'none' }}
+            accept='.png, .jpg, .docx'
+            onChange={updateFileInput}
+            ref={fileInputRef}
+          />
+          <label className='file-input-icon' htmlFor={inputId}>
+            <UploadOutlined />
+          </label>
+    </FileInputContainer>
+    )
+}
+
+export const TaskAdding = ({theme1}) => {   
+  const [visibleItemIndex, setVisibleItemIndex] = useState(-1);
+  const [button1Active, setButton1Active] = useState(false);
+  const [button2Active, setButton2Active] = useState(false);
+  const items = [
+      {
+          topic: 'Основные свойства логарифма',
+          subtopics: [
+              'Суретте көрсетілген параболаның формуласын табыңыз', 
+              'Суретте көрсетілген параболаның формуласын табыңыз', 
+              'Суретте көрсетілген параболаның формуласын табыңыз'
+          ]
+      },
+      {
+          topic: 'Линейные уравнения',
+          subtopics: [
+              'Основные понятия', 
+              'Решение уравнений', 
+              'Примеры'
+          ]
+      },
+      {
+          topic: 'Линейные уравнения',
+          subtopics: ['Основные понятия', 'Решение уравнений', 'Примеры']
+      },
+      {
+          topic: 'Линейные уравнения',
+          subtopics: ['Основные понятия', 'Решение уравнений', 'Примеры']
+      },
+      // Add more topics and subtopics as needed
+  ];
 
     const toggleVisibility = (index) => {
         setVisibleItemIndex(visibleItemIndex === index ? -1 : index);
     };
 
-    return (
-        <div className='file-input-container'>
-      <input
-        className='graduation file-input'
-        type='text'
-        placeholder='Выписка учебного заведения'
-        ref={graduateDisplayRef}
-      />
-      <input
-        id='graduationInput'
-        className='file-input'
-        type='file'
-        style={{ display: 'none' }}
-        accept='.pdf, .doc, .docx'
-        onChange={updateFileInput}
-        ref={fileInputRef}
-      />
-      <label className='file-input-icon' htmlFor='graduationInput'>
-        <UploadOutlined />
-      </label>
-    </div>
+    const toggleButton1 = () => {
+      setButton1Active(!button1Active);
+      setButton2Active(false); // Deactivate the other button
+      // Additional logic or actions can be added here
+    };
+  
+    const toggleButton2 = () => {
+      setButton2Active(!button2Active);
+      setButton1Active(false); // Deactivate the other button
+      // Additional logic or actions can be added here
+    };
 
-        // <ChoosePartContainer>
-        //     <Text>Выберите тип вопроса:</Text>
-        //     <PointContainer>
-        //         <TextWithBg bgColor={colors.background_gray} padding='.5rem 2rem'>1 балл</TextWithBg>
-        //         <TextWithBg bgColor={colors.background_gray} padding='.5rem 2rem'>2 балл</TextWithBg>
-        //     </PointContainer>
-        //     <Text>Выберите тему:</Text>
-        //     <ThemesContainer>
-        //         {items.map((item, index) => (
-        //             <div key={index}>
-        //                 <VisibilityContent>
-        //                     <ThemeVisibleContent>
-        //                         <Text type='largePlus'>{item.topic}</Text>
-        //                         <RotatableIcon rotated={visibleItemIndex === index} onClick={() => toggleVisibility(index)}/>
-        //                     </ThemeVisibleContent>
-        //                     { visibleItemIndex === index &&  (
-        //                         <HiddenContent className={visibleItemIndex === index ? 'visible-content' : 'hidden-content'}>
-        //                             <ul style={{paddingInlineStart: '20px', display: 'flex', flexDirection: 'column', gap: '1rem',}}>
-        //                                 {item.subtopics.map((subtopic, subIndex) => (
-        //                                     <li key={subIndex}>
-        //                                         <ThemeElementRow>
-        //                                             <TruncatedText title={subtopic}>{subtopic}</TruncatedText>
-        //                                             <FormOutlined />   
-        //                                         </ThemeElementRow>
-        //                                     </li>
-        //                                 ))}
-        //                             </ul>
-        //                         </HiddenContent>
-        //                     )}
-        //                 </VisibilityContent>
-        //             </div>
-        //         ))}
-        //     </ThemesContainer>
-        // </ChoosePartContainer>
+    return (
+      // <AnswersContainer>
+      //   <Text>Введите ответы:</Text>
+      //   <FileInput />
+      //   <FileInput />
+      //   <FileInput />
+      //   <FileInput />
+      // </AnswersContainer>
+
+        <ChoosePartContainer>
+            <Text>Выберите тип вопроса:</Text>
+            <PointContainer>
+              <CustomButton
+                width='100%'
+                bgColor={button1Active ? colors.black_green : colors.background_gray}
+                color={button1Active ? colors.white : colors.black}
+                onClick={toggleButton1}
+              >
+                1 балл
+              </CustomButton>
+
+              <CustomButton
+                width='100%'
+                bgColor={button2Active ? colors.black_green : colors.background_gray}
+                color={button2Active ? colors.white : colors.black}
+                onClick={toggleButton2}
+              >
+                2 балла
+              </CustomButton>
+            </PointContainer>
+            <Text>Выберите тему:</Text>
+            <ThemesContainer>
+                {items.map((item, index) => (
+                    <div key={index}>
+                        <VisibilityContent>
+                            <ThemeVisibleContent>
+                                <Text type='largePlus'>{item.topic}</Text>
+                                <RotatableIcon rotated={visibleItemIndex === index} onClick={() => toggleVisibility(index)}/>
+                            </ThemeVisibleContent>
+                            { visibleItemIndex === index &&  (
+                                <HiddenContent className={visibleItemIndex === index ? 'visible-content' : 'hidden-content'}>
+                                    <ul style={{paddingInlineStart: '20px', display: 'flex', flexDirection: 'column', gap: '1rem',}}>
+                                        {item.subtopics.map((subtopic, subIndex) => (
+                                            <li key={subIndex}>
+                                                <ThemeElementRow>
+                                                    <TruncatedText title={subtopic}>{subtopic}</TruncatedText>
+                                                    <FormOutlined />   
+                                                </ThemeElementRow>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </HiddenContent>
+                            )}
+                        </VisibilityContent>
+                    </div>
+                ))}
+            </ThemesContainer>
+        </ChoosePartContainer>
         
         // <AddingQuestionContainer>
         //     <InputImgRow>
