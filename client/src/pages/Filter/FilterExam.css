@@ -1,0 +1,51 @@
+/* ExamPage.module.css */
+
+.container {
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .languageToggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .languageButton {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
+  .languageButtonActive {
+    background-color: #004d40;
+    color: white;
+  }
+  
+  .subjectCategory {
+    margin-bottom: 10px;
+  }
+  
+  .subjectButton {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  .startButton {
+    padding: 15px 30px;
+    background-color: #00897b;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
