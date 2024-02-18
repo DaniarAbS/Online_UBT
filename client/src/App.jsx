@@ -2,25 +2,24 @@ import './App.css'
 import { TestPage } from './pages/TestPage/TestPage'
 import { ExamResults } from './pages/ExamResults/ExamResults'
 import { HomePage } from './pages/Home'
-import {NotFoundPage} from './pages/NotFoundPage'
+import { NotFoundPage } from './pages/NotFoundPage'
 import { useState, useRef, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { TaskAdding } from './pages/TaskAdding/TaskAdding'
 import RegistrationForm from './pages/RegisterForTeacher/registerTeacher'
 
 const ROLES = {
-  'User': 2001,
-  'Teacher': 1984,
-  'Admin': 5150
+	'User': 2001,
+	'Teacher': 1984,
+	'Admin': 5150
 }
 
 function App() {
-  const [popupVisible, setPopupVisible] = useState(false);
+	const [popupVisible, setPopupVisible] = useState(false);
 
-  const togglePopup = () => {
-    setPopupVisible(!popupVisible);
-  };
-
+	const togglePopup = () => {
+		setPopupVisible(!popupVisible);
+	};
   return (
     <div>
       <BrowserRouter>
