@@ -6,8 +6,7 @@ import Header from "../components/header/header";
 export const HomePage = () => {
 	return (
 		<>
-			<SideBar></SideBar>
-			<Header></Header>
+			That's home page
 		</>
 	)
 }

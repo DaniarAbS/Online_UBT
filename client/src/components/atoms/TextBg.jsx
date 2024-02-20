@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const BgTextWrapper = styled.div`
-    /* background-color: #009172; */
     display: flex;
     justify-content: space-between;
     padding: 3px 25px;

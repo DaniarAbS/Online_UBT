@@ -7,6 +7,8 @@ import { useState, useRef, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { TaskAdding } from './pages/TaskAdding/TaskAdding'
 import RegistrationForm from './pages/RegisterForTeacher/registerTeacher'
+import Header from './components/header/header'
+import SideBar from './components/sidebar/SideBar'
 
 const ROLES = {
 	'User': 2001,
@@ -20,13 +22,14 @@ function App() {
 	const togglePopup = () => {
 		setPopupVisible(!popupVisible);
 	};
+
   return (
     <div>
       <BrowserRouter>
         <Routes>
           <Route index element={<HomePage />}/>
           <Route path='/home' element={<HomePage />}/>
-          <Route path='/exam_results' element={<ExamResults />}/>
+          <Route path='/exam_results' element={<ExamResults/>}/>
           <Route path='/test' element={<TestPage />}/>
           <Route path='/new_task' element={<TaskAdding theme1='Основные свойства логарифма'/>}/>
           <Route path='*' element={<NotFoundPage />}/>
