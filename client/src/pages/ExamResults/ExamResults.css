@@ -8,13 +8,10 @@
 }
 
 .progress{
-  /* position: absolute; */
-  /* top: 0;
-  left: 0; */
   height: 100%;
   border-radius: 10px;
   background: linear-gradient(45deg, #009172, #009172);
-  animation: animate 4s ease-in-out forwards;
+  animation: animate 2s ease-in-out forwards;
 }
 
 @keyframes animate {

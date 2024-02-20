@@ -5,6 +5,9 @@ import { Text } from '../atoms/CustomText/CustomText';
 import { ChooseSubject } from '../atoms/CustomSelect'
 import QuestionSet from '../moleculas/QuestionSet';
 import { TextWithBg } from '../atoms/TextBg';
+import { subjectArr } from '../../data/data';
+import ButtonGrid from '../moleculas/ButtonGrid';
+import { useState } from 'react';
 
 const Container = styled.div`
     display: flex;
@@ -12,7 +15,6 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
 `;
-
 const TextnSelectContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -20,7 +22,6 @@ const TextnSelectContainer = styled.div`
     width: 100%;
     gap: 20px;
 `
-
 const AnsweredContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -28,32 +29,42 @@ const AnsweredContainer = styled.div`
     padding: 20px 0;
     width: 100%;
 `
+// const subjects = [
+//     { value: 'math', label: 'Mathematics' },
+//     { value: 'eng', label: 'English' },
+//     { value: 'sci', label: 'Science' },
+//   ];
 
-const subjects = [
-    { value: 'math', label: 'Mathematics' },
-    { value: 'eng', label: 'English' },
-    { value: 'sci', label: 'Science' },
-  ];
+const QuestionSetContainer = styled.div`
+    overflow: auto; /* Enable scrolling if content exceeds the container */
+    
+`;
 
+const PreQuestionBar = ({ text2 }) => {
+    const [selectedQuantity, setSelectedQuantity] = useState(10);
 
-const PreQuestionBar = ({text, text2}) => {
+    const handleSubjectSelect = (quantity) => {
+        setSelectedQuantity(quantity);
+      };
     return (
         <Container>
             <TextnSelectContainer>
                 <Text type='chooseSubject'>Выберите предмет:</Text>
-                <ChooseSubject type='subjectsSelect' options={subjects}></ChooseSubject>
+                <ChooseSubject onSelect={handleSubjectSelect} options={subjectArr}></ChooseSubject>
             </TextnSelectContainer>
             <AnsweredContainer>
-                <Text>{text}</Text>
+                <Text>Отвеченные вопросы</Text>
                 <TextWithBg bgColor='#009172' color='#ffffff'>{text2}</TextWithBg>
             </AnsweredContainer>
-            <QuestionSet />
+            <QuestionSetContainer>
+                <ButtonGrid numberOfButtons={selectedQuantity} />
+            </QuestionSetContainer>
         </Container>
     )
 }
 
 export const QuestionBar = ({text}) => {
   return (
-        <PreQuestionBar  text='Отвеченные вопросы' text2={text}/>
+        <PreQuestionBar text2={text}/>
   );
 };

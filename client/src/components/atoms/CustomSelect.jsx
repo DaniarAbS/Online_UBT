@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select } from 'antd';
 import styled from 'styled-components';
+import { useState } from 'react';
 
 const StyledSelect = styled(Select)`
   width: 100%;
@@ -11,18 +12,22 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-const handleChange = (value) => {
-  console.log(`${value}`);
-};
 
-export const ChooseSubject = ({ type, options }) => (
+export const ChooseSubject = ({ options }) => {
+  const [selectedSubject, setSelectedSubject] = useState(options[0]);
+
+  const handleChange = (selectedOption) => {
+    setSelectedSubject(selectedOption);
+  };
+
+  return (
     <StyledSelect
-      type={type}
-      defaultValue={options[0]?.value}
+      defaultValue={selectedSubject.name}
       onChange={handleChange}
-      options={options.map((item, index) => ({
-        value: item.value,
-        label: item.label,
+      options={options.map((item) => ({
+        value: item.name,
+        label: item.name,
       }))}
     />
-);
+  );
+};

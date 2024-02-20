@@ -29,7 +29,6 @@ const TestContainer = styled.div`
         
     }
 `
-
 // const QuestionAnswerContainer = styled.div`
 //     display: flex;
 //     flex-direction: row;
@@ -38,13 +37,11 @@ const TestContainer = styled.div`
 //     width: 100%;
 //     gap: 1.5;
 // `
-
 const AcceptContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: end;
 `
-
 const MainContent = styled.div`
     display: flex;
     flex-direction: row;
@@ -60,7 +57,6 @@ const MainContent = styled.div`
         order: 2;
     }
 `
-
 const MainInfo = styled.div`
     display: flex;
     flex-direction: row;
@@ -76,7 +72,6 @@ const MainInfo = styled.div`
         font-size: 15px;
     }
 `
-
 const IconTextContainer = styled.div`
     background-color: #F7F7F7;
     display: flex;
@@ -93,7 +88,6 @@ const IconTextContainer = styled.div`
         padding: 5px;
     }
 `
-
 const GivenTaskContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -102,14 +96,12 @@ const GivenTaskContainer = styled.div`
     gap: 1.5rem;
     border-radius: 20px;
 `
-
 const AnswerBlock = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
 `
-
 const PrevNextBtnsContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -122,7 +114,6 @@ const PrevNextBtnsContainer = styled.div`
         justify-content: space-evenly;
     }
 `
-
 const IconButton = styled.button`
     background-color: ${colors.black_green};
     width: 40%;

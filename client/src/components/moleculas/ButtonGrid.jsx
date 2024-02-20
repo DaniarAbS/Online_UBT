@@ -18,17 +18,12 @@ const GridButton = styled.button`
   height: 60px;
   font-size: ${sizes.large};
   font-weight: 500;
+  background-color: ${({ isselected }) => (isselected ? '#ff5722' : '#009172')};
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-
-  ${({ isselected }) => 
-    isselected && 
-    css`
-      background-color: #ff5722;
-    `
-  }
 
   @media screen and (max-width: 1000px){
     width: 20px;
@@ -38,7 +33,7 @@ const GridButton = styled.button`
 
 const Wrapper = styled.div`
   padding: 20px;
-  background-color: #009172;
+  background-color: #f7f7f7;
 `;
 
 const ButtonGrid = ({ numberOfButtons, onButtonClick }) => {
