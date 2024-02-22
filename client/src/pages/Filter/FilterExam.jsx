@@ -1,8 +1,8 @@
 // ExamPage.js
-import React, { useState } from 'react';
 import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import styles from './FilterExam.css';
+import './FilterExam.css';
 
 const ExamPage = () => {
   const [language, setLanguage] = useState('russian'); // 'kazakh' or 'russian'
@@ -27,52 +27,52 @@ const ExamPage = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
+    <div className={'container'}>
+      <div className={'header'}>
         <h1>Сдать экзамен</h1>
         {/* Placeholder for the profile component */}
       </div>
-      <div className={styles.languageToggle}>
+      <div className={'languageToggle'}>
         <button
-          className={`${styles.languageButton} ${
-            language === 'kazakh' && styles.languageButtonActive
+          className={`${'languageButton'} ${
+            language === 'kazakh' && 'languageButtonActive'
           }`}
           onClick={() => handleLanguageChange('kazakh')}
         >
           На казахском
         </button>
         <button
-          className={`${styles.languageButton} ${
-            language === 'russian' && styles.languageButtonActive
+          className={`${'languageButton'} ${
+            language === 'russian' && 'languageButtonActive'
           }`}
           onClick={() => handleLanguageChange('russian')}
         >
           На русском
         </button>
       </div>
-      <div className={styles.subjectCategory}>
+      <div className={'subjectCategory'}>
         <h2>Обязательные предметы</h2>
         {/* Repeat for each subject */}
         <button
-          className={styles.subjectButton}
+          className={'subjectButton'}
           onClick={() => handleSubjectSelect('math')}
         >
           Математика
         </button>
         {/* ... other subjects */}
       </div>
-      <div className={styles.subjectCategory}>
+      <div className={'subjectCategory'}>
         <h2>Выборочные предметы</h2>
         {/* Repeat for each subject */}
         <button
-          className={styles.subjectButton}
+          className={'subjectButton'}
           onClick={() => handleSubjectSelect('biology')}
         >
           Биология
         </button>
         {/* ... other subjects */}
       </div>
-      <button className={styles.startButton} onClick={handleSubmit}>
+      <button className={'startButton'} onClick={handleSubmit}>
         Начать
       </button>
     </div>

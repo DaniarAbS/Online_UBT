@@ -31,6 +31,7 @@ const PointContainer = styled.div`
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
+    gap: 1rem;
 `
 const ThemesContainer = styled.div`
     display: flex;
@@ -117,6 +118,34 @@ const props = {
 
 export const TaskAdding = ({theme1}) => {   
     const [visibleItemIndex, setVisibleItemIndex] = useState(-1);
+    const [selectedDiv, setSelectedDiv] = useState(null);
+    const [lastClickedButton, setLastClickedButton] = useState(null);
+
+    const handleButtonClick = (buttonNumber) => {
+      setLastClickedButton(buttonNumber);
+    };
+
+    const handleClick = (divNumber) => {
+      setSelectedDiv(divNumber);
+    };
+
+    const renderElement = (divNumber) => {
+      const isSelected = selectedDiv === divNumber;
+
+      return (
+        <div
+          onClick={() => handleClick(divNumber)}
+          style={{
+            cursor: 'pointer',
+          }}
+        >
+          {isSelected ? <CheckOutlined /> : <CloseOutlined />}
+        </div>
+      );
+    };
+    
+
+
     const items = [
         {
             topic: 'Основные свойства логарифма',
@@ -146,7 +175,7 @@ export const TaskAdding = ({theme1}) => {
     ];
 
     const fileInputRef = useRef(null);
-  const graduateDisplayRef = useRef(null);
+    const graduateDisplayRef = useRef(null);
 
   const updateFileInput = () => {
     const fileInput = fileInputRef.current;
@@ -167,71 +196,153 @@ export const TaskAdding = ({theme1}) => {
     };
 
     return (
-        <div className='file-input-container'>
-      <input
-        className='graduation file-input'
-        type='text'
-        placeholder='Выписка учебного заведения'
-        ref={graduateDisplayRef}
-      />
-      <input
-        id='graduationInput'
-        className='file-input'
-        type='file'
-        style={{ display: 'none' }}
-        accept='.pdf, .doc, .docx'
-        onChange={updateFileInput}
-        ref={fileInputRef}
-      />
-      <label className='file-input-icon' htmlFor='graduationInput'>
-        <UploadOutlined />
-      </label>
-    </div>
-
-        // <ChoosePartContainer>
-        //     <Text>Выберите тип вопроса:</Text>
-        //     <PointContainer>
-        //         <TextWithBg bgColor={colors.background_gray} padding='.5rem 2rem'>1 балл</TextWithBg>
-        //         <TextWithBg bgColor={colors.background_gray} padding='.5rem 2rem'>2 балл</TextWithBg>
-        //     </PointContainer>
-        //     <Text>Выберите тему:</Text>
-        //     <ThemesContainer>
-        //         {items.map((item, index) => (
-        //             <div key={index}>
-        //                 <VisibilityContent>
-        //                     <ThemeVisibleContent>
-        //                         <Text type='largePlus'>{item.topic}</Text>
-        //                         <RotatableIcon rotated={visibleItemIndex === index} onClick={() => toggleVisibility(index)}/>
-        //                     </ThemeVisibleContent>
-        //                     { visibleItemIndex === index &&  (
-        //                         <HiddenContent className={visibleItemIndex === index ? 'visible-content' : 'hidden-content'}>
-        //                             <ul style={{paddingInlineStart: '20px', display: 'flex', flexDirection: 'column', gap: '1rem',}}>
-        //                                 {item.subtopics.map((subtopic, subIndex) => (
-        //                                     <li key={subIndex}>
-        //                                         <ThemeElementRow>
-        //                                             <TruncatedText title={subtopic}>{subtopic}</TruncatedText>
-        //                                             <FormOutlined />   
-        //                                         </ThemeElementRow>
-        //                                     </li>
-        //                                 ))}
-        //                             </ul>
-        //                         </HiddenContent>
-        //                     )}
-        //                 </VisibilityContent>
-        //             </div>
-        //         ))}
-        //     </ThemesContainer>
-        // </ChoosePartContainer>
-        
-        // <AddingQuestionContainer>
-        //     <InputImgRow>
-        //         <Input placeholder='Введите текст' variant='borderless' style={{borderBottom: 'solid 2px #acacac', borderRadius: '0', width: '100%'}}/>
-        //         <img src={AddImage} alt="Add_image_icon" />
-        //     </InputImgRow>
-        //     <ApproveCancelContent>
-        //         <CheckOutlined style={{fontSize: '24px', fontWeight: 'bold'}}/>
-        //         <CloseOutlined style={{fontSize: '24px', fontWeight: 'bold'}}/>
-        //     </ApproveCancelContent>
-        // </AddingQuestionContainer>
+      <WholeContainer>
+        <ChoosePartContainer>
+            <Text>Выберите тип вопроса:</Text>
+            <PointContainer>
+                <button 
+                style={{
+                  backgroundColor: lastClickedButton === 1 ? colors.black_green : colors.font_gray,
+                }}
+                onClick={() => handleButtonClick(1)} padding='.5rem 2rem'>1 балл</button>
+                <button 
+                style={{
+                  backgroundColor: lastClickedButton === 2 ? colors.black_green : colors.font_gray,
+                }}
+                onClick={() => handleButtonClick(2)} padding='.5rem 2rem'>2 балл</button>
+            </PointContainer> 
+            <Text>Выберите тему:</Text>
+            <ThemesContainer>
+                {items.map((item, index) => (
+                    <div key={index}>
+                        <VisibilityContent>
+                            <ThemeVisibleContent>
+                                <Text type='largePlus'>{item.topic}</Text>
+                                <RotatableIcon rotated={visibleItemIndex === index} onClick={() => toggleVisibility(index)}/>
+                            </ThemeVisibleContent>
+                            { visibleItemIndex === index &&  (
+                                <HiddenContent className={visibleItemIndex === index ? 'visible-content' : 'hidden-content'}>
+                                    <ul style={{paddingInlineStart: '20px', display: 'flex', flexDirection: 'column', gap: '1rem',}}>
+                                        {item.subtopics.map((subtopic, subIndex) => (
+                                            <li key={subIndex}>
+                                                <ThemeElementRow>
+                                                    <TruncatedText title={subtopic}>{subtopic}</TruncatedText>
+                                                    <FormOutlined />   
+                                                </ThemeElementRow>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </HiddenContent>
+                            )}
+                        </VisibilityContent>
+                    </div>
+                ))}
+            </ThemesContainer>
+        </ChoosePartContainer>
+        <AddingQuestionContainer>
+            <InputImgRow>
+                <Input placeholder='Введите текст' variant='borderless' style={{borderBottom: 'solid 2px #acacac', borderRadius: '0', width: '100%'}}/>
+                <img src={AddImage} alt="Add_image_icon" />
+            </InputImgRow>
+            <ApproveCancelContent>
+                <CheckOutlined style={{fontSize: '24px', fontWeight: 'bold'}}/>
+                <CloseOutlined style={{fontSize: '24px', fontWeight: 'bold'}}/>
+            </ApproveCancelContent>
+        </AddingQuestionContainer>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+            {renderElement(1)}
+            <div className='file-input-container'>
+              <input
+                className='graduation file-input'
+                type='text'
+                placeholder='Выписка учебного заведения'
+                ref={graduateDisplayRef}
+              />
+              <input
+                id='graduationInput'
+                className='file-input'
+                type='file'
+                style={{ display: 'none' }}
+                accept='.pdf, .doc, .docx'
+                onChange={updateFileInput}
+                ref={fileInputRef}
+              />
+              <label className='file-input-icon' htmlFor='graduationInput'>
+                <UploadOutlined />
+              </label>
+            </div>
+          </div>
+          <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+            {renderElement(2)}
+            <div className='file-input-container'>
+              <input
+                className='graduation file-input'
+                type='text'
+                placeholder='Выписка учебного заведения'
+                ref={graduateDisplayRef}
+              />
+              <input
+                id='graduationInput'
+                className='file-input'
+                type='file'
+                style={{ display: 'none' }}
+                accept='.pdf, .doc, .docx'
+                onChange={updateFileInput}
+                ref={fileInputRef}
+              />
+              <label className='file-input-icon' htmlFor='graduationInput'>
+                <UploadOutlined />
+              </label>
+            </div>
+          </div>
+          <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+            {renderElement(3)}
+            <div className='file-input-container'>
+              <input
+                className='graduation file-input'
+                type='text'
+                placeholder='Выписка учебного заведения'
+                ref={graduateDisplayRef}
+              />
+              <input
+                id='graduationInput'
+                className='file-input'
+                type='file'
+                style={{ display: 'none' }}
+                accept='.pdf, .doc, .docx'
+                onChange={updateFileInput}
+                ref={fileInputRef}
+              />
+              <label className='file-input-icon' htmlFor='graduationInput'>
+                <UploadOutlined />
+              </label>
+            </div>
+          </div>
+          <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+            {renderElement(4)}
+            <div className='file-input-container'>
+              <input
+                className='graduation file-input'
+                type='text'
+                placeholder='Выписка учебного заведения'
+                ref={graduateDisplayRef}
+              />
+              <input
+                id='graduationInput'
+                className='file-input'
+                type='file'
+                style={{ display: 'none' }}
+                accept='.pdf, .doc, .docx'
+                onChange={updateFileInput}
+                ref={fileInputRef}
+              />
+              <label className='file-input-icon' htmlFor='graduationInput'>
+                <UploadOutlined />
+              </label>
+            </div>
+          </div>
+        </div>
+      </WholeContainer>
     )
 }

@@ -101,6 +101,7 @@ const AnswerBlock = styled.div`
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    gap: 2rem;
 `
 const PrevNextBtnsContainer = styled.div`
     display: flex;
@@ -108,6 +109,7 @@ const PrevNextBtnsContainer = styled.div`
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
 
     @media screen and (max-width: 900px){
         order: 2;
@@ -126,6 +128,7 @@ const IconButton = styled.button`
     @media screen and (max-width: 1000px){
         ${Text} {
             display: none;
+            width: 100%;
         }
     }
 
@@ -205,27 +208,29 @@ export const TestPage = ({ text, text2, text3, image1, image2, image3, image4 })
 						<Text type='large' weight='400'>{text3}</Text>
 						<img width='299px' height='394px' src="https://s3-alpha-sig.figma.com/img/2a00/682d/90b4330c798cd76f14e805bbd56b4c8f?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZSS1WKr~mzu6oeAwBBVHMWXK6Mt86sDSGa-oJ5ZjSxcnJNxCIwuu6ywpVAsNQg6R9Qgbl5NtSr~vfy2-MXKkr9fgMa3h5ruvcizZzVEXBfkU56RVCz1StZ1~86ghjLW6NhQGSLkXSPpxWGoJnbfID9Iy8qaZqm9bItEj~~jXlXWTKzYKohRNVuy~TCUOTqvpmOWWy-W0zqxywfFP~LBE1CqjbXo-bG3H31mLwPq399X3wYykyaHmsKtwsQ41FdMJuLsODWRPEJD1eqNtTsfB3R8Uc2~90QeZ6CSt0jr12hpZzE~GBRt6c3Gbif9cocRtB-NUCJHrJ4ckBzsQPzkazw__" alt="Task" />
 					</GivenTaskContainer>
-					<AnswerBlock>
-						<PrevNextBtnsContainer>
-							<IconButton>
-								<LeftCircleOutlined style={{ color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center' }} />
-								<Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Предыдущий</Text>
-							</IconButton>
-							<button className={`popup-button`}
-								onClick={togglePopup}>
-								<AppstoreOutlined className={`${buttonClicked ? 'clicked' : ''}`} />
-							</button>
-							<IconButton>
-								<Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Следующий</Text>
-								<RightCircleOutlined style={{ color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center' }} />
-							</IconButton>
-						</PrevNextBtnsContainer>
-						<RadioExample option1='A' option2='B' option3='C' option4='D' image1={image1} image2={image2} image3={image3} image4={image4} />
-					</AnswerBlock>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'end'}}>
+                        <AnswerBlock>
+                            <PrevNextBtnsContainer>
+                                <IconButton>
+                                    <LeftCircleOutlined style={{ color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center' }} />
+                                    <Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Предыдущий</Text>
+                                </IconButton>
+                                <button style={{width: '40%', height: '40px'}} className={`popup-button`}
+                                    onClick={togglePopup}>
+                                    <AppstoreOutlined className={`${buttonClicked ? 'clicked' : ''}`} />
+                                </button>
+                                <IconButton>
+                                    <Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Следующий</Text>
+                                    <RightCircleOutlined style={{ color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center' }} />
+                                </IconButton>
+                            </PrevNextBtnsContainer>
+                            <RadioExample option1='A' option2='B' option3='C' option4='D' image1={image1} image2={image2} image3={image3} image4={image4} />
+                        </AnswerBlock>
+                        <CustomButton onClick={togglePopup2} bgColor={colors.black_green} color={colors.white} width='200px'>
+                            Завершить тест
+                        </CustomButton>
+                    </div>
 				</MainContent>
-				<CustomButton onClick={togglePopup2} bgColor={colors.black_green} color={colors.white}>
-					Завершить тест
-				</CustomButton>
 			</AcceptContent>
 		</TestContainer>
 	)

@@ -26,8 +26,8 @@ const GridButton = styled.button`
   text-align: center;
 
   @media screen and (max-width: 1000px){
-    width: 20px;
-    height: 40px;
+    width: 30px;
+    height: 35px;
   }
 `;
 
