@@ -10,6 +10,7 @@ import RegistrationForm from './pages/RegisterForTeacher/registerTeacher'
 import Header from './components/header/header'
 import SideBar from './components/sidebar/SideBar'
 import ExamPage from './pages/Filter/FilterExam'
+import { ExamAnalyse } from './pages/ExamAnalyse'
 
 const ROLES = {
 	'User': 2001,
@@ -28,14 +29,15 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route index element={<HomePage />}/>
-          <Route path='/home' element={<HomePage />}/>
+          <Route index element={<RegistrationForm />}/>
+          <Route path='/register_teacher' element={<RegistrationForm />}/>
           <Route path='/exam_results' element={<ExamResults/>}/>
           <Route path='/test' element={<TestPage />}/>
           <Route path='/new_task' element={<TaskAdding theme1='Основные свойства логарифма'/>}/>
           <Route path='*' element={<NotFoundPage />}/>
-          <Route path='/register_teacher' element={<RegistrationForm />}/>
-          <Route path='filter' element={<ExamPage />}/>
+          <Route path='/filter' element={<ExamPage />}/>
+          {/* <Route path='/chart' element={<MyChart />}/> */}
+          <Route path='/exam_analyse' element={<ExamAnalyse />}/>
         </Routes>
       </BrowserRouter>
     </div>

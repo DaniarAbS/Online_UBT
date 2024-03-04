@@ -41,16 +41,23 @@ const QuestionSetContainer = styled.div`
 `;
 
 const PreQuestionBar = ({ text2 }) => {
-    const [selectedQuantity, setSelectedQuantity] = useState(10);
+    const [selectedQuantity, setSelectedQuantity] = useState(subjectArr[0].quantity);
 
-    const handleSubjectSelect = (quantity) => {
-        setSelectedQuantity(quantity);
-      };
     return (
         <Container>
             <TextnSelectContainer>
                 <Text type='chooseSubject'>Выберите предмет:</Text>
-                <ChooseSubject onSelect={handleSubjectSelect} options={subjectArr}></ChooseSubject>
+                <ChooseSubject 
+                    onSelect={(selectedOption) => {
+                        const selectedSubject = subjectArr.find((subject) => subject.name === selectedOption);
+                        setSelectedQuantity(selectedSubject ? selectedSubject.quantity : null);
+                      }}
+                    options={subjectArr.map((subject) => ({
+                        value: subject.name,
+                        label: subject.name,
+                      }))}
+                    defaultValue={subjectArr[0].name}
+                ></ChooseSubject>
             </TextnSelectContainer>
             <AnsweredContainer>
                 <Text>Отвеченные вопросы</Text>
