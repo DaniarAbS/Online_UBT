@@ -129,3 +129,116 @@ export const studentsRating = [
     'point': 90
   },
 ]
+export const MyResults = [
+  {
+    'name': 'January',
+    'point': 97, 
+  },
+  {
+    'name': 'February',
+    'point': 85,
+  },
+  {
+    'name': 'March',
+    'point': 100,
+  },
+  {
+    'name': 'April',
+    'point': 74,
+  },
+  {
+    'name': 'May',
+    'point': 90,
+  },
+  {
+    'name': 'September',
+    'point': 97,
+  },
+  {
+    'name': 'October',
+    'point': 85,
+  },
+  {
+    'name': 'November',
+    'point': 100,
+  },
+  {
+    'name': 'December',
+    'point': 74,
+  },
+  {
+    'name': 'January',
+    'point': 90,
+  },
+  {
+    'name': 'February',
+    'point': 90,
+  },
+]
+export const studentsData = [
+  {
+    'name': 'Алия Бекбосын',
+    'point': 97, 
+    'group': '11f',
+  },
+  {
+    'name': 'Коркем Кульмырза',
+    'point': 85,
+    'group': '11f',
+  },
+  {
+    'name': 'Анель Дуйсен',
+    'point': 100,
+    'group': '11f',
+  },
+  {
+    'name': 'Шарипхан Алихан',
+    'point': 74,
+    'group': '11f',
+  },
+  {
+    'name': 'Абсат Данияр',
+    'point': 90,
+    'group': '11f',
+  },
+  {
+    'name': 'Алия Бекбосын',
+    'point': 97,
+    'group': '11f',
+  },
+  {
+    'name': 'Коркем Кульмырза',
+    'point': 85,
+    'group': '11f',
+  },
+  {
+    'name': 'Анель Дуйсен',
+    'point': 100,
+    'group': '11f',
+  },
+  {
+    'name': 'Шарипхан Алихан',
+    'point': 74,
+    'group': '11f',
+  },
+  {
+    'name': 'Абсат Данияр',
+    'point': 90,
+    'group': '11f',
+  },
+  {
+    'name': 'Абсат Данияр',
+    'point': 90,
+    'group': '11f',
+  },
+]
+export const literal = [
+  {name: 'A'},
+  {name: 'B'},
+  {name: 'C'},
+]
+export const group = [
+  {name: 9},
+  {name: 10},
+  {name: 11},
+]

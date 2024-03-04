@@ -7,8 +7,7 @@ import './ExamResults.css'
 import { CustomButton } from "../../components/atoms/CustomButton/CustomButton";
 import { subjectArr, points, publicInfo, examResultsArr, studentsRating } from '../../data/data.js'
 import { ArrowDownOutlined } from "@ant-design/icons"
-
-
+import { PointChart } from "../PointChart.jsx";
 
 const WholeContainer = styled.div`
     display: flex;
@@ -64,7 +63,7 @@ const AnalyseTopContent = styled.div`
     }
 `
 
-const IconButton = styled.button`
+const TwoTextButton = styled.button`
     background-color: ${colors.black_green};
     width: 40%;
     height: 120px;
@@ -198,14 +197,14 @@ const ScrollContainer = styled.div`
 export const ExamResults = ({ }) => {
     const maxDisplayItems = 10;
     return (
-    <WholeContainer>
+    <div style={{display: 'flex', flexDirection: 'column', padding: '1rem', gap: '2rem'}}>
         <Text type='largex'>Результаты экзамена</Text>
         <ResultPoints>
             {examResultsArr.map((examResultsArr, index) => (
-                <IconButton key={index}>
+                <TwoTextButton key={index}>
                     <Text color={colors.white}>{examResultsArr.title}</Text>
                     <Text type='large2xPlus' color={colors.white} fontWeight='500'>{examResultsArr.name}</Text>
-                </IconButton>
+                </TwoTextButton>
             ))}
         </ResultPoints>
         <ContainerInfo>
@@ -288,6 +287,7 @@ export const ExamResults = ({ }) => {
                 )}
             </AnalyseByTheme>
         </AnalyseTopContent>
-    </WholeContainer>
+        <PointChart />
+    </div>
     )
 }

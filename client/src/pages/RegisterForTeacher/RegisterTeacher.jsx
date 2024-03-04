@@ -1,8 +1,22 @@
 import React, { useState } from 'react'; 
 import './RegisterTeacher.css'; // Make sure to create a CSS file with this name 
+import { useNavigate } from 'react-router-dom';
+import { ChooseSubject } from '../../components/atoms/CustomSelect';
+import { group, literal, subjectArr } from '../../data/data';
  
 function RegistrationForm() { 
-  // You can manage state and functions to handle form submission here 
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedLiteral, setSelectedLiteral] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const navigate = useNavigate();
+
+  // const navigateToMainPage = () => {
+  //   navigate('/test')
+  // }
+
+  const showSelectedLiteral = () => {
+    console.log('Group:', selectedGroup, "\nLiteral", selectedLiteral, '\nSubject', selectedSubject);
+  };
  
   return ( 
     <div className="registration-form"> 
@@ -28,24 +42,22 @@ function RegistrationForm() {
         <div className="class_Literal">
           <div className="form-group"> 
               <div className="choose_class">
-                <select>
-                  <option>Класс</option>
-                  <option>9</option>
-                  <option>10</option> 
-                  <option>11</option> 
-                </select> 
+                <ChooseSubject 
+                  options={group} 
+                  defaultValue='Выберите группу'
+                  onSelect={setSelectedGroup}
+                />
             </div> 
           </div>
           
 
           <div className="form-group"> 
             <div className="choose_literal">
-              <select>
-                <option>Литерал</option> 
-                <option>А</option> 
-                <option>Б</option>
-                <option>С</option>  
-              </select> 
+              <ChooseSubject 
+                options={literal} 
+                defaultValue='Выберите литерал'
+                onSelect={setSelectedLiteral}
+              />
             </div> 
           </div>
         </div>
@@ -53,17 +65,14 @@ function RegistrationForm() {
 
  
         <div className="form-group"> 
-          <select> 
-            <option>Предмет</option>
-            <option>Математика</option> 
-            <option>Физика</option> 
-          </select> 
+          <ChooseSubject 
+            options={subjectArr} 
+            defaultValue='Выберите предмет'
+            onSelect={setSelectedSubject}
+          />
         </div> 
-        
-        
-          <button type="submit">Регистрация</button>
-         
       </form> 
+          <button onClick={showSelectedLiteral}>Register</button>
       <p className="sing_in">Вы уже зарегистрированы? <a href="/login">Войти</a></p> 
     </div> 
   ); 

@@ -52,6 +52,7 @@ const VisibilityContent = styled.div`
     border: solid 2px #ACACAC;
     padding: 1rem;
     border-radius: 10px;
+    gap: 1rem;
 `
 const HiddenContent = styled.div`
     display: flex;

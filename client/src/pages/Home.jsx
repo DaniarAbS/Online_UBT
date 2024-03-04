@@ -7,6 +7,7 @@ export const HomePage = () => {
 	return (
 		<>
 			That's home page
+			<button>Go to the exam results</button>
 		</>
 	)
 }

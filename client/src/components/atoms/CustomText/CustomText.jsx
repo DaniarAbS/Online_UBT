@@ -9,9 +9,9 @@ const StyledText = styled.text`
 
 `;
 
-export const Text = ({ className, type, children, color, weight }) => {
+export const Text = ({ className, type, children, color, weight, fontSize }) => {
   return (
-    <StyledText className={className} type={type} style={{color: `${color}`, fontWeight: `${weight}`}}>
+    <StyledText className={className} type={type} style={{color: `${color}`, fontWeight: `${weight}`, fontSize: `${fontSize}`}}>
       {children}
     </StyledText>
   );
