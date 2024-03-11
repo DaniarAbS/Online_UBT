@@ -248,3 +248,30 @@ export const group = [
   {value: 10, label: '10'},
   {value: 11, label: '11'},
 ]
+
+export const teacherInfo = [
+  {
+    name: "Имя-фамилия", 
+    value: "Алишер Алтынбеков"
+  },
+  {
+    name: "Почта", 
+    value: "allisheraltynbekov@gmail.com"
+  },
+  {
+    name: "ИИН", 
+    value: "1111 2222 3333"
+  },
+  {
+    name: "Класс", 
+    value: "11"
+  },
+  {
+    name: "Литерал", 
+    value: "Ф"
+  },
+  {
+    name: "Предмет", 
+    value: "Subject Placeholder"
+  },
+]

@@ -6,13 +6,17 @@ import { NotFoundPage } from './pages/NotFoundPage'
 import { useState, useRef, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { TaskAdding } from './pages/TaskAdding/TaskAdding'
-import RegistrationForm from './pages/RegisterForTeacher/registerTeacher'
+import RegistrationForm from './pages/RegisterForTeacher/RegisterTeacher'
 import Header from './components/header/header'
 import SideBar from './components/sidebar/SideBar'
 import ExamPage from './pages/Filter/FilterExam'
 import { ExamAnalyse } from './pages/ExamAnalyse'
 import { RoleSelectionForm } from './pages/FilterForm/FilterForm'
 import { LoginPage } from './pages/LoginPage/LoginPage'
+import GeneralProfile from './pages/GeneralProfile/GeneralProfile'
+import SubjectAnaysisForm from './pages/SubjectAnalysisForm/SubjectAnaysisForm'
+import QuestionsForm from './pages/QuestionsForm/QuestionsForm'
+import AnalysisExam from './pages/AnalysisExam/AnalysisExam'
 
 const ROLES = {
 	'User': 2001,
@@ -42,6 +46,10 @@ function App() {
           {/* <Route path='/chart' element={<MyChart />}/> */}
           <Route path='/exam_analyse' element={<ExamAnalyse />}/>
           <Route path='/login' element={<LoginPage />}/>
+          <Route path='/profile' element={<GeneralProfile />}/>
+          <Route path='/subject_analyse' element={<SubjectAnaysisForm />}/>
+          <Route path='/question_form' element={<QuestionsForm />}/>
+          <Route path='/exam' element={<AnalysisExam />}/>
         </Routes>
       </BrowserRouter>
     </div>
