@@ -32,12 +32,8 @@
   }
   
   .form-group { 
+    position: relative;
     margin-bottom: 15px; 
-  } 
-   
-  .form-group label { 
-    display: block;
-    margin-bottom: 5px; 
   } 
    
   .form-group input[type="email"], 
@@ -46,9 +42,30 @@
   .form-group select { 
     width: 100%; 
     padding: 10px; 
+    font-size: 16px;
+    background: transparent;
+    outline: none;
     border: 1px solid #ddd; 
     border-radius: 4px; 
   } 
+
+  .form-group label{
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    padding: 0 5px;
+    pointer-events: none;
+    transition: 0.3s ease;
+  }
+
+  .form-group input:focus~label,
+  .form-group input:valid~label {
+    top: 0;
+    font-size: 12px;
+    background: transparent;
+  }
    
 
   button { 

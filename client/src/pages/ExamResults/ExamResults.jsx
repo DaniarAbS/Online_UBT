@@ -242,7 +242,7 @@ export const ExamResults = ({ }) => {
             <Text type='largex'>Оценка по предметам</Text>
             {subjectArr.map((subjectArr, index) => (
                 <SubjectEstimateRow  key={index}>
-                    <Element>{subjectArr.name}</Element>
+                    <Element>{subjectArr.label}</Element>
                         <ScrollContainer>
                             {Array.from({ length: subjectArr.quantity }).map((_, buttonIndex) => (
                                 <button style={{width: '50px', height: '50px', marginRight: '8px'}} key={buttonIndex}>{`${buttonIndex + 1}`}</button>

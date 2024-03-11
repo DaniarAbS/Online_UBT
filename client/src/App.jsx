@@ -11,6 +11,8 @@ import Header from './components/header/header'
 import SideBar from './components/sidebar/SideBar'
 import ExamPage from './pages/Filter/FilterExam'
 import { ExamAnalyse } from './pages/ExamAnalyse'
+import { RoleSelectionForm } from './pages/FilterForm/FilterForm'
+import { LoginPage } from './pages/LoginPage/LoginPage'
 
 const ROLES = {
 	'User': 2001,
@@ -31,6 +33,7 @@ function App() {
         <Routes>
           <Route index element={<RegistrationForm />}/>
           <Route path='/register_teacher' element={<RegistrationForm />}/>
+          <Route path='/filter_form' element={<RoleSelectionForm />}/>
           <Route path='/exam_results' element={<ExamResults/>}/>
           <Route path='/test' element={<TestPage />}/>
           <Route path='/new_task' element={<TaskAdding theme1='Основные свойства логарифма'/>}/>
@@ -38,6 +41,7 @@ function App() {
           <Route path='/filter' element={<ExamPage />}/>
           {/* <Route path='/chart' element={<MyChart />}/> */}
           <Route path='/exam_analyse' element={<ExamAnalyse />}/>
+          <Route path='/login' element={<LoginPage />}/>
         </Routes>
       </BrowserRouter>
     </div>

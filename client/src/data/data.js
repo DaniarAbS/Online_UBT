@@ -1,22 +1,27 @@
 export const subjectArr = [
     {
-      "name": "Грамотность чтения",
+      value: "Грамотность чтения",
+      label: "Грамотность чтения",
       "quantity": 10
     },
     {
-      "name": "Математическая грамотность",
+      value: "Математическая грамотность",
+      label: "Математическая грамотность",
       "quantity": 10
     },
     {
-      "name": "История Казахстана",
+      value: "История Казахстана",
+      label: "История Казахстана",
       "quantity": 20
     },
     {
-      "name": "Математика",
+      value: "Математика",
+      label: "Математика",
       "quantity": 45
     },
     {
-      "name": "Информатика",
+      value: "Информатика",
+      label: "Информатика",
       "quantity": 45
     },
   ]
@@ -233,12 +238,13 @@ export const studentsData = [
   },
 ]
 export const literal = [
-  {name: 'A'},
-  {name: 'B'},
-  {name: 'C'},
+  {value: 'A', label: 'A'},
+  {value: 'B', label: 'B'},
+  {value: 'C', label: 'C'},
 ]
+
 export const group = [
-  {name: 9},
-  {name: 10},
-  {name: 11},
+  {value: 9, label: '9'},
+  {value: 10, label: '10'},
+  {value: 11, label: '11'},
 ]
