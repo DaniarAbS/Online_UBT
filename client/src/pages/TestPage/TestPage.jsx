@@ -13,7 +13,8 @@ import { useState } from "react";
 import './TestPage.css'
 import { AppstoreOutlined, WarningOutlined } from "@ant-design/icons";
 import { CustomButton } from "../../components/atoms/CustomButton/CustomButton";
-
+import { TimerComponent } from '../../components/atoms/TimerComponent'
+import { subjectArr } from "../../data/data";
 
 
 const TestContainer = styled.div`
@@ -159,6 +160,9 @@ const TextIcon = ({ bgColor, text, color }) => {
 }
 
 export const TestPage = ({ text, text2, text3, image1, image2, image3, image4 }) => {
+    const [selectedQuantity, setSelectedQuantity] = useState(subjectArr[0].quantity);
+    const [subject, setSubject] = useState(subjectArr[0].label)
+    
 	const [popupVisible, setPopupVisible] = useState(false);
 	const [buttonClicked, setButtonClicked] = useState(false);
 	const [popupVisible2, setPopupVisible2] = useState(false);
@@ -172,16 +176,22 @@ export const TestPage = ({ text, text2, text3, image1, image2, image3, image4 })
 		setPopupVisible2(!popupVisible2)
 	}
 
+    const optionSelect = (selectedOption) => {
+        const selectedSubject = subjectArr.find((subject) => subject.label === selectedOption);
+        setSubject(selectedOption)
+        setSelectedQuantity(selectedSubject ? selectedSubject.quantity : null);
+    }
+
 	return (
 		<TestContainer>
 			<div className="main-container">
 				<div className={`responsive-container ${popupVisible ? 'hidden' : ''}`}>
-					<QuestionBar />
+					<QuestionBar onSelect={optionSelect} quantity={selectedQuantity}/>
 				</div>
 
 				{popupVisible && (
 					<div className="popup-container">
-						<QuestionBar />
+						<QuestionBar onSelect={optionSelect} quantity={selectedQuantity}/>
 						<button onClick={togglePopup}>Close</button>
 					</div>
 				)}
@@ -198,12 +208,12 @@ export const TestPage = ({ text, text2, text3, image1, image2, image3, image4 })
 				)}
 
 			</div>
-			<AcceptContent>
+			{/* <AcceptContent> */}
 				<MainContent>
 					<GivenTaskContainer>
 						<MainInfo>
-							<Text weight='700'>{text}</Text>
-							<TextIcon bgColor='#f7f7f7' color='#000000' text={text2} />
+							<Text weight='700'>{subject}</Text>
+							<TextIcon bgColor='#f7f7f7' color='#000000' text={<TimerComponent initialTime='05:02:20'/>} />
 						</MainInfo>
 						<Text type='large' weight='400'>{text3}</Text>
 						<img width='299px' height='394px' src="https://s3-alpha-sig.figma.com/img/2a00/682d/90b4330c798cd76f14e805bbd56b4c8f?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZSS1WKr~mzu6oeAwBBVHMWXK6Mt86sDSGa-oJ5ZjSxcnJNxCIwuu6ywpVAsNQg6R9Qgbl5NtSr~vfy2-MXKkr9fgMa3h5ruvcizZzVEXBfkU56RVCz1StZ1~86ghjLW6NhQGSLkXSPpxWGoJnbfID9Iy8qaZqm9bItEj~~jXlXWTKzYKohRNVuy~TCUOTqvpmOWWy-W0zqxywfFP~LBE1CqjbXo-bG3H31mLwPq399X3wYykyaHmsKtwsQ41FdMJuLsODWRPEJD1eqNtTsfB3R8Uc2~90QeZ6CSt0jr12hpZzE~GBRt6c3Gbif9cocRtB-NUCJHrJ4ckBzsQPzkazw__" alt="Task" />
@@ -231,7 +241,7 @@ export const TestPage = ({ text, text2, text3, image1, image2, image3, image4 })
                         </CustomButton>
                     </div>
 				</MainContent>
-			</AcceptContent>
+			{/* </AcceptContent> */}
 		</TestContainer>
 	)
 }

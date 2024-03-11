@@ -40,38 +40,28 @@ const QuestionSetContainer = styled.div`
     
 `;
 
-const PreQuestionBar = ({ text2 }) => {
+export const QuestionBar = ({text, onSelect, quantity}) => {
     const [selectedQuantity, setSelectedQuantity] = useState(subjectArr[0].quantity);
-
     return (
         <Container>
             <TextnSelectContainer>
                 <Text type='chooseSubject'>Выберите предмет:</Text>
                 <ChooseSubject 
-                    onSelect={(selectedOption) => {
-                        const selectedSubject = subjectArr.find((subject) => subject.name === selectedOption);
-                        setSelectedQuantity(selectedSubject ? selectedSubject.quantity : null);
-                      }}
+                    onSelect={onSelect}
                     options={subjectArr.map((subject) => ({
-                        value: subject.name,
-                        label: subject.name,
-                      }))}
-                    defaultValue={subjectArr[0].name}
-                ></ChooseSubject>
+                        value: subject.label,
+                        label: subject.label,
+                    }))}
+                    defaultValue={subjectArr[0].label}
+                />
             </TextnSelectContainer>
             <AnsweredContainer>
                 <Text>Отвеченные вопросы</Text>
-                <TextWithBg bgColor='#009172' color='#ffffff'>{text2}</TextWithBg>
+                <TextWithBg bgColor='#009172' color='#ffffff'>{text}</TextWithBg>
             </AnsweredContainer>
             <QuestionSetContainer>
-                <ButtonGrid numberOfButtons={selectedQuantity} />
+                <ButtonGrid numberOfButtons={quantity} />
             </QuestionSetContainer>
         </Container>
-    )
-}
-
-export const QuestionBar = ({text}) => {
-  return (
-        <PreQuestionBar text2={text}/>
-  );
+    );
 };
