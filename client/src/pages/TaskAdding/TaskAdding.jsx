@@ -117,7 +117,7 @@ const props = {
     ],
   };
 
-export const TaskAdding = ({theme1}) => {   
+export const TaskAdding = () => {   
     const [visibleItemIndex, setVisibleItemIndex] = useState(-1);
     const [selectedDiv, setSelectedDiv] = useState(null);
     const [lastClickedButton, setLastClickedButton] = useState(null);

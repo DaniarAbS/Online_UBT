@@ -4,30 +4,19 @@ import "./FilterForm.css";
 import { FilterChoose } from "../../components/atoms/FilterChoose/FilterChoose";
 import {filterPage} from '../../data/page_text'
 
-export const RoleSelectionForm = () => {
-  const [role, setRole] = useState("");
+export const RoleSelectionForm = ({ onSelect, selectedRole }) => {
+  // const [role, setRole] = useState("");
 
   const navigate = useNavigate(); // Instantiate the navigation function
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    switch (role){
-      case 'Ученик': 
-        navigate('/')
-        break;
-      case 'Учитель': 
-        navigate("/login");
-        break;
-      case 'Админ': 
-        console.log('admin')
-        break;
-    }
+    navigate('/login')
   };
 
-  const handleDataFromChild = (childData) => {
-    setRole(childData);
-  };
+  // const handleDataFromChild = (childData) => {
+  //   setRole(childData);
+  // };
 
   <submit className="on">
     Role
@@ -41,7 +30,7 @@ export const RoleSelectionForm = () => {
         <p>{filterPage.miniTitle}</p>
       </div>
       <form style={{display: 'flex', flexDirection: 'column', gap: '2rem'}} onSubmit={handleSubmit}>
-        <FilterChoose onDataReceived={handleDataFromChild}/>
+        <FilterChoose onSelect={onSelect} selectedRole={selectedRole}/>
         <button type="submit" className="filter-button">
           {filterPage.logInText}
         </button>

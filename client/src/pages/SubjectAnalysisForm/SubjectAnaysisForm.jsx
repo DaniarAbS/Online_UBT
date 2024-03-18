@@ -1,6 +1,6 @@
 // GradesTable.jsx
 import React, { useState } from "react";
-import QuestionsForm from "../QuestionsForm/QuestionsForm"; // If the file is QuestionsForm.jsx
+import {QuestionDatabase} from "../QuestionsForm/QuestionsForm"; // If the file is QuestionsForm.jsx
 import "./SubjectAnalysisForm.css"; // Make sure to create a corresponding CSS file for styling
 import styled from "styled-components";
 
@@ -247,6 +247,7 @@ const handlePrevPage = () => {
                     </div>
         </div>
       </div>
+      <QuestionDatabase />
     </div>
   );
 };

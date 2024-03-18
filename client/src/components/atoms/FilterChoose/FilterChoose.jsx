@@ -1,37 +1,31 @@
 import React from 'react';
-import { Flex, Radio } from 'antd';
-import { filterData } from '../../../data/filter_select';
+import { Radio } from 'antd';
+import {filterData} from '../../../data/filter_select'
 import { CheckOutlined } from '@ant-design/icons';
-import { useState } from 'react';
 
 import './FilterChoose.css'
 
-export const FilterChoose = (props) => {
-  const [selectedButton, setSelectedButton] = useState('');
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setSelectedButton(value);
-    props.onDataReceived(value);
-  };
+export const FilterChoose = ({ onSelect, selectedRole }) => {
 
   return (
-    <Flex vertical gap="middle">
-      <Radio.Group onChange={handleChange} defaultValue='' size="large" style={{ borderRadius: 0 }}>
-        {filterData.map((filter, index) => (
-          <Radio.Button
-            key={index}
-            value={filter.name}
-            checked={selectedButton === filter.name}
-            // onChange={handleChange}
-          >
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
-              {filter.name}
-              {selectedButton === filter.name && <CheckOutlined style={{ marginLeft: 8 }} />}
-            </div>
-          </Radio.Button>
-        ))}
-      </Radio.Group>
-    </Flex>
+      <Radio.Group 
+          defaultValue='' 
+          size="large" 
+          style={{ borderRadius: 0 }} 
+          value={selectedRole} 
+          onChange={(e) => onSelect(e.target.value)}
+        >
+          {filterData.map((filter, index) => (
+            <Radio.Button
+              key={index}
+              value={filter.role}
+            >
+              <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                {filter.name}
+                {selectedRole === filter.role && <CheckOutlined style={{ marginLeft: 8 }} />}
+              </div>
+            </Radio.Button>
+          ))}
+        </Radio.Group>
   )
 }
