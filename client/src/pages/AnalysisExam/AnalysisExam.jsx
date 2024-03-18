@@ -7,6 +7,9 @@ import editImg from "../../assets/imgs/edit.png"
 import exitImg from "../../assets/imgs/exit.png"
 import { DatePicker } from "antd";
 import styled from "styled-components";
+import { exams } from "../../data/data";
+import { Input, Space } from 'antd';
+const { Search } = Input;
 
 
 const Table = styled.div`
@@ -41,7 +44,7 @@ const Cell = styled.div`
     @media (max-width: 992px) {
       padding: 10px;
       font-size: 0.8rem;
-
+      
     }
 `
 const ChangeButton = styled.button`
@@ -49,145 +52,13 @@ const ChangeButton = styled.button`
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   width: min-content;
   background-color: unset;
-`;
+  `;
 
-
+const onSearch = (value, _e, info) => console.log(info?.source, value);
 const ExamAnalysis = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-
-  const exams = [
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-    {
-      id: 1,
-      nameKazakh: "Innoverse мектебі",
-      nameRussian: "Innoverse школа",
-      nameEnglish: "Innoverse school",
-      timeLeft: "9 часов, 22 минуты",
-      startDate: "1 Нояб. 2023, 12:44",
-      endDate: "30 Нояб. 2023, 12:44",
-      participants: 107,
-    },
-  ];
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -197,7 +68,6 @@ const ExamAnalysis = () => {
     exam.nameEnglish.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
     setModalOpen(true);
@@ -255,11 +125,21 @@ const handlePrevPage = () => {
         <div className="first-container">
           <h3>Экзамены</h3>
           <div className="searchBar">
-            <input
+            {/* <input
               type="text"
               placeholder="Поиск"
               value={searchTerm}
               onChange={handleSearchChange}
+            /> */}
+            
+            <Search
+              placeholder="Поиск"
+              allowClear
+              onSearch={handleSearchChange}
+              style={{
+                width: 300,
+                borderBottom: '1px solid #000',
+              }}
             />
             {/* <button class="close-icon"></button> */}
           </div>
