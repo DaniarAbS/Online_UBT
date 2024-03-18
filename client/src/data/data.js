@@ -242,3 +242,11 @@ export const group = [
   {name: 10},
   {name: 11},
 ]
+
+export const updatePersonal = [
+  {
+    newName: "Алишер", 
+    newSurname: "Алтынбеков",
+    newEmail: "allisheraltnynbekov@gmail.com"
+  } 
+]

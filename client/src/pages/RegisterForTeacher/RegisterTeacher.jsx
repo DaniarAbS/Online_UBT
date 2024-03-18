@@ -3,7 +3,18 @@ import './RegisterTeacher.css'; // Make sure to create a CSS file with this name
 import { useNavigate } from 'react-router-dom';
 import { ChooseSubject } from '../../components/atoms/CustomSelect';
 import { group, literal, subjectArr } from '../../data/data';
+import styled from 'styled-components';
  
+const Button = styled.div`
+  background-color: #009172;
+  color: #fff;
+  width: 100%; 
+  padding: 10px; 
+  border: none; 
+  border-radius: 4px;   
+  cursor: pointer; 
+`
+
 function RegistrationForm() { 
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedLiteral, setSelectedLiteral] = useState(null);
@@ -72,7 +83,7 @@ function RegistrationForm() {
           />
         </div> 
       </form> 
-          <button onClick={showSelectedLiteral}>Register</button>
+          <Button onClick={showSelectedLiteral}>Register</Button>
       <p className="sing_in">Вы уже зарегистрированы? <a href="/login">Войти</a></p> 
     </div> 
   ); 
