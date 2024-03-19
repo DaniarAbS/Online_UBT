@@ -6,7 +6,7 @@ import myExams from "./../../assets/img/icons/exam.png"
 import myExamsDark from "./../../assets/img/icons/exam_black.png"
 
 import results from "./../../assets/img/icons/results.png"
-import resultsDark from "./../../assets/img/icons/result_black.png"
+import resultsDark from "./../../assets/img/icons/results_black.png"
 
 import myClass from './../../assets/img/icons/my_class.png'
 import myClassDark from './../../assets/img/icons/my_class_black.png'
