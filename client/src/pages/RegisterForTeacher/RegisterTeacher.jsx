@@ -266,7 +266,7 @@ export const RegistrationForm = () => {
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Space>
-              <Button type="primary" htmlType="submit">
+              <Button className={styles.submit} type="primary" htmlType="submit">
                 Submit
               </Button>
             </Space>

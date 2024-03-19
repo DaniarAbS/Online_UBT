@@ -25,7 +25,6 @@
   display: flex;
   align-items: center;
   gap: 50px;
-  color: #000000;
   text-wrap: wrap;
   background-color: inherit;
 }
@@ -35,7 +34,6 @@
   align-items: center;
   margin-top: 10px;
   gap: 42px;
-  color: #000000;
   margin-left: 5px;
   text-wrap: nowrap;
   background-color: inherit;
@@ -229,7 +227,7 @@
 
 .form-group label {
   position: absolute;
-  top: 10px;
+  top: 20px;
   left: 10px;
   background: transparent;
   transition: all 0.3s ease;
@@ -238,7 +236,8 @@
 }
 
 .form-group.focused label {
-  top: -10px;
+  padding: 0 10px;
+  top: 0px;
   left: 10px;
   font-size: 16px;
   background: #f7f7f7;
@@ -260,6 +259,9 @@
 
 .password-update-form img {
   margin-left: -40px;
+  width: 30px;
+  height: 30px;
+  margin-top: 13px;
 }
 
 .password-update-form form {
@@ -396,6 +398,53 @@
   border: 1px solid #ACACAC;
 }
 
+.modal-box {
+  background-color: #f7f7f7;
+  border-radius: 15px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.modal-buttons {
+ display: flex;
+ justify-content: end;
+ gap: 20px;
+}
+
+.modal-buttons button {
+  font-size: 1.2rem;
+}
+
+.modal-box .form-group {
+  width: 400px;
+}
+
+.modal-box .form-group input {
+  border: 1px solid #ACACAC;
+  background-color: #f7f7f7;
+  padding: 10px;
+}
+
+.modal-box .form-group label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: transparent;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  color: #999;
+}
+
+.modal-box .form-group.focused label {
+  padding: 0 10px;
+  top: -10px;
+  left: 10px;
+  font-size: 16px;
+  background: #f7f7f7;
+}
+
 @media (max-width: 992px) {
   .general {
     width: 800px;
@@ -429,10 +478,6 @@
 
   .updatePasswordGeneral {
     align-items: center;
-  }
-
-  .password-update-container {
-    
   }
 
   .updatePasswordGeneral hr {
