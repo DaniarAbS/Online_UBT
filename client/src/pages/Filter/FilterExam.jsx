@@ -28,7 +28,7 @@ const ExamPage = () => {
 
   return (
     <div className={'container'}>
-      <div className={'header'}>
+      <div className={'heading'}>
         <h1>Сдать экзамен</h1>
         {/* Placeholder for the profile component */}
       </div>

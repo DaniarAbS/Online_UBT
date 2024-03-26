@@ -1,7 +1,7 @@
 import "./style.css";
 
-import timeIcon from "./../img/icons/time-icon.svg";
-import dateIcon from "./../img/icons/date-icon.svg"
+import timeIcon from "../../assets/img/icons/time-icon.svg";
+import dateIcon from "../../assets/img/icons/date-icon.svg"
 
 const Exam = ({ time, day }) => {
 	return (

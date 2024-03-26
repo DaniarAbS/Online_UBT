@@ -42,12 +42,13 @@ export const RegistrationForm = () => {
     email: '',
     fullname: '',
     password: '',
-    password2: '',
+    
     literal: '',
     group: '',
     subject: '',
   });
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(null)
+  const [password, setPassword] = useState(null);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -70,8 +71,8 @@ export const RegistrationForm = () => {
     }));
   };
 
-  const onFinish = (values) => {
-    console.log(values);
+  const onFinish = () => {
+    console.log(info);
     navigate('/role')
   };
  
@@ -100,7 +101,7 @@ export const RegistrationForm = () => {
             <Input
               id={styles.email_input}
               placeholder=''
-              onChange={handleInputChange}
+              onChange={(e) => setEmail(e.target.value)}
               className={styles.form_input}
             />
             <label
@@ -112,7 +113,7 @@ export const RegistrationForm = () => {
           </div>
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           name="fullname"
           rules={[
             {
@@ -135,7 +136,7 @@ export const RegistrationForm = () => {
               ФИО*
             </label>
           </div>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           name="password"
@@ -150,7 +151,7 @@ export const RegistrationForm = () => {
             <Input.Password
               id={styles.password_input}
               placeholder=''
-              onChange={handleInputChange}
+              onChange={(e) => setPassword(e.target.value)}
               className={styles.form_input}
             />
             <label

@@ -57,13 +57,10 @@ const GeneralProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add form submission logic here
     if (newPassword === confirmPassword) {
       console.log("Password updated!");
-      // Update the password in your state/store or send it to your server
     } else {
       console.log("Passwords do not match!");
-      // Handle the error state
     }
   };
 

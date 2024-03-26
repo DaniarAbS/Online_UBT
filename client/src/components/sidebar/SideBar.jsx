@@ -35,7 +35,7 @@ import { Link } from "react-router-dom"
 const SideBar = ({ selectedRole }) => {
 	return (
 		<>
-			<sidebar className="sidebar " id="sidebar">
+			<sidebar className="sidebar" id="sidebar">
 				<div className="sidebar__container">
 
 					<div className="sidebar-item-menu" id="sidebar-item-menu">

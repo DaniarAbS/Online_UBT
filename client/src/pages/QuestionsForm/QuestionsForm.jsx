@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./QuestonsForm.css";
 import styled from "styled-components";
 import addImg from "../../assets/imgs/add.png";
@@ -42,13 +42,26 @@ const ChangeButton = styled.button`
 // The main component for the page
 export const QuestionDatabase = ({userRole}) => {
   // This could be fetched from an API or passed as props
-
   const [currentPage, setCurrentPage] = useState(0);
+  const [question, setQuestion] = useState(null)
 
   const itemsPerPage = 10;
   const startIndex = currentPage * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, topics.length);
   const visibleData = topics.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    const fetchQuestions = async() => {
+      const response = await fetch('api/questions')
+      const json = await response.json()
+
+      if (response.ok){
+        setQuestion(response)
+      }
+    }
+
+    fetchQuestions();
+  }, [])
   
   
   const handleNextPage = () => {
@@ -83,6 +96,15 @@ export const QuestionDatabase = ({userRole}) => {
                         <Cell><img src={addImg} /></Cell>
                     </TableRow>
                 ))}
+                {/* {question.map((question, index) => (
+                    <TableRow key={index}>
+                        <Cell>{index + 1}</Cell>
+                        <Cell>{question.name}</Cell>
+                        <Cell>{question.onePointQuestions}</Cell>
+                        <Cell>{question.twoPointsQuestions}</Cell>
+                        <Cell><img src={addImg} /></Cell>
+                    </TableRow>
+                ))} */}
             </Table>
             <div style={{display: 'flex', marginRight: '140px', gap: '1rem', alignItems: 'center'}}>        
                 <ChangeButton onClick={handlePrevPage} disabled={currentPage === 0}>

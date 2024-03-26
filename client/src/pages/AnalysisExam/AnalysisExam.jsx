@@ -1,15 +1,18 @@
 // ExamAnalysis.js
 import React, { useState } from "react";
 import "./AnalysisExam.css";
+import styled from "styled-components";
+import DateTimePicker from "../../components/organism/DateTImePicker";
+import { exams } from "../../data/data";
+
+import { Input, DatePicker, TimePicker } from 'antd';
+const { Search } = Input;
+import moment from 'moment';
+
 import "../../assets/imgs/search-icon.png";
 import "../../assets/imgs/close-icon.png";
 import editImg from "../../assets/imgs/edit.png"
 import exitImg from "../../assets/imgs/exit.png"
-import { DatePicker } from "antd";
-import styled from "styled-components";
-import { exams } from "../../data/data";
-import { Input, Space } from 'antd';
-const { Search } = Input;
 
 
 const Table = styled.div`
@@ -55,10 +58,32 @@ const ChangeButton = styled.button`
   `;
 
 const onSearch = (value, _e, info) => console.log(info?.source, value);
-const ExamAnalysis = () => {
+export const AnalysisExam = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [focused, setFocused] = useState({
+    iin: false,
+    password: false,
+  });
+  const [loginData, setLoginData] = useState({ iin: "", password: "" });
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const [startDateTime, setStartDateTime] = useState(null);
+  const [endDateTime, setEndDateTime] = useState(null);
+
+  const handleStartDateTimeChange = (date) => {
+    setStartDateTime(date);
+  };
+
+  const handleEndDateTimeChange = (date) => {
+    setEndDateTime(date);
+  };
+
+  const isButtonDisabled = () => {
+    return !startDateTime || !endDateTime || endDateTime.isBefore(startDateTime);
+  };
+
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -68,16 +93,20 @@ const ExamAnalysis = () => {
     exam.nameEnglish.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-
   const openModal = () => {
     setModalOpen(true);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
-  };
+  const closeModal = async (e) => {
+    e.preventDefault()
 
-  const [loginData, setLoginData] = useState({ iin: "", password: "" });
+    
+    setModalOpen(false);
+    console.log('Start date of exam:', startDateTime.format('YYYY-MM-DD'), ' start time of exam: ', startDateTime.format('HH:mm'));
+    console.log('End date of exam:', endDateTime.format('YYYY-MM-DD'), ' end time of exam: ', endDateTime.format('HH:mm'));
+    setStartDateTime(null)
+    setEndDateTime(null)
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -89,12 +118,7 @@ const ExamAnalysis = () => {
     console.log("Login Data:", loginData);
     // Handle login logic here
   };
-  const [focused, setFocused] = useState({
-    iin: false,
-    password: false,
-  });
 
-  const [selectedOption, setSelectedOption] = useState("");
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -190,16 +214,18 @@ const handlePrevPage = () => {
               <div className="modal-main">
                 <h2>Создать экзамен</h2>
                 <form onSubmit={handleSubmit} className="form">
-                  <DatePicker
-                    placeholder="Начало дата/время*"
-                    onChange={onChange}
-                    picker="day"
-                  />
-                  <DatePicker
-                    placeholder="Начало дата/время*"
-                    onChange={onChange}
-                    picker="day"
-                  />
+                <DatePicker
+                  showTime={{ format: 'HH:mm' }}
+                  placeholder="Начало дата/время*"
+                  onChange={handleStartDateTimeChange}
+                  format="YYYY-MM-DD HH:mm"
+                />
+                <DatePicker
+                  showTime={{ format: 'HH:mm' }}
+                  placeholder="Конец дата/время*"
+                  onChange={handleEndDateTimeChange}
+                  format="YYYY-MM-DD HH:mm"
+                />
                 </form>
 
                 <h2>Тип вопросов</h2>
@@ -225,7 +251,7 @@ const handlePrevPage = () => {
 
                 <div className="buttons">
                   <button className="cancelButton">Отмена</button>
-                  <button onClick={closeModal} className="saveButton">
+                  <button onClick={closeModal} disabled={isButtonDisabled()} className="saveButton">
                     Сохранить
                   </button>
                 </div>
@@ -236,4 +262,3 @@ const handlePrevPage = () => {
     </div>
   );
 };
-export default ExamAnalysis;

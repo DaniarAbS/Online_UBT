@@ -16,7 +16,9 @@ import { LoginPage } from './pages/LoginPage/LoginPage'
 import GeneralProfile from './pages/GeneralProfile/GeneralProfile'
 import SubjectAnaysisForm from './pages/SubjectAnalysisForm/SubjectAnaysisForm'
 import {QuestionDatabase} from './pages/QuestionsForm/QuestionsForm'
-import AnalysisExam from './pages/AnalysisExam/AnalysisExam'
+import {AnalysisExam} from './pages/AnalysisExam/AnalysisExam'
+import Exams from './pages/Exams'
+import { Public } from './routes/PublicRoutes'
 
 export const ROLES = {
 	Public: 'public',
@@ -48,11 +50,12 @@ function App() {
     <div>
       <BrowserRouter>
         {userRole !== 'public' && <SideBar selectedRole={selectedRole}/>}
+          <div className='_container'>
           <Routes>
-            <Route index element={<RegistrationForm />}/>
-            <Route path='/register_teacher' element={<RegistrationForm />}/>
-            <Route path='/role' element={<RoleSelectionForm onSelect={handleRoleSelect} selectedRole={selectedRole}/>}/>
-            <Route path='/login' element={<LoginPage onLogin={handleLogin} selectedRole={selectedRole}/>}/>
+            <Route path="/" element={<RegistrationForm />}/>
+            <Route path="/register" element={<RegistrationForm />}/>
+            <Route path="/role" element={<RoleSelectionForm onSelect={handleRoleSelect} selectedRole={selectedRole}/>}/>
+            <Route path="/login" element={<LoginPage onLogin={handleLogin} selectedRole={selectedRole}/>}/>
             <Route path='/question_base' element={<QuestionDatabase userRole={userRole}/>}/>
             <Route path='/exam_results' element={<ExamResults/>}/>
             <Route path='/test' element={<TestPage />}/>
@@ -63,7 +66,9 @@ function App() {
             <Route path='/profile' element={<GeneralProfile />}/>
             <Route path='/subject_analyse' element={<SubjectAnaysisForm />}/>
             <Route path='/exam' element={<AnalysisExam />}/>
+            <Route path='/exams' element={<Exams />}/>
           </Routes>
+          </div>
       </BrowserRouter>
     </div>
   );

@@ -45,11 +45,6 @@
 
 /* Additional styles for header and sidebar, adjust as necessary */
 
-.sidebar {
-  /* Your styles for sidebar */
-  min-width: 250px; /* or whatever width you prefer */
-}
-
 .title h1 {
   font-size: 24px;
   font-family: "SF pro display";
