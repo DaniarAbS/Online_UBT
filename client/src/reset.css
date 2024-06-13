@@ -23,13 +23,26 @@ html,body{
 	font-family: var(--body-font);
 }
 
-input,button,textarea{font-family:inherit;}
+input,button,textarea{
+	font-family:inherit;
+}
 
-button{cursor: pointer;}
-button::-moz-focus-inner {padding:0;border:0;}
-a, a:visited{text-decoration: none;}
-a:hover{text-decoration: none;}
-ul li{list-style: none;}
+button{
+	cursor: pointer;
+}
+button::-moz-focus-inner {
+	padding:0;
+	border:0;
+}
+a, a:visited{
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: none;
+}
+ul li{
+	list-style: none;
+}
 
 img {
 	max-width: 100%;

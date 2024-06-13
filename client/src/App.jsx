@@ -1,77 +1,83 @@
-import './App.css'
-import { TestPage } from './pages/TestPage/TestPage'
-import { ExamResults } from './pages/ExamResults/ExamResults'
-import { HomePage } from './pages/Home'
-import { NotFoundPage } from './pages/NotFoundPage'
-import { useState, useRef, useEffect } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { TaskAdding } from './pages/TaskAdding/TaskAdding'
-import { RegistrationForm } from './pages/RegisterForTeacher/RegisterTeacher'
-import Header from './components/header/header'
-import SideBar from './components/sidebar/SideBar'
-import ExamPage from './pages/Filter/FilterExam'
-import { ExamAnalyse } from './pages/ExamAnalyse'
-import { RoleSelectionForm } from './pages/FilterForm/FilterForm'
-import { LoginPage } from './pages/LoginPage/LoginPage'
-import GeneralProfile from './pages/GeneralProfile/GeneralProfile'
-import SubjectAnaysisForm from './pages/SubjectAnalysisForm/SubjectAnaysisForm'
-import {QuestionDatabase} from './pages/QuestionsForm/QuestionsForm'
-import {AnalysisExam} from './pages/AnalysisExam/AnalysisExam'
-import Exams from './pages/Exams'
-import { Public } from './routes/PublicRoutes'
+import './App.css';
+import { useState, useRef, useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import PublicRoutes from './routes/PublicRoutes';
+import StudentRoutes from './routes/StudentRoute';
+import TeacherRoutes from './routes/TeacherRoutes';
+import AdminRoutes from './routes/AdminRoute';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 export const ROLES = {
-	Public: 'public',
-	Teacher: 'teacher',
-	Admin: 'admin',
+  Public: 'public',
+  Teacher: 'teacher',
+  Admin: 'admin',
   Student: 'student'
-}
+};
 
 function App() {
-	const [popupVisible, setPopupVisible] = useState(false);
   const [selectedRole, setSelectedRole] = useState(null);
-  const [userRole, setUserRole] = useState(ROLES.Public)
-
-	const togglePopup = () => {
-		setPopupVisible(!popupVisible);
-	};
+  const [userRole, setUserRole] = useState(ROLES.Public);
 
   const handleRoleSelect = (role) => {
-    setSelectedRole(role)
+    setSelectedRole(role);
     console.log(role);
-  }
+  };
 
-  const handleLogin = () => {
-    setUserRole(selectedRole)
-    console.log(selectedRole);
-  }
+  useEffect(() => {
+    const storedRole = localStorage.getItem('selectedRole');
+    if (storedRole) {
+      setSelectedRole(storedRole);
+      setUserRole(storedRole);
+    }
+  }, []);
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Check if data exists in localStorage
+    const user_data = localStorage.getItem('user_data');
+    if (user_data) {
+      setData(JSON.parse(user_data));
+    }
+  }, []);
+
+  // const handleLogin = () => {
+  //   setUserRole(selectedRole)
+  // }
+
+  const navigateToLogin = () => {
+    localStorage.removeItem('selectedRole');
+    localStorage.removeItem('user_data');
+    setSelectedRole('');
+    setUserRole('public');
+
+    navigate('/');
+    window.location.reload();
+  };
+
+  console.log('data role: ', data.role);
 
   return (
-    <div>
+    <LanguageProvider>
       <BrowserRouter>
-        {userRole !== 'public' && <SideBar selectedRole={selectedRole}/>}
-          <div className='_container'>
-          <Routes>
-            <Route path="/" element={<RegistrationForm />}/>
-            <Route path="/register" element={<RegistrationForm />}/>
-            <Route path="/role" element={<RoleSelectionForm onSelect={handleRoleSelect} selectedRole={selectedRole}/>}/>
-            <Route path="/login" element={<LoginPage onLogin={handleLogin} selectedRole={selectedRole}/>}/>
-            <Route path='/question_base' element={<QuestionDatabase userRole={userRole}/>}/>
-            <Route path='/exam_results' element={<ExamResults/>}/>
-            <Route path='/test' element={<TestPage />}/>
-            <Route path='/new_task' element={<TaskAdding />}/>
-            <Route path='*' element={<NotFoundPage />}/>
-            <Route path='/filter' element={<ExamPage />}/>
-            <Route path='/exam_analyse' element={<ExamAnalyse />}/>
-            <Route path='/profile' element={<GeneralProfile />}/>
-            <Route path='/subject_analyse' element={<SubjectAnaysisForm />}/>
-            <Route path='/exam' element={<AnalysisExam />}/>
-            <Route path='/exams' element={<Exams />}/>
-          </Routes>
-          </div>
+        {!data.role ? (
+          <PublicRoutes
+            handleRoleSelect={handleRoleSelect}
+            selectedRole={selectedRole}
+            //  handleLogin={handleLogin}
+          />
+        ) : data.role === 'student' ? (
+          <StudentRoutes navigateToLogin={navigateToLogin} />
+        ) : data.role === 'teacher' ? (
+          <TeacherRoutes navigateToLogin={navigateToLogin} />
+        ) : data.role === 'admin' ? (
+          <AdminRoutes navigateToLogin={navigateToLogin} />
+        ) : (
+          <h1>There is an error in server</h1>
+        )}
       </BrowserRouter>
-    </div>
+    </LanguageProvider>
   );
 }
 
-export default App
+export default App;

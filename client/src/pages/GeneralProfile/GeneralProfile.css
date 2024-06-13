@@ -380,10 +380,8 @@
 }
 
 .general hr {
-  position: absolute;
-  margin-top: -40px;
   width: 0;
-  height: 555px;
+  height: 65%;
   border: 1px solid #ACACAC;
 }
 

@@ -1,247 +1,308 @@
-import React from "react";
-import styled from "styled-components";
-
-import { QuestionBar } from "../../components/organism/QuestionsBar";
-import { AnswerPart } from "../../components/organism/AnswernEnd";
-import { QuestionContent } from "../../components/organism/QuestionContent";
-import { Text } from "../../components/atoms/CustomText/CustomText";
-import { ClockCircleOutlined, LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
-import { RadioExample } from "../../components/atoms/CustomRadio/CustomRadio";
-import { colors } from "../../base/colors";
-import { useState } from "react";
-
-import './TestPage.css'
-import { AppstoreOutlined, WarningOutlined } from "@ant-design/icons";
-import { CustomButton } from "../../components/atoms/CustomButton/CustomButton";
-import { TimerComponent } from '../../components/atoms/TimerComponent'
-import { subjectArr } from "../../data/data";
-
-
-const TestContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: start;
-    justify-content: center;
-    /* width: 80%; */
-    width: 100%;
-    gap: 1.5rem;
-
-    @media screen and (max-width: 900px){
-        
-    }
-`
-// const QuestionAnswerContainer = styled.div`
-//     display: flex;
-//     flex-direction: row;
-//     align-items: center;
-//     justify-content: center;
-//     width: 100%;
-//     gap: 1.5;
-// `
-const AcceptContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-`
-const MainContent = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    /* justify-content: space-between; */
-    flex-wrap: wrap;
-    width: 100%;
-    gap: 1.5;
-
-    @media screen and (max-width: 1000px){
-        flex-direction: column;
-        width: 100%;
-        order: 2;
-    }
-`
-const MainInfo = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 20px 0;
-    width: 100%;
-    gap: 2rem;
-    font-size: 20px;
-    text-align: start;
-
-    @media screen and (max-width: 900px){
-        font-size: 15px;
-    }
-`
-const IconTextContainer = styled.div`
-    background-color: #F7F7F7;
-    display: flex;
-    justify-content: space-evenly;
-    width: 60%;
-    align-items: center;
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 20px;
-    
-    @media screen and (max-width: 900px){
-        font-size: 15px;
-        width: 40%;
-        padding: 5px;
-    }
-`
-const GivenTaskContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    padding: .5rem;
-    gap: 1.5rem;
-    border-radius: 20px;
-`
-const AnswerBlock = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-    gap: 2rem;
-`
-const PrevNextBtnsContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-
-    @media screen and (max-width: 900px){
-        order: 2;
-        justify-content: space-evenly;
-    }
-`
-const IconButton = styled.button`
-    background-color: ${colors.black_green};
-    width: 40%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-
-    @media screen and (max-width: 1000px){
-        ${Text} {
-            display: none;
-            width: 100%;
-        }
-    }
-
-`
-const PopupContainer = styled.div`
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-`;
+import React, { useState, useEffect } from 'react';
+import {
+  ClockCircleOutlined,
+  LeftCircleOutlined,
+  RightCircleOutlined,
+  AppstoreOutlined,
+  WarningOutlined
+} from '@ant-design/icons';
+import { useLocation, useNavigate } from 'react-router-dom';
+import QuestionBar from '../../components/organism/QuestionBar/QuestionsBar';
+import { Text } from '../../components/atoms/CustomText/CustomText';
+import axios from 'axios';
+import './TestPage.css';
 
 const TextIcon = ({ bgColor, text, color }) => {
-	return (
-		<IconTextContainer style={{ backgroundColor: `${bgColor}`, color: `${color}` }}>
-			<ClockCircleOutlined height='30px' width='30px' />
-			<Text>{text}</Text>
-		</IconTextContainer>
-	)
-}
+  return (
+    <div className="iconTextContainer" style={{ backgroundColor: `${bgColor}`, color: `${color}` }}>
+      <ClockCircleOutlined height="30px" width="30px" />
+      <p>{text}</p>
+    </div>
+  );
+};
 
-export const TestPage = ({ text, text2, text3, image1, image2, image3, image4 }) => {
-    const [selectedQuantity, setSelectedQuantity] = useState(subjectArr[0].quantity);
-    const [subject, setSubject] = useState(subjectArr[0].label)
-    
-	const [popupVisible, setPopupVisible] = useState(false);
-	const [buttonClicked, setButtonClicked] = useState(false);
-	const [popupVisible2, setPopupVisible2] = useState(false);
+export const TestPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const examData = location.state?.examData || {};
+  const startExam = location.state?.startExam || {};
 
-	const togglePopup = () => {
-		setPopupVisible(!popupVisible);
-		setButtonClicked(!buttonClicked);
-	};
+  const subjects = examData.questionsBySubject || [];
+  const [selectedSubjectId, setSelectedSubjectId] = useState(subjects[0]?.id || '');
+  const [selectedSubjectName, setSelectedSubjectName] = useState(subjects[0]?.subjectName || '');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [answeredQuestions, setAnsweredQuestions] = useState([]);
 
-	const togglePopup2 = () => {
-		setPopupVisible2(!popupVisible2)
-	}
+  const selectedQuestions =
+    subjects.find((subject) => subject.id === selectedSubjectId)?.questions || [];
 
-    const optionSelect = (selectedOption) => {
-        const selectedSubject = subjectArr.find((subject) => subject.label === selectedOption);
-        setSubject(selectedOption)
-        setSelectedQuantity(selectedSubject ? selectedSubject.quantity : null);
+  useEffect(() => {
+    clearLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${currentIndex}`);
+    if (savedAnswers) {
+      try {
+        setSelectedAnswers(JSON.parse(savedAnswers));
+        setAnsweredQuestions((prev) => [...new Set([...prev, currentIndex])]);
+      } catch (error) {
+        console.error('Error parsing saved answers:', error);
+        setSelectedAnswers([]);
+      }
+    } else {
+      setSelectedAnswers([]);
+    }
+  }, [selectedSubjectId, currentIndex]);
+
+  const clearLocalStorage = () => {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith(`${selectedSubjectId}-`)) {
+        localStorage.removeItem(key);
+      }
+    });
+  };
+
+  const handleSubjectSelect = async (subjectId) => {
+    await submitAnswers(); // Submit current answers before changing subject
+    const subject = subjects.find((subject) => subject.id === subjectId);
+    setSelectedSubjectId(subjectId);
+    setSelectedSubjectName(subject?.subjectName || '');
+    setCurrentIndex(0);
+    setSelectedAnswers([]);
+    setAnsweredQuestions([]);
+  };
+
+  const handleNext = async () => {
+    if (currentIndex < selectedQuestions.length - 1) {
+      await submitAnswers();
+      setCurrentIndex((prev) => prev + 1);
+      setSelectedAnswers([]);
+    } else {
+      const currentSubjectIndex = subjects.findIndex((subject) => subject.id === selectedSubjectId);
+      if (currentSubjectIndex < subjects.length - 1) {
+        await submitAnswers();
+        handleSubjectSelect(subjects[currentSubjectIndex + 1].id);
+      }
+    }
+  };
+
+  const handlePrevious = async () => {
+    if (currentIndex > 0) {
+      await submitAnswers();
+      setCurrentIndex((prev) => prev - 1);
+      setSelectedAnswers([]);
+    } else {
+      const currentSubjectIndex = subjects.findIndex((subject) => subject.id === selectedSubjectId);
+      if (currentSubjectIndex > 0) {
+        await submitAnswers();
+        handleSubjectSelect(subjects[currentSubjectIndex - 1].id);
+      }
+    }
+  };
+
+  const handleQuestionButtonClick = async (index) => {
+    await submitAnswers();
+    setCurrentIndex(index);
+    setSelectedAnswers([]);
+  };
+
+  const handleOptionChange = (optionId) => {
+    const currentQuestion = selectedQuestions[currentIndex];
+    let newSelectedAnswers;
+
+    if (currentQuestion.type === 'onePoint') {
+      newSelectedAnswers = [optionId];
+    } else if (currentQuestion.type === 'twoPoints') {
+      newSelectedAnswers = selectedAnswers.includes(optionId)
+        ? selectedAnswers.filter((id) => id !== optionId)
+        : [...selectedAnswers, optionId];
     }
 
-	return (
-		<TestContainer>
-			<div className="main-container">
-				<div className={`responsive-container ${popupVisible ? 'hidden' : ''}`}>
-					<QuestionBar onSelect={optionSelect} quantity={selectedQuantity}/>
-				</div>
+    setSelectedAnswers(newSelectedAnswers);
+    localStorage.setItem(
+      `${selectedSubjectId}-${currentIndex}`,
+      JSON.stringify(newSelectedAnswers)
+    );
+    setAnsweredQuestions((prev) => [...new Set([...prev, currentIndex])]);
+  };
 
-				{popupVisible && (
-					<div className="popup-container">
-						<QuestionBar onSelect={optionSelect} quantity={selectedQuantity}/>
-						<button onClick={togglePopup}>Close</button>
-					</div>
-				)}
+  const submitAnswers = async () => {
+    if (selectedQuestions.length === 0) return;
 
-				{popupVisible2 && (
-					<PopupContainer>
-						<WarningOutlined style={{ fontSize: '40px' }} />
-						<Text >Вы хотите завершить экзамен сейчас?</Text>
-						<div style={{ display: 'flex', flexDirection: 'row', gap: '.5rem' }}>
-							<CustomButton sizeType='popupButton' color={colors.white} bgColor={colors.black_green} onClick={togglePopup2}>Отмена</CustomButton>
-							<CustomButton sizeType='popupButton' color={colors.white} bgColor={colors.black_green} onClick={togglePopup2}>Завершить</CustomButton>
-						</div>
-					</PopupContainer>
-				)}
+    const currentQuestion = selectedQuestions[currentIndex];
+    const answerData = {
+      examId: startExam.examId,
+      studentId: startExam.studentId,
+      subjectId: selectedSubjectId,
+      questionId: currentQuestion._id,
+      optionIds: selectedAnswers,
+      questionNumber: currentQuestion.questionNumber,
+      language: startExam.language
+    };
 
-			</div>
-			{/* <AcceptContent> */}
-				<MainContent>
-					<GivenTaskContainer>
-						<MainInfo>
-							<Text weight='700'>{subject}</Text>
-							<TextIcon bgColor='#f7f7f7' color='#000000' text={<TimerComponent initialTime='05:02:20'/>} />
-						</MainInfo>
-						<Text type='large' weight='400'>{text3}</Text>
-						<img width='299px' height='394px' src="https://s3-alpha-sig.figma.com/img/2a00/682d/90b4330c798cd76f14e805bbd56b4c8f?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZSS1WKr~mzu6oeAwBBVHMWXK6Mt86sDSGa-oJ5ZjSxcnJNxCIwuu6ywpVAsNQg6R9Qgbl5NtSr~vfy2-MXKkr9fgMa3h5ruvcizZzVEXBfkU56RVCz1StZ1~86ghjLW6NhQGSLkXSPpxWGoJnbfID9Iy8qaZqm9bItEj~~jXlXWTKzYKohRNVuy~TCUOTqvpmOWWy-W0zqxywfFP~LBE1CqjbXo-bG3H31mLwPq399X3wYykyaHmsKtwsQ41FdMJuLsODWRPEJD1eqNtTsfB3R8Uc2~90QeZ6CSt0jr12hpZzE~GBRt6c3Gbif9cocRtB-NUCJHrJ4ckBzsQPzkazw__" alt="Task" />
-					</GivenTaskContainer>
-                    <div style={{display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'end'}}>
-                        <AnswerBlock>
-                            <PrevNextBtnsContainer>
-                                <IconButton>
-                                    <LeftCircleOutlined style={{ color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center' }} />
-                                    <Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Предыдущий</Text>
-                                </IconButton>
-                                <button style={{width: '40%', height: '40px'}} className={`popup-button`}
-                                    onClick={togglePopup}>
-                                    <AppstoreOutlined className={`${buttonClicked ? 'clicked' : ''}`} />
-                                </button>
-                                <IconButton>
-                                    <Text className='hidden_text' type='medium' color={colors.white} fontWeight='500'>Следующий</Text>
-                                    <RightCircleOutlined style={{ color: `${colors.white}`, height: '20px', width: '20px', display: 'flex', alignItems: 'center' }} />
-                                </IconButton>
-                            </PrevNextBtnsContainer>
-                            <RadioExample option1='A' option2='B' option3='C' option4='D' image1={image1} image2={image2} image3={image3} image4={image4} />
-                        </AnswerBlock>
-                        <CustomButton onClick={togglePopup2} bgColor={colors.black_green} color={colors.white} width='200px'>
-                            Завершить тест
-                        </CustomButton>
-                    </div>
-				</MainContent>
-			{/* </AcceptContent> */}
-		</TestContainer>
-	)
-}
+    console.log('answerData', answerData);
+
+    try {
+      const response = await axios.post(
+        'https://ubt-server.vercel.app/students/submitOrUpdateAnswer',
+        answerData
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error submitting answer:', error);
+    }
+  };
+
+  const handleConfirm = async () => {
+    await submitAnswers(); // Ensure the current answer is submitted
+
+    const resultData = {
+      examId: startExam.examId,
+      studentId: startExam.studentId
+    };
+
+    try {
+      const response = await axios.post(
+        'https://ubt-server.vercel.app/students/getResult',
+        resultData
+      );
+      console.log(response.data);
+      navigate('/exam_results', { state: { resultData: response.data } });
+    } catch (error) {
+      console.error('Error getting result:', error);
+    }
+  };
+
+  const isAnswered = (index) => {
+    const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${index}`);
+    return savedAnswers && JSON.parse(savedAnswers).length > 0;
+  };
+
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [popupVisible2, setPopupVisible2] = useState(false);
+
+  const togglePopup = () => {
+    setPopupVisible(!popupVisible);
+    setButtonClicked(!buttonClicked);
+  };
+
+  const togglePopup2 = async () => {
+    await submitAnswers();
+    setPopupVisible2(!popupVisible2);
+  };
+
+  return (
+    <>
+      {popupVisible2 && (
+        <div className="popupContainer">
+          <WarningOutlined className="warningIcon" />
+          <p>Вы хотите завершить экзамен сейчас?</p>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
+            <button className="confirmButton" onClick={handleConfirm}>
+              Да
+            </button>
+            <button className="cancelButton" onClick={togglePopup2}>
+              Отмена
+            </button>
+          </div>
+        </div>
+      )}
+      <div className={`testContainer ${popupVisible ? 'bgShadow' : ''}`}>
+        <div className="mainContainer">
+          <div className={`responsiveContainer ${popupVisible ? 'hidden' : ''}`}>
+            <QuestionBar
+              subjects={subjects.map((subject) => ({
+                id: subject.id,
+                name: subject.subjectName
+              }))}
+              text={`${answeredQuestions.length} / ${selectedQuestions.length}`}
+              onSelect={(subjectId) => handleSubjectSelect(subjectId)}
+              selectedQuestions={selectedQuestions}
+              handleQuestionButtonClick={handleQuestionButtonClick}
+              isAnswered={isAnswered}
+              currentIndex={currentIndex}
+            />
+          </div>
+          {popupVisible && (
+            <div className="popup-container">
+              <QuestionBar
+                subjects={subjects.map((subject) => ({
+                  id: subject.id,
+                  name: subject.subjectName
+                }))}
+                text={`${answeredQuestions.length} / ${selectedQuestions.length}`}
+                onSelect={(subjectId) => handleSubjectSelect(subjectId)}
+                selectedQuestions={selectedQuestions}
+                handleQuestionButtonClick={handleQuestionButtonClick}
+                isAnswered={isAnswered}
+                currentIndex={currentIndex}
+              />
+              <button onClick={togglePopup}>Close</button>
+            </div>
+          )}
+        </div>
+        {selectedQuestions.length > 0 ? (
+          <div className="mainContent">
+            <div className="givenTaskContainer">
+              <div className="mainInfo">
+                <Text weight="700">{`${selectedSubjectName}. Вопрос ${currentIndex + 1} из ${selectedQuestions.length}`}</Text>
+              </div>
+              <div className="questionContainer">
+                <Text type="large" weight="400">
+                  {selectedQuestions[currentIndex]?.question}
+                </Text>
+                {selectedQuestions[currentIndex]?.image && (
+                  <img src={selectedQuestions[currentIndex].image} alt="Question related" />
+                )}
+              </div>
+            </div>
+            <div className="rightSideInfo">
+              <div className="answerBlock">
+                <div className="prevNextBtnsContainer">
+                  <div className="iconButton">
+                    <LeftCircleOutlined className="btnIcon" onClick={handlePrevious} />
+                    <h5>Предыдущий</h5>
+                  </div>
+                  <button
+                    style={{ width: '40%', height: '40px' }}
+                    className={`popup-button`}
+                    onClick={togglePopup}
+                  >
+                    <AppstoreOutlined className={`${buttonClicked ? 'clicked' : ''}`} />
+                  </button>
+                  <div className="iconButton" onClick={handleNext}>
+                    <h5>Следующий</h5>
+                    <RightCircleOutlined className="btnIcon" />
+                  </div>
+                </div>
+                <div className="choicesContainer">
+                  {selectedQuestions[currentIndex]?.options?.map((option) => (
+                    <label key={option._id} className="radioLabel">
+                      <input
+                        type={
+                          selectedQuestions[currentIndex].type === 'onePoint' ? 'radio' : 'checkbox'
+                        }
+                        value={option._id}
+                        checked={selectedAnswers.includes(option._id)}
+                        onChange={() => handleOptionChange(option._id)}
+                      />
+                      {option.text}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <button onClick={togglePopup2}>Завершить тест</button>
+            </div>
+          </div>
+        ) : (
+          <div className="noQuestionsContainer">
+            <Text type="testQuestion">Нет доступных вопросов по выбранному предмету.</Text>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
