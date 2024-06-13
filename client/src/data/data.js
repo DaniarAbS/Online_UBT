@@ -244,9 +244,9 @@ export const literal = [
 ]
 
 export const group = [
-  {value: 9, label: '9'},
-  {value: 10, label: '10'},
-  {value: 11, label: '11'},
+  {value: '9', label: '9'},
+  {value: '10', label: '10'},
+  {value: '11', label: '11'},
 ]
 
 export const teacherInfo = [
@@ -453,4 +453,442 @@ export const exams = [
     endDate: "30 Нояб. 2023, 12:44",
     participants: 107,
   },
+];
+
+export const upExams = [
+  {
+    startedAt: '12.25.48',
+    finishedAt: '12.05.24',
+  },
+  {
+    startedAt: '12.25.48',
+    finishedAt: '12.05.24',
+  },
+  {
+    startedAt: '12.25.48',
+    finishedAt: '12.05.24',
+  },
+  {
+    startedAt: '12.25.48',
+    finishedAt: '12.05.24',
+  },
+] 
+
+export const DoneExamList = [
+  {
+    time: '12.25.48',
+    day: '12.05.24',
+    points: '89',
+  },
+  {
+    time: '12.25.48',
+    day: '12.05.24',
+    points: '89',
+  },
+  {
+    time: '12.25.48',
+    day: '12.05.24',
+    points: '89',
+  },
+] 
+
+export const subjects = [
+  'Математика', 
+  'Физика', 
+  'Биология', 
+  'География',
+  'Русская литература', 
+  'Қазақ тілі',
+  'Қазақ әдебиеті',
+  'Английский язык',
+  'Информатика',
+];
+
+export const myClassData = [
+  {
+    id: 1,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 2,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 3,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 4,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 5,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 6,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 7,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 8,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 9,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 10,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 11,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+]
+export const studentsData2 = [
+  {
+    id: 1,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 2,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 3,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 4,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 5,
+    name: 'Daniyar',
+    surname: 'Absat',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 6,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 7,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 8,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 9,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 10,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 11,
+    name: 'Dias',
+    surname: 'Altynbek',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  },
+  {
+    id: 11,
+    name: 'Әміржан',
+    surname: 'Әмірхан',
+    group: '3f2',
+    id_number: '060612501009',
+    gmail: 'daniarabsat416@gmail.com',
+  }
+]
+export const TeachersData = [
+  {
+    id: 1,
+    name: 'Nurzhan',
+    surname: 'sagyndyk',
+    group: '3f2',
+    subject: 'Информатика',
+    gmail: 'nurzhansagyndyk@gmail.com',
+  },
+  {
+    id: 2,
+    name: 'Nurzhan',
+    surname: 'sagyndyk',
+    group: '3f2',
+    subject: 'Информатика',
+    gmail: 'nurzhansagyndyk@gmail.com',
+  },
+  {
+    id: 3,
+    name: 'Nurzhan',
+    surname: 'sagyndyk',
+    group: '3f2',
+    subject: 'Информатика',
+    gmail: 'nurzhansagyndyk@gmail.com',
+  },
+  {
+    id: 4,
+    name: 'Nurzhan',
+    surname: 'sagyndyk',
+    group: '3f2',
+    subject: 'Информатика',
+    gmail: 'nurzhansagyndyk@gmail.com',
+  },
+  {
+    id: 5,
+    name: 'Nurzhan',
+    surname: 'sagyndyk',
+    group: '3f2',
+    subject: 'Информатика',
+    gmail: 'nurzhansagyndyk@gmail.com',
+  },
+  {
+    id: 6,
+    name: 'Uldana',
+    surname: 'Adilbek',
+    group: '1f2',
+    subject: 'Математика',
+    gmail: 'uldanadilbek@gmail.com',
+  },
+  {
+    id: 7,
+    name: 'Uldana',
+    surname: 'Adilbek',
+    group: '1f2',
+    subject: 'Математика',
+    gmail: 'uldanadilbek@gmail.com',
+  },
+  {
+    id: 8,
+    name: 'Uldana',
+    surname: 'Adilbek',
+    group: '1f2',
+    subject: 'Математика',
+    gmail: 'uldanadilbek@gmail.com',
+  },
+  {
+    id: 9,
+    name: 'Uldana',
+    surname: 'Adilbek',
+    group: '1f2',
+    subject: 'Математика',
+    gmail: 'uldanadilbek@gmail.com',
+  },
+  {
+    id: 10,
+    name: 'Uldana',
+    surname: 'Adilbek',
+    group: '1f2',
+    subject: 'Математика',
+    gmail: 'uldanadilbek@gmail.com',
+  },
+  {
+    id: 11,
+    name: 'Uldana',
+    surname: 'Adilbek',
+    group: '1f2',
+    subject: 'Математика',
+    gmail: 'uldanadilbek@gmail.com',
+  },
+  {
+    id: 11,
+    name: 'Әміржан',
+    surname: 'Әмірхан',
+    group: '1D1',
+    subject: 'Оқу сауаттылығы',
+    gmail: 'amirkhanamirzhon@gmail.com',
+  }
+]
+
+// export const questionAnswers = [
+//   {
+//     question: 'What is your favorite color?',
+//     answers: {
+//       a1: { type: 'text', content: 'Red' },
+//       a2: { type: 'text', content: 'Blue' },
+//       a3: { type: 'text', content: 'Green' },
+//       a4: { type: 'text', content: 'Yellow' }
+//     }
+//   },
+//   {
+//     question: 'Which animal do you like the most?',
+//     answers: {
+//       a1: { type: 'image', content: 'path_to_image1.jpg' },
+//       a2: { type: 'image', content: 'path_to_image2.jpg' },
+//       a3: { type: 'image', content: 'path_to_image3.jpg' },
+//       a4: { type: 'image', content: 'path_to_image4.jpg' }
+//     }
+//   }
+// ];
+
+export const subjectData = [
+  {
+    subject: 'Mathematics',
+    dependencies: ['Physics', 'IT', 'Geography']
+  },
+  {
+    subject: 'Geography',
+    dependencies: ['Mathematics', 'English', 'World History']
+  },
+
+];
+export const learned = [
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  {
+    name: "Алгоритм > Основные свойства алгоритма",
+    participantCount: 45,
+    totallyLearned: 13,
+    learned: '68%',
+  },
+  // ... other topics
 ];

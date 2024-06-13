@@ -1,349 +1,359 @@
-import './TaskAdding.css'
-import { Text } from '../../components/atoms/CustomText/CustomText';
-import React from "react";
-import { useState, useEffect, useRef } from "react";
+import styles from './TaskAdding.module.css';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { RightOutlined, FormOutlined, CheckOutlined, CloseOutlined, UploadOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { sizes } from '../../base/sizes';
-import { TextWithBg } from '../../components/atoms/TextBg';
-import { colors } from '../../base/colors';
 import Input from 'antd/es/input/Input';
-import AddImage from '../../assets/icons/add_image_icon.png'
-import { Button, Upload } from 'antd';
+import AddImage from '../../assets/icons/add_image_icon.png';
+import axios from 'axios';
+import config from '../../../config';
+import { v4 as uuidv4 } from 'uuid';
 
-const WholeContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-
-    @media screen and (max-width: 1000px){
-        flex-wrap: wrap;
-    }
-`
-const ChoosePartContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: .5rem;
-`
-const PointContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-    gap: 1rem;
-`
-const ThemesContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-`
-const ThemeVisibleContent = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    width: 100%;
-`
-const VisibilityContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    border: solid 2px #ACACAC;
-    padding: 1rem;
-    border-radius: 10px;
-    gap: 1rem;
-`
-const HiddenContent = styled.div`
-    display: flex;
-    flex-direction: column;
-`
-const ThemeElementRow = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 1rem;
-`
 const TruncatedText = styled.span`
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 250px; /* Adjust this width according to your needs */
-    font-size: ${sizes.mediumPlus};
-`;
-const RotatableIcon = styled(RightOutlined)`
-  transition: transform 0.5s ease;
-  transform: ${(props) => (props.rotated ? 'rotate(90deg)' : 'rotate(0)')};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px; /* Adjust this width according to your needs */
+  font-size: ${sizes.small};
 `;
 
-const AddingQuestionContainer = styled.div`
-    display: flex;
-    background-color: ${colors.background_gray};
-    flex-direction: column;
-    align-items: end;
-    justify-content: space-between;
-    min-height: 430px;
-    width: 616px;
-    padding: 2rem;
-`
-const InputImgRow = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-    gap: 2rem;
-`
-const ApproveCancelContent = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 60px;
-`
+export const TaskAdding = () => {
+  const [visibleItemIndex, setVisibleItemIndex] = useState(-1);
+  const [selectedDiv, setSelectedDiv] = useState(null);
+  const [lastClickedButton, setLastClickedButton] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedTopic, setSelectedTopic] = useState('');
+  const [question, setQuestion] = useState('');
+  const [image, setImage] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
+  const [topics, setTopics] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [answers, setAnswers] = useState([
+    { id: uuidv4(), text: '', isCorrect: false },
+    { id: uuidv4(), text: '', isCorrect: false },
+    { id: uuidv4(), text: '', isCorrect: false },
+    { id: uuidv4(), text: '', isCorrect: false }
+  ]);
+  const [type, setType] = useState(1); // Default to 1-point question
+  const [maxCorrectAnswers, setMaxCorrectAnswers] = useState(1);
+  const [language, setLanguage] = useState('kz'); // Language state
 
-const props = {
-    action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-    onChange({ file, fileList }) {
-      if (file.status !== 'uploading') {
-        console.log(file, fileList);
+  useEffect(() => {
+    async function fetchSubjects() {
+      try {
+        const response = await axios.get(`${config.baseURL}/subjects/`);
+        setSubjects(response.data);
+      } catch (error) {
+        console.error(error);
       }
-    },
-    defaultFileList: [
-      {
-        uid: '1',
-        name: 'yyy.png',
-        status: 'done',
-        url: 'https://www.bing.com/images/search?view=detailV2&ccid=7n0UkdFf&id=4228CFCC5CD5C58B8B619A1C2732DF5A3F100AC7&thid=OIP.7n0UkdFfcM6ItZsiBHe4YQHaKi&mediaurl=https%3a%2f%2fpbs.twimg.com%2fmedia%2fFFY-i4gXoAkGIQg%3fformat%3djpg%26name%3dlarge&exph=1600&expw=1125&FORM=IRPFED&ck=F74B44087667412AAABAC0C7F9E6E29C&reqid=C06F457FEC14440E965578F677F9B079&selectedIndex=2&itb=0&idpp=insfeed',
-      },
-    ],
-  };
+    }
 
-export const TaskAdding = () => {   
-    const [visibleItemIndex, setVisibleItemIndex] = useState(-1);
-    const [selectedDiv, setSelectedDiv] = useState(null);
-    const [lastClickedButton, setLastClickedButton] = useState(null);
+    fetchSubjects();
+  }, []);
 
-    const handleButtonClick = (buttonNumber) => {
-      setLastClickedButton(buttonNumber);
-    };
+  useEffect(() => {
+    const teachersSubject = localStorage.getItem('teachersSubject');
+    console.log('teachersSubject', teachersSubject);
+    if (teachersSubject) {
+      async function fetchTopics() {
+        try {
+          const response = await axios.get(`${config.baseURL}/subjects/${teachersSubject}`);
+          console.log('topics: ', response.data.topics);
+          setTopics(response.data.topics);
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
-    const handleClick = (divNumber) => {
-      setSelectedDiv(divNumber);
-    };
-
-    const renderElement = (divNumber) => {
-      const isSelected = selectedDiv === divNumber;
-
-      return (
-        <div
-          onClick={() => handleClick(divNumber)}
-          style={{
-            cursor: 'pointer',
-          }}
-        >
-          {isSelected ? <CheckOutlined /> : <CloseOutlined />}
-        </div>
-      );
-    };
-    
-
-
-    const items = [
-        {
-            topic: 'Основные свойства логарифма',
-            subtopics: [
-                'Суретте көрсетілген параболаның формуласын табыңыз', 
-                'Суретте көрсетілген параболаның формуласын табыңыз', 
-                'Суретте көрсетілген параболаның формуласын табыңыз'
-            ]
-        },
-        {
-            topic: 'Линейные уравнения',
-            subtopics: [
-                'Основные понятия', 
-                'Решение уравнений', 
-                'Примеры'
-            ]
-        },
-        {
-            topic: 'Линейные уравнения',
-            subtopics: ['Основные понятия', 'Решение уравнений', 'Примеры']
-        },
-        {
-            topic: 'Линейные уравнения',
-            subtopics: ['Основные понятия', 'Решение уравнений', 'Примеры']
-        },
-        // Add more topics and subtopics as needed
-    ];
-
-    const fileInputRef = useRef(null);
-    const graduateDisplayRef = useRef(null);
-
-  const updateFileInput = () => {
-    const fileInput = fileInputRef.current;
-    if (fileInput.files.length > 1) {
-      // Reset the file input if more than one file is selected
-      fileInput.value = '';
-      graduateDisplayRef.current.value = '';
-    } else if (fileInput.files.length === 1) {
-      graduateDisplayRef.current.value = fileInput.files[0].name;
+      fetchTopics();
     } else {
-      graduateDisplayRef.current.value = '';
+      setTopics([]);
+    }
+  }, [selectedSubject]);
+
+  const handleButtonClick = (buttonNumber) => {
+    setLastClickedButton(buttonNumber);
+    setType(buttonNumber);
+    const updatedAnswers = answers.map((answer) => ({ ...answer, isCorrect: false }));
+    setAnswers(updatedAnswers);
+    setMaxCorrectAnswers(buttonNumber === 1 ? 1 : answers.length);
+    if (buttonNumber === 1 && answers.length > 4) {
+      setAnswers(answers.slice(0, 4));
     }
   };
 
+  const handleAnswerChange = (index, text) => {
+    const updatedAnswers = [...answers];
+    updatedAnswers[index].text = text;
+    setAnswers(updatedAnswers);
+  };
 
-    const toggleVisibility = (index) => {
-        setVisibleItemIndex(visibleItemIndex === index ? -1 : index);
+  const handleToggleCorrectAnswer = (index) => {
+    const updatedAnswers = [...answers];
+    if (type === 1) {
+      updatedAnswers.forEach((answer, idx) => {
+        answer.isCorrect = idx === index;
+      });
+    } else {
+      updatedAnswers[index].isCorrect = !updatedAnswers[index].isCorrect;
+      const numCorrectAnswers = updatedAnswers.filter((ans) => ans.isCorrect).length;
+      if (numCorrectAnswers > maxCorrectAnswers) {
+        updatedAnswers[index].isCorrect = false;
+      }
+    }
+    setAnswers(updatedAnswers);
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmit = async () => {
+    if (!lastClickedButton) {
+      alert(language === 'kz' ? 'Сұрақ түрін таңдаңыз.' : 'Выберите тип вопроса.');
+      return;
+    }
+
+    if (!selectedTopic) {
+      alert(language === 'kz' ? 'Тақырып таңдаңыз.' : 'Выберите тему.');
+      return;
+    }
+
+    if (!question && !image) {
+      alert(
+        language === 'kz'
+          ? 'Сұрақ немесе сурет еңгізіңіз.'
+          : 'Введите текст вопроса или добавьте изображение.'
+      );
+      return;
+    }
+
+    const allAnswersFilled = answers.every((answer) => answer.text.trim() !== '');
+    if (!allAnswersFilled) {
+      alert(
+        language === 'kz' ? 'Барлық жауап нұсқаларын еңгізіңіз.' : 'Заполните все варианты ответов.'
+      );
+      return;
+    }
+
+    const atLeastOneCorrect = answers.some((answer) => answer.isCorrect);
+    if (!atLeastOneCorrect) {
+      alert(
+        language === 'kz'
+          ? 'Кем дегенде бір дұрыс жауап еңгізіңіз.'
+          : 'Выберите хотя бы один правильный ответ.'
+      );
+      return;
+    }
+
+    const correctOptions = answers.filter((answer) => answer.isCorrect).map((answer) => answer.id);
+    const questionType = type === 1 ? 'onePoint' : 'twoPoints';
+    const newQuestion = {
+      type: questionType,
+      topicId: selectedTopic,
+      question,
+      image: image ? URL.createObjectURL(image) : '',
+      options: answers,
+      correctOptions,
+      language: language
     };
 
+    console.log('newQuestion', newQuestion);
+
+    try {
+      const response = await axios.post(`${config.baseURL}/question/add`, newQuestion);
+      console.log(response.data);
+      handleReset();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleReset = () => {
+    setLastClickedButton(null);
+    setType(1);
+    setSelectedSubject('');
+    setSelectedTopic('');
+    setQuestion('');
+    setImage(null);
+    setImagePreviewUrl('');
+    setAnswers([
+      { id: uuidv4(), text: '', isCorrect: false },
+      { id: uuidv4(), text: '', isCorrect: false },
+      { id: uuidv4(), text: '', isCorrect: false },
+      { id: uuidv4(), text: '', isCorrect: false }
+    ]);
+  };
+
+  const handleLanguageToggle = () => {
+    setLanguage((prevLanguage) => (prevLanguage === 'kz' ? 'ru' : 'kz'));
+  };
+
+  const addNewOption = () => {
+    if (answers.length < 8) {
+      setAnswers([...answers, { id: uuidv4(), text: '', isCorrect: false }]);
+    } else {
+      alert(language === 'kz' ? 'Ең көп жауап 8 болуы мүмкін.' : 'Максимум 8 ответов.');
+    }
+  };
+
+  const removeOption = (index) => {
+    if (answers.length > 4) {
+      const updatedAnswers = answers.filter((_, i) => i !== index);
+      setAnswers(updatedAnswers);
+    } else {
+      alert(
+        language === 'kz'
+          ? 'Төрт жауаптан кем болуы мүмкін емес.'
+          : 'Нельзя иметь меньше четырех ответов.'
+      );
+    }
+  };
+
+  const renderCorrectAnswerToggle = (index) => {
     return (
-      <WholeContainer>
-        <ChoosePartContainer>
-            <Text>Выберите тип вопроса:</Text>
-            <PointContainer>
-                <button 
-                style={{
-                  backgroundColor: lastClickedButton === 1 ? colors.black_green : colors.font_gray,
-                }}
-                onClick={() => handleButtonClick(1)} padding='.5rem 2rem'>1 балл</button>
-                <button 
-                style={{
-                  backgroundColor: lastClickedButton === 2 ? colors.black_green : colors.font_gray,
-                }}
-                onClick={() => handleButtonClick(2)} padding='.5rem 2rem'>2 балл</button>
-            </PointContainer> 
-            <Text>Выберите тему:</Text>
-            <ThemesContainer>
-                {items.map((item, index) => (
-                    <div key={index}>
-                        <VisibilityContent>
-                            <ThemeVisibleContent>
-                                <Text type='largePlus'>{item.topic}</Text>
-                                <RotatableIcon rotated={visibleItemIndex === index} onClick={() => toggleVisibility(index)}/>
-                            </ThemeVisibleContent>
-                            { visibleItemIndex === index &&  (
-                                <HiddenContent className={visibleItemIndex === index ? 'visible-content' : 'hidden-content'}>
-                                    <ul style={{paddingInlineStart: '20px', display: 'flex', flexDirection: 'column', gap: '1rem',}}>
-                                        {item.subtopics.map((subtopic, subIndex) => (
-                                            <li key={subIndex}>
-                                                <ThemeElementRow>
-                                                    <TruncatedText title={subtopic}>{subtopic}</TruncatedText>
-                                                    <FormOutlined />   
-                                                </ThemeElementRow>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </HiddenContent>
-                            )}
-                        </VisibilityContent>
-                    </div>
-                ))}
-            </ThemesContainer>
-        </ChoosePartContainer>
-        <AddingQuestionContainer>
-            <InputImgRow>
-                <Input placeholder='Введите текст' variant='borderless' style={{borderBottom: 'solid 2px #acacac', borderRadius: '0', width: '100%'}}/>
-                <img src={AddImage} alt="Add_image_icon" />
-            </InputImgRow>
-            <ApproveCancelContent>
-                <CheckOutlined style={{fontSize: '24px', fontWeight: 'bold'}}/>
-                <CloseOutlined style={{fontSize: '24px', fontWeight: 'bold'}}/>
-            </ApproveCancelContent>
-        </AddingQuestionContainer>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-          <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
-            {renderElement(1)}
-            <div className='file-input-container'>
-              <input
-                className='graduation file-input'
-                type='text'
-                placeholder='Выписка учебного заведения'
-                ref={graduateDisplayRef}
-              />
-              <input
-                id='graduationInput'
-                className='file-input'
-                type='file'
-                style={{ display: 'none' }}
-                accept='.pdf, .doc, .docx'
-                onChange={updateFileInput}
-                ref={fileInputRef}
-              />
-              <label className='file-input-icon' htmlFor='graduationInput'>
-                <UploadOutlined />
-              </label>
+      <div
+        className={`${styles.correctAnswerToggle} ${answers[index].isCorrect ? styles.correct : ''}`}
+        onClick={() => handleToggleCorrectAnswer(index)}
+      >
+        {answers[index].isCorrect ? <CheckOutlined /> : <CloseOutlined />}
+      </div>
+    );
+  };
+
+  return (
+    <div className={styles.outContainer}>
+      <h2>{language === 'kz' ? 'Сұрақ қосу' : 'Добавление вопроса'}</h2>
+
+      <button
+        style={{
+          padding: '.7rem 1rem',
+          backgroundColor: '#009172',
+          color: '#fff',
+          width: '3rem',
+          borderRadius: '.5rem'
+        }}
+        onClick={handleLanguageToggle}
+      >
+        {language === 'kz' ? 'kz' : 'ru'}
+      </button>
+      <div className="container text-center">
+        <div className="row align-items-start add_content">
+          <div className="col-3">
+            <div className={styles.chooseContainer}>
+              <h4>{language === 'kz' ? 'Сұрақ түрін таңдаңыз:' : 'Выберите тип вопроса:'}</h4>
+              <div className={styles.pointContainer}>
+                <button
+                  className={`${styles.pointBtn} ${lastClickedButton === 1 ? styles.clickedBtn : ''}`}
+                  onClick={() => handleButtonClick(1)}
+                >
+                  1 {language === 'kz' ? 'балл' : 'балл'}
+                </button>
+                <button
+                  className={`${styles.pointBtn} ${lastClickedButton === 2 ? styles.clickedBtn : ''}`}
+                  onClick={() => handleButtonClick(2)}
+                >
+                  2 {language === 'kz' ? 'балл' : 'балла'}
+                </button>
+              </div>
+              <div className={styles.titleSelect}>
+                <h4>{language === 'kz' ? 'Тақырып таңдаңыз:' : 'Выберите тему:'}</h4>
+                <select
+                  className={styles.themeSelect}
+                  value={selectedTopic}
+                  onChange={(e) => setSelectedTopic(e.target.value)}
+                >
+                  <option value="">
+                    {language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}
+                  </option>
+                  {topics.map((topic) => (
+                    <option key={topic._id} value={topic._id}>
+                      {topic.kz_title}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
-          <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
-            {renderElement(2)}
-            <div className='file-input-container'>
-              <input
-                className='graduation file-input'
-                type='text'
-                placeholder='Выписка учебного заведения'
-                ref={graduateDisplayRef}
-              />
-              <input
-                id='graduationInput'
-                className='file-input'
-                type='file'
-                style={{ display: 'none' }}
-                accept='.pdf, .doc, .docx'
-                onChange={updateFileInput}
-                ref={fileInputRef}
-              />
-              <label className='file-input-icon' htmlFor='graduationInput'>
-                <UploadOutlined />
-              </label>
+          <div className={`col-6 ${styles.chooseContainer}`}>
+            <h4>{language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите вопрос'}</h4>
+            <div className={styles.addingQuestionContainer}>
+              <div className={styles.inputImgRow}>
+                <Input
+                  placeholder={language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите текст'}
+                  variant="borderless"
+                  style={{ borderBottom: 'solid 2px #acacac', borderRadius: '0', width: '100%' }}
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                />
+                <input
+                  type="file"
+                  id="imageUpload"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  onChange={handleImageUpload}
+                />
+                <label htmlFor="imageUpload">
+                  <img src={AddImage} alt="Add image icon" />
+                </label>
+              </div>
+              {imagePreviewUrl && (
+                <div className={styles.imagePreview}>
+                  <img
+                    src={imagePreviewUrl}
+                    alt="Preview"
+                    style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
+                  />
+                </div>
+              )}
+              <div className={styles.approveCancelContent}>
+                <CheckOutlined
+                  style={{ fontSize: '24px', fontWeight: 'bold' }}
+                  onClick={handleSubmit}
+                />
+                <CloseOutlined
+                  style={{ fontSize: '24px', fontWeight: 'bold' }}
+                  onClick={handleReset}
+                />
+              </div>
             </div>
           </div>
-          <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
-            {renderElement(3)}
-            <div className='file-input-container'>
-              <input
-                className='graduation file-input'
-                type='text'
-                placeholder='Выписка учебного заведения'
-                ref={graduateDisplayRef}
-              />
-              <input
-                id='graduationInput'
-                className='file-input'
-                type='file'
-                style={{ display: 'none' }}
-                accept='.pdf, .doc, .docx'
-                onChange={updateFileInput}
-                ref={fileInputRef}
-              />
-              <label className='file-input-icon' htmlFor='graduationInput'>
-                <UploadOutlined />
-              </label>
-            </div>
-          </div>
-          <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
-            {renderElement(4)}
-            <div className='file-input-container'>
-              <input
-                className='graduation file-input'
-                type='text'
-                placeholder='Выписка учебного заведения'
-                ref={graduateDisplayRef}
-              />
-              <input
-                id='graduationInput'
-                className='file-input'
-                type='file'
-                style={{ display: 'none' }}
-                accept='.pdf, .doc, .docx'
-                onChange={updateFileInput}
-                ref={fileInputRef}
-              />
-              <label className='file-input-icon' htmlFor='graduationInput'>
-                <UploadOutlined />
-              </label>
+          <div className={`col-3 ${styles.chooseContainer}`}>
+            <h4>{language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответы'}</h4>
+            <div className={styles.choseAnswer}>
+              {answers.map((answer, index) => (
+                <div key={answer.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  {renderCorrectAnswerToggle(index)}
+                  <input
+                    className={`${styles.graduation} ${styles.file_input}`}
+                    type="text"
+                    placeholder={language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответ'}
+                    value={answer.text}
+                    onChange={(e) => handleAnswerChange(index, e.target.value)}
+                  />
+                  {type === 2 && answers.length > 4 && (
+                    <CloseOutlined
+                      className={styles.removeOption}
+                      onClick={() => removeOption(index)}
+                    />
+                  )}
+                </div>
+              ))}
+              {type === 2 && answers.length < 8 && (
+                <button onClick={addNewOption} className={styles.addOptionButton}>
+                  {language === 'kz' ? 'Қосымша жауап қосу' : 'Добавить еще один ответ'}
+                </button>
+              )}
             </div>
           </div>
         </div>
-      </WholeContainer>
-    )
-}
+      </div>
+    </div>
+  );
+};

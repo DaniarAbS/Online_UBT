@@ -1,8 +1,13 @@
 @import "./reset.css";
 @import url('../src/fonts/fonts.css');
 
+@font-face {
+	font-family: "SF Pro Display Medium";
+	src: url('/client/src/fonts/SFProDisplay-Medium.ttf');
+}
+
 :root{
-	--body-font: 'SF Pro', sans-serif;
+	--body-font: 'SF Pro Display Medium', sans-serif;
 	--bigger-font-size:32px;
 	--big-font-size:24px;
 	--normal-font-size: 20px;
