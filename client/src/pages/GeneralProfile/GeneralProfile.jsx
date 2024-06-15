@@ -13,6 +13,8 @@ import './GeneralProfile.css';
 
 import { Modal, Button, Form, Input, Select } from 'antd';
 
+import Loader from '../../components/organism/Loader/Loader';
+
 const GeneralProfile = () => {
   const [data, setData] = useState({});
   const [parsedData, setParsedData] = useState('');
@@ -40,6 +42,8 @@ const GeneralProfile = () => {
   const [selectedLiteral, setSelectedLiteral] = useState(null);
   const [subject, setSubject] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   let parsed;
   const profession_id = parsedData.secondId;
 
@@ -52,6 +56,7 @@ const GeneralProfile = () => {
     let response;
 
     async function getData() {
+      setLoading(true);
       try {
         switch (parsed.role) {
           case 'admin':
@@ -109,6 +114,8 @@ const GeneralProfile = () => {
         // }
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     }
 
@@ -116,6 +123,7 @@ const GeneralProfile = () => {
   }, []);
 
   async function handleUpdateProfile() {
+    setLoading(true);
     let updatedUserData;
 
     console.log('parsedRole', parsedData.role);
@@ -184,10 +192,13 @@ const GeneralProfile = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
   async function handleUpdatePassword() {
+    setLoading(true);
     const updatedPassword = {
       oldPassword: currentPassword,
       newPassword: newPassword
@@ -204,6 +215,8 @@ const GeneralProfile = () => {
       setConfirmPassword('');
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -240,6 +253,7 @@ const GeneralProfile = () => {
 
   return (
     <>
+      {loading && <Loader />}
       <Modal title="Обновить профиль" visible={isModalOpen} onCancel={closeModal} footer={[]}>
         <Form
           variant="filled"

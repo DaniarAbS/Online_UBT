@@ -8,6 +8,7 @@ import axios from 'axios';
 import config from '../../../config';
 
 import { LanguageContext } from '../../contexts/LanguageContext';
+import Loader from '../../components/organism/Loader/Loader';
 
 const { Option } = Select;
 
@@ -59,8 +60,10 @@ export const Teachers = () => {
   const itemsPerPage = 10;
 
   const { language } = useContext(LanguageContext);
+  const [loading, setLoading] = useState(false);
 
   async function fetchTeachers() {
+    setLoading(true);
     try {
       const response = await axios.get('https://ubt-server.vercel.app/adminTeacher/');
       console.log('admin teacher: ', response.data);
@@ -68,6 +71,8 @@ export const Teachers = () => {
     } catch (error) {
       console.error(error);
       return [];
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -82,11 +87,14 @@ export const Teachers = () => {
 
   useEffect(() => {
     async function fetchSubjects() {
+      setLoading(true);
       try {
         const response = await axios.get(`${config.baseURL}/subjects/`);
         setSubjects(response.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     }
 
@@ -94,6 +102,7 @@ export const Teachers = () => {
   }, []);
 
   async function handleUpdateTeacher() {
+    setLoading(true);
     const updatedTeacherData = {
       name: name || teachers.find((teacher) => teacher.id === selectedTeacherId)?.name,
       surname: surname || teachers.find((teacher) => teacher.id === selectedTeacherId)?.surname,
@@ -121,6 +130,8 @@ export const Teachers = () => {
       setSelectedTeacherId(null);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -132,15 +143,19 @@ export const Teachers = () => {
   };
 
   const handleReload = async () => {
+    setLoading(true);
     try {
       const response = await axios.get('https://ubt-server.vercel.app/adminTeacher/');
       setTeachers(response.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
   async function handleDeleteTeacher(teacherId) {
+    setLoading(true);
     try {
       const response = await axios.delete(
         `https://ubt-server.vercel.app/adminTeacher/${teacherId}`
@@ -152,6 +167,8 @@ export const Teachers = () => {
       setSelectedTeacherId(null);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -220,6 +237,7 @@ export const Teachers = () => {
   };
 
   async function handleSubmit() {
+    setLoading(true);
     // Use the state variables to submit the form data or perform other actions
     const newTeacher = {
       name: name,
@@ -247,6 +265,7 @@ export const Teachers = () => {
 
     // Clear input fields after submission if needed
     clearInputFields();
+    setLoading(false);
   }
 
   const clearInputFields = () => {
@@ -260,6 +279,7 @@ export const Teachers = () => {
 
   return (
     <>
+      {loading && <Loader />}
       <Modal
         title={language == 'kz' ? 'Мұғалім қосу' : 'Добавить учителя'}
         visible={addModalVisible}

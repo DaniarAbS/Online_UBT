@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './FilterExam.module.css';
 
+import Loader from '../../components/organism/Loader/Loader';
+
 const FilterExam = () => {
   const [examLanguage, setExamLanguage] = useState('ru'); // 'kazakh' or 'russian'
   const [selectedSubjects, setSelectedSubjects] = useState([]);
@@ -11,12 +13,15 @@ const FilterExam = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [loading, setLoading] = useState(false);
+
   // Retrieve selectedExamId from URL parameters
   const searchParams = new URLSearchParams(location.search);
   const selectedExamId = searchParams.get('selectedExamId');
 
   useEffect(() => {
     async function fetchSubject() {
+      setLoading(true);
       const user_data = JSON.parse(localStorage.getItem('user_data'));
       setSecondId(user_data.secondId);
 
@@ -26,6 +31,8 @@ const FilterExam = () => {
         setSubjects(response.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     }
 
@@ -45,6 +52,7 @@ const FilterExam = () => {
   };
 
   async function handleSubmit() {
+    setLoading(true);
     if (selectedSubjects.length < 5) {
       alert('Выберите как минимум пять предметов, включая обязательные и выборочные.');
       return;
@@ -68,6 +76,8 @@ const FilterExam = () => {
       navigate('/test', { state: { examData: response.data, startExam: startExam } });
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -85,65 +95,70 @@ const FilterExam = () => {
   );
 
   return (
-    <div className={styles.wholeContainer}>
-      <div className={styles.heading}>
-        <h1>Сдать экзамен</h1>
-      </div>
-      <div className={styles.container}>
-        <div className={`row table_row ${styles.titleButtonsContainer}`}>
-          <h4 className="col-3 table_item">Выберите язык экзамена</h4>
-          <div className={`col-8 table_item ${styles.chosingBtns}`}>
-            <button
-              className={`${styles.languageButton} ${examLanguage === 'kz' && styles.languageButtonActive}`}
-              onClick={() => handleLanguageChange('kz')}
-            >
-              На казахском
-            </button>
-            <button
-              className={`${styles.languageButton} ${examLanguage === 'ru' && styles.languageButtonActive}`}
-              onClick={() => handleLanguageChange('ru')}
-            >
-              На русском
-            </button>
-          </div>
+    <>
+      {loading && <Loader />}
+      <div className={styles.wholeContainer}>
+        <div className={styles.heading}>
+          <h1>Сдать экзамен</h1>
         </div>
-        <div className={`row table_row ${styles.titleButtonsContainer}`}>
-          <h4 className="col-3 table_item">Обязательные предметы</h4>
-          <div className={`col-8 table_item ${styles.chosingBtns}`}>
-            {mandatorySubjects.map((subject) => (
+        <div className={styles.container}>
+          <div className={`row table_row ${styles.titleButtonsContainer}`}>
+            <h4 className="col-3 table_item">Выберите язык экзамена</h4>
+            <div className={`col-8 table_item ${styles.chosingBtns}`}>
               <button
-                key={subject._id}
-                className={styles.subjectButton}
-                onClick={() => toggleSubject(subject._id)}
-                disabled={selectedSubjects.includes(subject._id)}
+                className={`${styles.languageButton} ${examLanguage === 'kz' && styles.languageButtonActive}`}
+                onClick={() => handleLanguageChange('kz')}
               >
-                {subject.ru_subject}
+                На казахском
               </button>
-            ))}
-          </div>
-        </div>
-        <div className={`row table_row ${styles.titleButtonsContainer}`}>
-          <h4 className="col-2 table_item">Выборочные предметы</h4>
-          <div className={`col-8 table_item ${[styles.chosingBtns, styles.btnGap].join(' ')}`}>
-            {optionalSubjects.map((subject) => (
               <button
-                key={subject._id}
-                onClick={() => toggleSubject(subject._id)}
-                disabled={selectedSubjects.length === 5 && !selectedSubjects.includes(subject._id)}
-                className={`${styles.subjectButton} ${selectedSubjects.includes(subject._id) ? styles.selected : styles.unselected}`}
+                className={`${styles.languageButton} ${examLanguage === 'ru' && styles.languageButtonActive}`}
+                onClick={() => handleLanguageChange('ru')}
               >
-                {subject.ru_subject}
+                На русском
               </button>
-            ))}
+            </div>
+          </div>
+          <div className={`row table_row ${styles.titleButtonsContainer}`}>
+            <h4 className="col-3 table_item">Обязательные предметы</h4>
+            <div className={`col-8 table_item ${styles.chosingBtns}`}>
+              {mandatorySubjects.map((subject) => (
+                <button
+                  key={subject._id}
+                  className={styles.subjectButton}
+                  onClick={() => toggleSubject(subject._id)}
+                  disabled={selectedSubjects.includes(subject._id)}
+                >
+                  {subject.ru_subject}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={`row table_row ${styles.titleButtonsContainer}`}>
+            <h4 className="col-2 table_item">Выборочные предметы</h4>
+            <div className={`col-8 table_item ${[styles.chosingBtns, styles.btnGap].join(' ')}`}>
+              {optionalSubjects.map((subject) => (
+                <button
+                  key={subject._id}
+                  onClick={() => toggleSubject(subject._id)}
+                  disabled={
+                    selectedSubjects.length === 5 && !selectedSubjects.includes(subject._id)
+                  }
+                  className={`${styles.subjectButton} ${selectedSubjects.includes(subject._id) ? styles.selected : styles.unselected}`}
+                >
+                  {subject.ru_subject}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
+        <div className={styles.btnCont}>
+          <button className={styles.startButton} onClick={handleSubmit}>
+            Начать
+          </button>
+        </div>
       </div>
-      <div className={styles.btnCont}>
-        <button className={styles.startButton} onClick={handleSubmit}>
-          Начать
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 

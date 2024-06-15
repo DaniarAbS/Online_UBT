@@ -7,6 +7,8 @@ import { Input, DatePicker, Modal } from 'antd';
 import moment from 'moment';
 import styles from './AnalysisExam.module.css';
 import exitImg from '../../assets/imgs/exit.png';
+
+import Loader from '../../components/organism/Loader/Loader';
 import { LanguageContext } from '../../contexts/LanguageContext';
 
 const { Search } = Input;
@@ -20,6 +22,7 @@ const ChangeButton = styled.button`
 
 export const AnalysisExam = () => {
   const { language } = useContext(LanguageContext);
+  const [loading, setLoading] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [exams, setExams] = useState([]);
@@ -41,6 +44,7 @@ export const AnalysisExam = () => {
 
   useEffect(() => {
     async function fetchExams() {
+      setLoading(true);
       try {
         const response = await axios.get('https://ubt-server.vercel.app/exams/');
         setExams(response.data);
@@ -48,6 +52,8 @@ export const AnalysisExam = () => {
         console.log(response.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     }
 
@@ -60,12 +66,15 @@ export const AnalysisExam = () => {
   }, []);
 
   const handleReload = async () => {
+    setLoading(true);
     try {
       const response = await axios.get('https://ubt-server.vercel.app/exams/');
       setExams(response.data);
       setFilteredExams(response.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -84,6 +93,7 @@ export const AnalysisExam = () => {
 
   async function handleUpdateExam(event) {
     event.preventDefault();
+    setLoading(true);
     const formattedStartDate = startDateTime.toISOString();
     const formattedEndDate = endDateTime.toISOString();
 
@@ -104,6 +114,8 @@ export const AnalysisExam = () => {
       handleReload(); // Reload the exams after updating
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -167,6 +179,7 @@ export const AnalysisExam = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setLoading(true);
     const formattedStartDate = startDateTime.toISOString();
     const formattedEndDate = endDateTime.toISOString();
     const newExamData = {
@@ -184,6 +197,7 @@ export const AnalysisExam = () => {
     console.log(data);
     handleCreateExamCancel();
     handleReload(); // Reload the exams after creating a new one
+    setLoading(false);
   }
 
   const showCreateExam = () => {
@@ -213,6 +227,7 @@ export const AnalysisExam = () => {
 
   return (
     <>
+      {loading && <Loader />}
       <Modal
         visible={createExamVisible}
         onCancel={handleCreateExamCancel}

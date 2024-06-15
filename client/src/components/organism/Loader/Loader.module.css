@@ -1,6 +1,7 @@
 .lds_facebook,
 .lds_facebook div {
   box-sizing: border-box;
+  color: #009172;
 }
 .lds_facebook {
   display: inline-block;

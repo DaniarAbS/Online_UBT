@@ -9,6 +9,9 @@ import axios from 'axios';
 import config from '../../../config';
 import { v4 as uuidv4 } from 'uuid';
 
+import Loader from '../../components/organism/Loader/Loader';
+import { LanguageContext } from '../../contexts/LanguageContext';
+
 const TruncatedText = styled.span`
   white-space: nowrap;
   overflow: hidden;
@@ -36,15 +39,20 @@ export const TaskAdding = () => {
   ]);
   const [type, setType] = useState(1); // Default to 1-point question
   const [maxCorrectAnswers, setMaxCorrectAnswers] = useState(1);
+
   const [language, setLanguage] = useState('kz'); // Language state
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     async function fetchSubjects() {
       try {
         const response = await axios.get(`${config.baseURL}/subjects/`);
         setSubjects(response.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     }
 
@@ -56,12 +64,15 @@ export const TaskAdding = () => {
     console.log('teachersSubject', teachersSubject);
     if (teachersSubject) {
       async function fetchTopics() {
+        setLoading(true);
         try {
           const response = await axios.get(`${config.baseURL}/subjects/${teachersSubject}`);
           console.log('topics: ', response.data.topics);
           setTopics(response.data.topics);
         } catch (error) {
           console.error(error);
+        } finally {
+          setLoading(false); // Stop loading
         }
       }
 
@@ -115,6 +126,7 @@ export const TaskAdding = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     if (!lastClickedButton) {
       alert(language === 'kz' ? 'Сұрақ түрін таңдаңыз.' : 'Выберите тип вопроса.');
       return;
@@ -172,6 +184,8 @@ export const TaskAdding = () => {
       handleReset();
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -228,132 +242,138 @@ export const TaskAdding = () => {
   };
 
   return (
-    <div className={styles.outContainer}>
-      <h2>{language === 'kz' ? 'Сұрақ қосу' : 'Добавление вопроса'}</h2>
+    <>
+      {loading && <Loader />}
+      <div className={styles.outContainer}>
+        <h2>{language === 'kz' ? 'Сұрақ қосу' : 'Добавление вопроса'}</h2>
 
-      <button
-        style={{
-          padding: '.7rem 1rem',
-          backgroundColor: '#009172',
-          color: '#fff',
-          width: '3rem',
-          borderRadius: '.5rem'
-        }}
-        onClick={handleLanguageToggle}
-      >
-        {language === 'kz' ? 'kz' : 'ru'}
-      </button>
-      <div className="container text-center">
-        <div className="row align-items-start add_content">
-          <div className="col-3">
-            <div className={styles.chooseContainer}>
-              <h4>{language === 'kz' ? 'Сұрақ түрін таңдаңыз:' : 'Выберите тип вопроса:'}</h4>
-              <div className={styles.pointContainer}>
-                <button
-                  className={`${styles.pointBtn} ${lastClickedButton === 1 ? styles.clickedBtn : ''}`}
-                  onClick={() => handleButtonClick(1)}
-                >
-                  1 {language === 'kz' ? 'балл' : 'балл'}
-                </button>
-                <button
-                  className={`${styles.pointBtn} ${lastClickedButton === 2 ? styles.clickedBtn : ''}`}
-                  onClick={() => handleButtonClick(2)}
-                >
-                  2 {language === 'kz' ? 'балл' : 'балла'}
-                </button>
-              </div>
-              <div className={styles.titleSelect}>
-                <h4>{language === 'kz' ? 'Тақырып таңдаңыз:' : 'Выберите тему:'}</h4>
-                <select
-                  className={styles.themeSelect}
-                  value={selectedTopic}
-                  onChange={(e) => setSelectedTopic(e.target.value)}
-                >
-                  <option value="">
-                    {language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}
-                  </option>
-                  {topics.map((topic) => (
-                    <option key={topic._id} value={topic._id}>
-                      {topic.kz_title}
+        <button
+          style={{
+            padding: '.7rem 1rem',
+            backgroundColor: '#009172',
+            color: '#fff',
+            width: '3rem',
+            borderRadius: '.5rem'
+          }}
+          onClick={handleLanguageToggle}
+        >
+          {language === 'kz' ? 'kz' : 'ru'}
+        </button>
+        <div className="container text-center">
+          <div className="row align-items-start add_content">
+            <div className="col-3">
+              <div className={styles.chooseContainer}>
+                <h4>{language === 'kz' ? 'Сұрақ түрін таңдаңыз:' : 'Выберите тип вопроса:'}</h4>
+                <div className={styles.pointContainer}>
+                  <button
+                    className={`${styles.pointBtn} ${lastClickedButton === 1 ? styles.clickedBtn : ''}`}
+                    onClick={() => handleButtonClick(1)}
+                  >
+                    1 {language === 'kz' ? 'балл' : 'балл'}
+                  </button>
+                  <button
+                    className={`${styles.pointBtn} ${lastClickedButton === 2 ? styles.clickedBtn : ''}`}
+                    onClick={() => handleButtonClick(2)}
+                  >
+                    2 {language === 'kz' ? 'балл' : 'балла'}
+                  </button>
+                </div>
+                <div className={styles.titleSelect}>
+                  <h4>{language === 'kz' ? 'Тақырып таңдаңыз:' : 'Выберите тему:'}</h4>
+                  <select
+                    className={styles.themeSelect}
+                    value={selectedTopic}
+                    onChange={(e) => setSelectedTopic(e.target.value)}
+                  >
+                    <option value="">
+                      {language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}
                     </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className={`col-6 ${styles.chooseContainer}`}>
-            <h4>{language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите вопрос'}</h4>
-            <div className={styles.addingQuestionContainer}>
-              <div className={styles.inputImgRow}>
-                <Input
-                  placeholder={language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите текст'}
-                  variant="borderless"
-                  style={{ borderBottom: 'solid 2px #acacac', borderRadius: '0', width: '100%' }}
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                />
-                <input
-                  type="file"
-                  id="imageUpload"
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  onChange={handleImageUpload}
-                />
-                <label htmlFor="imageUpload">
-                  <img src={AddImage} alt="Add image icon" />
-                </label>
-              </div>
-              {imagePreviewUrl && (
-                <div className={styles.imagePreview}>
-                  <img
-                    src={imagePreviewUrl}
-                    alt="Preview"
-                    style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
-                  />
+                    {topics.map((topic) => (
+                      <option key={topic._id} value={topic._id}>
+                        {topic.kz_title}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              )}
-              <div className={styles.approveCancelContent}>
-                <CheckOutlined
-                  style={{ fontSize: '24px', fontWeight: 'bold' }}
-                  onClick={handleSubmit}
-                />
-                <CloseOutlined
-                  style={{ fontSize: '24px', fontWeight: 'bold' }}
-                  onClick={handleReset}
-                />
               </div>
             </div>
-          </div>
-          <div className={`col-3 ${styles.chooseContainer}`}>
-            <h4>{language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответы'}</h4>
-            <div className={styles.choseAnswer}>
-              {answers.map((answer, index) => (
-                <div key={answer.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  {renderCorrectAnswerToggle(index)}
+            <div className={`col-6 ${styles.chooseContainer}`}>
+              <h4>{language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите вопрос'}</h4>
+              <div className={styles.addingQuestionContainer}>
+                <div className={styles.inputImgRow}>
+                  <Input
+                    placeholder={language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите текст'}
+                    variant="borderless"
+                    style={{ borderBottom: 'solid 2px #acacac', borderRadius: '0', width: '100%' }}
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                  />
                   <input
-                    className={`${styles.graduation} ${styles.file_input}`}
-                    type="text"
-                    placeholder={language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответ'}
-                    value={answer.text}
-                    onChange={(e) => handleAnswerChange(index, e.target.value)}
+                    type="file"
+                    id="imageUpload"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handleImageUpload}
                   />
-                  {type === 2 && answers.length > 4 && (
-                    <CloseOutlined
-                      className={styles.removeOption}
-                      onClick={() => removeOption(index)}
-                    />
-                  )}
+                  <label htmlFor="imageUpload">
+                    <img src={AddImage} alt="Add image icon" />
+                  </label>
                 </div>
-              ))}
-              {type === 2 && answers.length < 8 && (
-                <button onClick={addNewOption} className={styles.addOptionButton}>
-                  {language === 'kz' ? 'Қосымша жауап қосу' : 'Добавить еще один ответ'}
-                </button>
-              )}
+                {imagePreviewUrl && (
+                  <div className={styles.imagePreview}>
+                    <img
+                      src={imagePreviewUrl}
+                      alt="Preview"
+                      style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
+                    />
+                  </div>
+                )}
+                <div className={styles.approveCancelContent}>
+                  <CheckOutlined
+                    style={{ fontSize: '24px', fontWeight: 'bold' }}
+                    onClick={handleSubmit}
+                  />
+                  <CloseOutlined
+                    style={{ fontSize: '24px', fontWeight: 'bold' }}
+                    onClick={handleReset}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={`col-3 ${styles.chooseContainer}`}>
+              <h4>{language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответы'}</h4>
+              <div className={styles.choseAnswer}>
+                {answers.map((answer, index) => (
+                  <div
+                    key={answer.id}
+                    style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
+                  >
+                    {renderCorrectAnswerToggle(index)}
+                    <input
+                      className={`${styles.graduation} ${styles.file_input}`}
+                      type="text"
+                      placeholder={language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответ'}
+                      value={answer.text}
+                      onChange={(e) => handleAnswerChange(index, e.target.value)}
+                    />
+                    {type === 2 && answers.length > 4 && (
+                      <CloseOutlined
+                        className={styles.removeOption}
+                        onClick={() => removeOption(index)}
+                      />
+                    )}
+                  </div>
+                ))}
+                {type === 2 && answers.length < 8 && (
+                  <button onClick={addNewOption} className={styles.addOptionButton}>
+                    {language === 'kz' ? 'Қосымша жауап қосу' : 'Добавить еще один ответ'}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

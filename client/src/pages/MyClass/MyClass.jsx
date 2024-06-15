@@ -9,6 +9,7 @@ import styles from './MyClass.module.css';
 import config from '../../../config';
 
 import { LanguageContext } from '../../contexts/LanguageContext';
+import Loader from '../../components/organism/Loader/Loader';
 
 import { Link } from 'react-router-dom';
 
@@ -63,15 +64,19 @@ const MyClassTable = () => {
 
   const [searchMode, setSearchMode] = useState('fullname');
 
+  const [loading, setLoading] = useState(false);
   const { language } = useContext(LanguageContext);
 
   async function fetchStudents() {
+    setLoading(true);
     try {
       const response = await axios.get('https://ubt-server.vercel.app/adminStudent/');
       return response.data;
     } catch (error) {
       console.error(error);
       return [];
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -86,6 +91,7 @@ const MyClassTable = () => {
 
   async function handleUpdateStudent(event) {
     event.preventDefault();
+    setLoading(true);
     const updatedStudentData = {
       name: name,
       surname: surname,
@@ -110,10 +116,13 @@ const MyClassTable = () => {
       setSelectedStudentId(null);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
   async function handleDeleteStudent(studentId) {
+    setLoading(true);
     try {
       const response = await axios.delete(
         `https://ubt-server.vercel.app/adminStudent/${studentId}`
@@ -126,6 +135,8 @@ const MyClassTable = () => {
       getClassId(userData);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -148,6 +159,7 @@ const MyClassTable = () => {
   const visibleData = filteredStudents.slice(startIndex, endIndex);
 
   async function getClassId(user_data) {
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://ubt-server.vercel.app/adminTeacher/${user_data.secondId}`
@@ -162,6 +174,8 @@ const MyClassTable = () => {
       setClassStudents(response2.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -221,6 +235,7 @@ const MyClassTable = () => {
   };
 
   async function handleSubmit() {
+    setLoading(true);
     // Use the state variables to submit the form data or perform other actions
     const newStudent = {
       name: name,
@@ -250,6 +265,7 @@ const MyClassTable = () => {
 
     // Clear input fields after submission if needed
     clearInputFields();
+    setLoading(false);
   }
 
   const clearInputFields = () => {
@@ -261,6 +277,7 @@ const MyClassTable = () => {
 
   return (
     <>
+      {loading && <Loader />}
       <Modal
         title={language == 'kz' ? 'Студент қосу' : 'Добавить студента'}
         visible={addModalVisible}

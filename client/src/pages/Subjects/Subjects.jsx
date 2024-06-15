@@ -6,6 +6,7 @@ import { Modal, Button, Form, Input } from 'antd';
 import axios from 'axios';
 import styles from './Subjects.module.css';
 
+import Loader from '../../components/organism/Loader/Loader';
 import { LanguageContext } from '../../contexts/LanguageContext';
 
 const ActiveButton = styled.button`
@@ -53,9 +54,11 @@ const MyClassTable = () => {
   const [subjectSearchMode, setSubjectSearchMode] = useState('kz_subject');
   const [classSearchMode, setClassSearchMode] = useState('class');
 
+  const [loading, setLoading] = useState(false);
   const { language } = useContext(LanguageContext);
 
   async function fetchSubjects() {
+    setLoading(true);
     try {
       const response = await axios.get(`https://ubt-server.vercel.app/subjects/`);
       console.log(response.data);
@@ -63,10 +66,13 @@ const MyClassTable = () => {
     } catch (error) {
       console.error(error);
       return [];
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
   async function fetchClasses() {
+    setLoading(true);
     try {
       const response = await axios.get(`https://ubt-server.vercel.app/class`);
       console.log(response.data);
@@ -74,6 +80,8 @@ const MyClassTable = () => {
     } catch (error) {
       console.error(error);
       return [];
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -92,6 +100,7 @@ const MyClassTable = () => {
   }, [viewMode]);
 
   async function handleUpdateSubject() {
+    setLoading(true);
     const updatedSubjectData = {
       kz_subject: kzName,
       ru_subject: ruName
@@ -109,10 +118,13 @@ const MyClassTable = () => {
       setSelectedSubjectId(null);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
   async function handleUpdateClass() {
+    setLoading(true);
     const updatedClassData = {
       class: classNumber,
       literal: classLiteral
@@ -130,10 +142,13 @@ const MyClassTable = () => {
       setSelectedClassId(null);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
   async function handleDeleteSubject(subjectId) {
+    setLoading(true);
     try {
       const response = await axios.delete(`https://ubt-server.vercel.app/subjects/${subjectId}`);
       console.log('Subject deleted successfully', response.data);
@@ -143,6 +158,8 @@ const MyClassTable = () => {
       setSelectedSubjectId(null);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -255,6 +272,7 @@ const MyClassTable = () => {
   };
 
   async function handleSubmitSubject() {
+    setLoading(true);
     const newSubject = {
       kz_subject: kzName,
       ru_subject: ruName
@@ -271,9 +289,11 @@ const MyClassTable = () => {
     setAddModalVisible(false);
 
     clearInputFields();
+    setLoading(false);
   }
 
   async function handleSubmitClass() {
+    setLoading(true);
     const newClass = {
       class: classNumber,
       literal: classLiteral
@@ -290,6 +310,7 @@ const MyClassTable = () => {
     setAddModalVisible(false);
 
     clearInputFields();
+    setLoading(false);
   }
 
   const clearInputFields = () => {
@@ -301,6 +322,7 @@ const MyClassTable = () => {
 
   const SubjectsTable = () => (
     <>
+      {loading && <Loader />}
       <div style={{ padding: '0 1rem' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#fff' }}>
           <thead>

@@ -8,7 +8,6 @@ import styles from './StudentsTable.module.css';
 import axios from 'axios';
 
 import Loader from '../../components/organism/Loader/Loader';
-
 import { LanguageContext } from '../../contexts/LanguageContext';
 
 import { Link } from 'react-router-dom';
@@ -63,7 +62,6 @@ export const Students = () => {
   const [selectedLiteral, setSelectedLiteral] = useState(null);
 
   const [loading, setLoading] = useState(false);
-
   const { language } = useContext(LanguageContext);
 
   const itemsPerPage = 10;

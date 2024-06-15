@@ -12,6 +12,8 @@ import { Text } from '../../components/atoms/CustomText/CustomText';
 import axios from 'axios';
 import './TestPage.css';
 
+import Loader from '../../components/organism/Loader/Loader';
+
 const TextIcon = ({ bgColor, text, color }) => {
   return (
     <div className="iconTextContainer" style={{ backgroundColor: `${bgColor}`, color: `${color}` }}>
@@ -33,6 +35,8 @@ export const TestPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
   const selectedQuestions =
     subjects.find((subject) => subject.id === selectedSubjectId)?.questions || [];
@@ -62,10 +66,11 @@ export const TestPage = () => {
         localStorage.removeItem(key);
       }
     });
+    localStorage.removeItem('answers');
   };
 
   const handleSubjectSelect = async (subjectId) => {
-    await submitAnswers(); // Submit current answers before changing subject
+    await saveAnswerToLocalStorage();
     const subject = subjects.find((subject) => subject.id === subjectId);
     setSelectedSubjectId(subjectId);
     setSelectedSubjectName(subject?.subjectName || '');
@@ -75,35 +80,33 @@ export const TestPage = () => {
   };
 
   const handleNext = async () => {
+    await saveAnswerToLocalStorage();
     if (currentIndex < selectedQuestions.length - 1) {
-      await submitAnswers();
       setCurrentIndex((prev) => prev + 1);
       setSelectedAnswers([]);
     } else {
       const currentSubjectIndex = subjects.findIndex((subject) => subject.id === selectedSubjectId);
       if (currentSubjectIndex < subjects.length - 1) {
-        await submitAnswers();
         handleSubjectSelect(subjects[currentSubjectIndex + 1].id);
       }
     }
   };
 
   const handlePrevious = async () => {
+    await saveAnswerToLocalStorage();
     if (currentIndex > 0) {
-      await submitAnswers();
       setCurrentIndex((prev) => prev - 1);
       setSelectedAnswers([]);
     } else {
       const currentSubjectIndex = subjects.findIndex((subject) => subject.id === selectedSubjectId);
       if (currentSubjectIndex > 0) {
-        await submitAnswers();
         handleSubjectSelect(subjects[currentSubjectIndex - 1].id);
       }
     }
   };
 
   const handleQuestionButtonClick = async (index) => {
-    await submitAnswers();
+    await saveAnswerToLocalStorage();
     setCurrentIndex(index);
     setSelectedAnswers([]);
   };
@@ -121,16 +124,10 @@ export const TestPage = () => {
     }
 
     setSelectedAnswers(newSelectedAnswers);
-    localStorage.setItem(
-      `${selectedSubjectId}-${currentIndex}`,
-      JSON.stringify(newSelectedAnswers)
-    );
     setAnsweredQuestions((prev) => [...new Set([...prev, currentIndex])]);
   };
 
-  const submitAnswers = async () => {
-    if (selectedQuestions.length === 0) return;
-
+  const saveAnswerToLocalStorage = async () => {
     const currentQuestion = selectedQuestions[currentIndex];
     const answerData = {
       examId: startExam.examId,
@@ -142,53 +139,68 @@ export const TestPage = () => {
       language: startExam.language
     };
 
-    console.log('answerData', answerData);
+    const answers = JSON.parse(localStorage.getItem('answers')) || [];
+    const existingAnswerIndex = answers.findIndex(
+      (answer) =>
+        answer.subjectId === selectedSubjectId && answer.questionId === currentQuestion._id
+    );
 
+    if (existingAnswerIndex !== -1) {
+      answers[existingAnswerIndex] = answerData;
+    } else {
+      answers.push(answerData);
+      console.log('answer is: ', answerData);
+    }
+
+    localStorage.setItem('answers', JSON.stringify(answers));
+  };
+
+  const submitAnswersToBackend = async (answers) => {
     try {
       const response = await axios.post(
         'https://ubt-server.vercel.app/students/submitOrUpdateAnswer',
-        answerData
+        { answers }
       );
-      console.log(response.data);
+      console.log('submitAnswer', response.data);
+      return response.data;
     } catch (error) {
-      console.error('Error submitting answer:', error);
+      console.error('Error submitting answers:', error);
+      throw error;
+    }
+  };
+
+  const getResultFromBackend = async (resultData) => {
+    try {
+      const response = await axios.post(
+        'https://ubt-server.vercel.app/students/getResult',
+        resultData
+      );
+      console.log('total result: ', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error getting result:', error);
+      throw error;
     }
   };
 
   const handleConfirm = async () => {
-    await submitAnswers(); // Ensure the current answer is submitted
+    const resultData = {
+      examId: startExam.examId,
+      studentId: startExam.studentId
+    };
 
-    const answers = [];
-    for (const key of Object.keys(localStorage)) {
-      if (key.startsWith(selectedSubjectId)) {
-        const [subjectId, questionIndex] = key.split('-');
-        const savedAnswers = JSON.parse(localStorage.getItem(key));
-        const question = subjects.find((subject) => subject.id === subjectId).questions[
-          parseInt(questionIndex, 10)
-        ];
-        answers.push({
-          examId: startExam.examId,
-          studentId: startExam.studentId,
-          subjectId: subjectId,
-          questionId: question._id,
-          optionIds: savedAnswers,
-          questionNumber: question.questionNumber,
-          language: startExam.language
-        });
-      }
-    }
-
-    const resultData = { answers };
+    console.log('resultData', resultData);
 
     try {
-      const response = await axios.post(
-        'https://ubt-server.vercel.app/students/submitOrUpdateAnswer',
-        resultData
-      );
-      console.log(response.data);
-      navigate('/exam_results', { state: { resultData: response.data } });
+      // First, submit the answers
+
+      // Then, get the result
+      await getResultFromBackend(resultData);
+      const result = await getResultFromBackend(resultData);
+      console.log('result', result);
+      navigate('/exam_results', { state: { resultData: result } });
     } catch (error) {
-      console.error('Error submitting answers:', error);
+      console.error('Error in handleConfirm:', error);
     }
   };
 
@@ -207,7 +219,15 @@ export const TestPage = () => {
   };
 
   const togglePopup2 = async () => {
-    await submitAnswers();
+    const answers = JSON.parse(localStorage.getItem('answers')) || [];
+    console.log('answers are: ', answers);
+    await saveAnswerToLocalStorage();
+
+    try {
+      await submitAnswersToBackend(answers);
+    } catch (error) {
+      console.error(error);
+    }
     setPopupVisible2(!popupVisible2);
   };
 
