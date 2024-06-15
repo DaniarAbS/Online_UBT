@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Modal, Form, Input, Button, Select } from 'antd';
 
+import Loader from '../../components/organism/Loader/Loader';
 import { LanguageContext } from '../../contexts/LanguageContext';
 
 const ChangeButton = styled.button`
@@ -26,9 +27,11 @@ const QuestionDatabase = () => {
 
   const [topicLanguage, setTopicLanguage] = useState('kz');
 
+  const [loading, setLoading] = useState(false);
   const { language } = useContext(LanguageContext);
 
   async function fetchTopics() {
+    setLoading(true);
     const teachersSubject = localStorage.getItem('teachersSubject');
     console.log('teachersSubject', teachersSubject);
     try {
@@ -37,6 +40,8 @@ const QuestionDatabase = () => {
       setTopics(response.data.topics);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -78,6 +83,7 @@ const QuestionDatabase = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const teachersSubject = localStorage.getItem('teachersSubject');
     console.log('teachersSubject', teachersSubject);
 
@@ -101,11 +107,14 @@ const QuestionDatabase = () => {
       fetchTopics();
     } catch (error) {
       console.error('Error adding topic:', error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
   return (
     <>
+      {loading && <Loader />}
       <Modal
         title="Add Topic"
         visible={addModalVisible}

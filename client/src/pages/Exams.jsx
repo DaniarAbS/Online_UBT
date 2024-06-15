@@ -3,7 +3,9 @@ import Exam from '../components/exam/Exam';
 import styled from 'styled-components';
 import axios from 'axios';
 import moment from 'moment';
+
 import { LanguageContext } from '../contexts/LanguageContext';
+import Loader from '../components/organism/Loader/Loader';
 
 const ExamContainer = styled.div`
   display: flex;
@@ -36,15 +38,19 @@ const Exams = () => {
   const [upExams, setUpExams] = useState(null);
   const [selectedExamId, setSelectedExamId] = useState(null);
   const { language } = useContext(LanguageContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchExams() {
+      setLoading(true);
       try {
         const response = await axios.get('https://ubt-server.vercel.app/exams/');
         setUpExams(response.data);
         console.log('exams:', response.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     }
 
@@ -57,6 +63,7 @@ const Exams = () => {
 
   return (
     <>
+      {loading && <Loader />}
       <ExamContainer>
         <MainTitle>{language === 'kz' ? 'Алдағы емтихандар' : 'Предстоящие экзамены'}</MainTitle>
         <ExamsList>
