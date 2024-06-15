@@ -158,20 +158,37 @@ export const TestPage = () => {
   const handleConfirm = async () => {
     await submitAnswers(); // Ensure the current answer is submitted
 
-    const resultData = {
-      examId: startExam.examId,
-      studentId: startExam.studentId
-    };
+    const answers = [];
+    for (const key of Object.keys(localStorage)) {
+      if (key.startsWith(selectedSubjectId)) {
+        const [subjectId, questionIndex] = key.split('-');
+        const savedAnswers = JSON.parse(localStorage.getItem(key));
+        const question = subjects.find((subject) => subject.id === subjectId).questions[
+          parseInt(questionIndex, 10)
+        ];
+        answers.push({
+          examId: startExam.examId,
+          studentId: startExam.studentId,
+          subjectId: subjectId,
+          questionId: question._id,
+          optionIds: savedAnswers,
+          questionNumber: question.questionNumber,
+          language: startExam.language
+        });
+      }
+    }
+
+    const resultData = { answers };
 
     try {
       const response = await axios.post(
-        'https://ubt-server.vercel.app/students/getResult',
+        'https://ubt-server.vercel.app/students/submitOrUpdateAnswer',
         resultData
       );
       console.log(response.data);
       navigate('/exam_results', { state: { resultData: response.data } });
     } catch (error) {
-      console.error('Error getting result:', error);
+      console.error('Error submitting answers:', error);
     }
   };
 

@@ -10,7 +10,7 @@ const LanguageSwitcher = () => {
       style={{ padding: '.5rem', backgroundColor: '#009172', color: '#fff' }}
       onClick={toggleLanguage}
     >
-      {language === 'kz' ? 'RU' : 'KZ'}
+      {language === 'kz' ? 'KZ' : 'RU'}
     </button>
   );
 };

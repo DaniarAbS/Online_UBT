@@ -6,6 +6,7 @@ import StudentRoutes from './routes/StudentRoute';
 import TeacherRoutes from './routes/TeacherRoutes';
 import AdminRoutes from './routes/AdminRoute';
 import { LanguageProvider } from './contexts/LanguageContext';
+import Loader from './components/organism/Loader/Loader';
 
 export const ROLES = {
   Public: 'public',
@@ -17,6 +18,7 @@ export const ROLES = {
 function App() {
   const [selectedRole, setSelectedRole] = useState(null);
   const [userRole, setUserRole] = useState(ROLES.Public);
+  const [loading, setLoading] = useState(false);
 
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
@@ -60,6 +62,7 @@ function App() {
   return (
     <LanguageProvider>
       <BrowserRouter>
+        {loading && <Loader />}
         {!data.role ? (
           <PublicRoutes
             handleRoleSelect={handleRoleSelect}
