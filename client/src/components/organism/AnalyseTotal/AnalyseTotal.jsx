@@ -61,13 +61,13 @@ export const AnalyseTotal = ({ onPartChange }) => {
         <Text fontSize="30px" weight="bold">
           Анализ экзамена
         </Text>
-        <div className={styles.buttonsContainer}>
+        {/* <div className={styles.buttonsContainer}>
           <div className={styles.buttonContainer}>
             <Button onClick={() => onPartChange('public')}>Общие</Button>
             <Button onClick={() => onPartChange('subjects')}>Предметы</Button>
             <Button onClick={() => onPartChange('themes')}>Темы</Button>
           </div>
-        </div>
+        </div> */}
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', padding: '1rem' }}>
         <div className={styles.twoTextButton}>
@@ -83,13 +83,13 @@ export const AnalyseTotal = ({ onPartChange }) => {
           <Text>59/140</Text>
         </div>
       </div>
-      <div className={styles.filterContent}>
+      {/* <div className={styles.filterContent}>
         <Text>Топ 10 по предмету</Text>
         <ChooseSubject iconWidth="10rem" options={subjectArr} />
         <Text>и среди классов</Text>
         <ChooseSubject iconWidth="10rem" options={subjectArr} />
         <Text>INNOVERSE SCHOOL</Text>
-      </div>
+      </div> */}
       <ColumnChart />
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div className={styles.tableHeader}>
@@ -162,7 +162,7 @@ export const AnalyseTotal = ({ onPartChange }) => {
           </div>
         </div>
       </div>
-      <PointChart />
+      {/* <PointChart /> */}
     </div>
   );
 };

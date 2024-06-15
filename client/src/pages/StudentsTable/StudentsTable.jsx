@@ -7,6 +7,8 @@ import excelIcon from '../../assets/img/excel.png';
 import styles from './StudentsTable.module.css';
 import axios from 'axios';
 
+import Loader from '../../components/organism/Loader/Loader';
+
 import { LanguageContext } from '../../contexts/LanguageContext';
 
 import { Link } from 'react-router-dom';
@@ -60,17 +62,22 @@ export const Students = () => {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedLiteral, setSelectedLiteral] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   const { language } = useContext(LanguageContext);
 
   const itemsPerPage = 10;
 
   async function fetchStudents() {
+    setLoading(true);
     try {
       const response = await axios.get('https://ubt-server.vercel.app/adminStudent/');
       return response.data;
     } catch (error) {
       console.error(error);
       return [];
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
@@ -85,6 +92,7 @@ export const Students = () => {
 
   async function handleUpdateStudent(event) {
     event.preventDefault();
+    setLoading(true);
     const updatedStudentData = {
       name: name,
       surname: surname,
@@ -109,19 +117,25 @@ export const Students = () => {
       setSelectedStudentId(null);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
   const handleReload = async () => {
+    setLoading(true);
     try {
       const response = await axios.get('https://ubt-server.vercel.app/adminStudent/');
       setStudents(response.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
   async function handleDeleteStudent(studentId) {
+    setLoading(true);
     try {
       const response = await axios.delete(
         `https://ubt-server.vercel.app/adminStudent/${studentId}`
@@ -133,10 +147,13 @@ export const Students = () => {
       setSelectedStudentId(null);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
   async function handleSendExcel() {
+    setLoading(true);
     const excelLink = {
       fileUrl: link
     };
@@ -148,8 +165,11 @@ export const Students = () => {
       console.log('Excel link send successfully', response.data);
       const StudentExcel = await fetchStudents();
       setStudents(StudentExcel);
+      setLink('');
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
     setExcelModalVisible(false);
   }
@@ -230,10 +250,12 @@ export const Students = () => {
   };
 
   const handleExcelCancel = () => {
+    setLink('');
     setExcelModalVisible(false);
   };
 
   async function handleSubmit() {
+    setLoading(true);
     // Use the state variables to submit the form data or perform other actions
     const newStudent = {
       name: name,
@@ -262,6 +284,7 @@ export const Students = () => {
 
     // Clear input fields after submission if needed
     clearInputFields();
+    setLoading(false);
   }
 
   const clearInputFields = () => {
@@ -275,6 +298,7 @@ export const Students = () => {
 
   return (
     <>
+      {loading && <Loader />}
       <Modal
         title={language == 'kz' ? 'Студент қосу' : 'Добавить студента'}
         visible={addModalVisible}
@@ -617,7 +641,7 @@ export const Students = () => {
           style={{
             padding: '2rem 0'
           }}
-          onFinish={handleSendExcel}
+          // onFinish={handleSendExcel}
         >
           <Form.Item
             name="link"

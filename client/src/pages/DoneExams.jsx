@@ -64,7 +64,7 @@ const DoneExam = () => {
           {language == 'kz' ? 'Студент тапсырған емтихандар' : 'Сданные экзамены студента'}
         </MainTitle>
         <ExamsList>
-          {doneExams.map((exam) => {
+          {DoneExamList.map((exam) => {
             return <FinishedExam time={exam.time} day={exam.day} points={exam.overallPoints} />;
           })}
         </ExamsList>

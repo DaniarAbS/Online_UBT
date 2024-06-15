@@ -131,7 +131,7 @@ const MyClassTable = () => {
 
   const itemsPerPage = 10;
 
-  const filteredStudents = students.filter((student) => {
+  const filteredStudents = classStudents.filter((student) => {
     if (searchMode === 'fullname') {
       const fullName = `${student.name} ${student.surname}`.toLowerCase();
       return fullName.includes(searchQuery.toLowerCase());
@@ -153,6 +153,7 @@ const MyClassTable = () => {
         `https://ubt-server.vercel.app/adminTeacher/${user_data.secondId}`
       );
       const class_id = response.data.class._id;
+      console.log('class id', class_id);
       setGroupNum(response.data.class.class);
       setLiteralNum(response.data.class.literal);
 
@@ -529,7 +530,7 @@ const MyClassTable = () => {
             </div>
           </div>
           <div className={styles.tableCont}>
-            {students.length <= 0 ? (
+            {classStudents.length <= 0 ? (
               <p>{language == 'kz' ? 'Студенттер әлі жоқ' : 'Здесь до сих пор нету '}</p>
             ) : (
               <div className="container">
