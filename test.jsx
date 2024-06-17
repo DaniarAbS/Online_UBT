@@ -1,309 +1,454 @@
-
-import React, { useState, useEffect } from 'react';
-import {
-  ClockCircleOutlined,
-  LeftCircleOutlined,
-  RightCircleOutlined,
-  AppstoreOutlined,
-  WarningOutlined
-} from '@ant-design/icons';
-import { useLocation, useNavigate } from 'react-router-dom';
-import QuestionBar from '../../components/organism/QuestionBar/QuestionsBar';
-import { Text } from '../../components/atoms/CustomText/CustomText';
-import axios from 'axios';
-import './TestPage.css';
-
-const TextIcon = ({ bgColor, text, color }) => {
-  return (
-    <div className="iconTextContainer" style={{ backgroundColor: `${bgColor}`, color: `${color}` }}>
-      <ClockCircleOutlined height="30px" width="30px" />
-      <p>{text}</p>
-    </div>
-  );
-};
-
-export const TestPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const examData = location.state?.examData || {};
-  const startExam = location.state?.startExam || {};
-
-  const subjects = examData.questionsBySubject || [];
-  const [selectedSubjectId, setSelectedSubjectId] = useState(subjects[0]?.id || '');
-  const [selectedSubjectName, setSelectedSubjectName] = useState(subjects[0]?.subjectName || '');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState([]);
-  const [answeredQuestions, setAnsweredQuestions] = useState([]);
-
-  const selectedQuestions =
-    subjects.find((subject) => subject.id === selectedSubjectId)?.questions || [];
-
-  useEffect(() => {
-    clearLocalStorage();
-  }, []);
-
-  useEffect(() => {
-    const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${currentIndex}`);
-    if (savedAnswers) {
-      try {
-        setSelectedAnswers(JSON.parse(savedAnswers));
-        setAnsweredQuestions((prev) => [...new Set([...prev, currentIndex])]);
-      } catch (error) {
-        console.error('Error parsing saved answers:', error);
-        setSelectedAnswers([]);
-      }
-    } else {
-      setSelectedAnswers([]);
+{
+  "answers": [
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d12bde29afdecce1a49b5"],
+      "questionId": "666d12bde29afdecce1a49bd",
+      "questionNumber": 1,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d12dde29afdecce1a49c1"],
+      "questionId": "666d12dee29afdecce1a49cd",
+      "questionNumber": 2,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d1303e29afdecce1a49de"],
+      "questionId": "666d1304e29afdecce1a49e6",
+      "questionNumber": 3,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dff1a3795d2780db9bd2f"],
+      "questionId": "666dff1b3795d2780db9bd31",
+      "questionNumber": 4,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dff4df352d141ddc530e3"],
+      "questionId": "666dff4ef352d141ddc530e7",
+      "questionNumber": 5,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dff70f352d141ddc530f1"],
+      "questionId": "666dff71f352d141ddc530f7",
+      "questionNumber": 6,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dff9ff352d141ddc53108"],
+      "questionId": "666dff9ff352d141ddc5310e",
+      "questionNumber": 7,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dffbdf352d141ddc53114"],
+      "questionId": "666dffbef352d141ddc5311a",
+      "questionNumber": 8,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dffe0f352d141ddc53122"],
+      "questionId": "666dffe1f352d141ddc53126",
+      "questionNumber": 9,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e003b0707d75d4749c611"],
+      "questionId": "666e003c0707d75d4749c617",
+      "questionNumber": 10,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2efb75d5524604b5bc10"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666c3dfb9ec573c161c409c2"],
+      "questionId": "666c3dfb9ec573c161c409ca",
+      "questionNumber": 1,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666c3e269ec573c161c409ce"],
+      "questionId": "666c3e289ec573c161c409da",
+      "questionNumber": 2,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666c3e399ec573c161c409e2"],
+      "questionId": "666c3e3a9ec573c161c409e6",
+      "questionNumber": 3,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dfc6e78755bf32e786b3d"],
+      "questionId": "666dfc6e78755bf32e786b45",
+      "questionNumber": 4,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dfc8c78755bf32e786b49"],
+      "questionId": "666dfc8d78755bf32e786b51",
+      "questionNumber": 5,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dfcba78755bf32e786b57"],
+      "questionId": "666dfcbb78755bf32e786b5d",
+      "questionNumber": 6,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dfd3178755bf32e786b7a"],
+      "questionId": "666dfd3278755bf32e786b84",
+      "questionNumber": 7,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dfd8878755bf32e786b94"],
+      "questionId": "666dfd8978755bf32e786b9c",
+      "questionNumber": 8,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dfda54bc671b93924425a"],
+      "questionId": "666dfda64bc671b939244260",
+      "questionNumber": 9,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666dfdd14bc671b939244271"],
+      "questionId": "666dfdd24bc671b93924427b",
+      "questionNumber": 10,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c2f0175d5524604b5bc13"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d12216299b2791d762161"],
+      "questionId": "666d12226299b2791d762169",
+      "questionNumber": 1,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d12496299b2791d76216d"],
+      "questionId": "666d124b6299b2791d762179",
+      "questionNumber": 2,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d125d6299b2791d76217d"],
+      "questionId": "666d125e6299b2791d762185",
+      "questionNumber": 3,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e00a0ad3135fa60730a79"],
+      "questionId": "666e00a1ad3135fa60730a81",
+      "questionNumber": 4,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e00d0ad3135fa60730a85"],
+      "questionId": "666e00d1ad3135fa60730a8d",
+      "questionNumber": 5,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e00f3ad3135fa60730a9e"],
+      "questionId": "666e00f4ad3135fa60730aa8",
+      "questionNumber": 6,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e0115ad3135fa60730aac"],
+      "questionId": "666e0116ad3135fa60730ab4",
+      "questionNumber": 7,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e014aad3135fa60730ac5"],
+      "questionId": "666e014cad3135fa60730acf",
+      "questionNumber": 8,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e0171ad3135fa60730ae2"],
+      "questionId": "666e0171ad3135fa60730ae6",
+      "questionNumber": 9,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e018dad3135fa60730aec"],
+      "questionId": "666e018dad3135fa60730af2",
+      "questionNumber": 10,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c31d85970933c47ccd12b"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d118f6299b2791d76212a"],
+      "questionId": "666d11906299b2791d762130",
+      "questionNumber": 1,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d11b96299b2791d76213a"],
+      "questionId": "666d11ba6299b2791d76213e",
+      "questionNumber": 2,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d11e06299b2791d762148"],
+      "questionId": "666d11e16299b2791d76214a",
+      "questionNumber": 3,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e01ca96eef9727be524bd"],
+      "questionId": "666e01ca96eef9727be524c1",
+      "questionNumber": 4,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e01f196eef9727be524cf"],
+      "questionId": "666e01f196eef9727be524d1",
+      "questionNumber": 5,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e021096eef9727be524d5"],
+      "questionId": "666e021196eef9727be524dd",
+      "questionNumber": 6,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e022996eef9727be524e5"],
+      "questionId": "666e022996eef9727be524e9",
+      "questionNumber": 7,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e024796eef9727be524fa"],
+      "questionId": "666e024796eef9727be52500",
+      "questionNumber": 8,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e026696eef9727be52508"],
+      "questionId": "666e026796eef9727be5250e",
+      "questionNumber": 9,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e028496eef9727be5251c"],
+      "questionId": "666e028596eef9727be52524",
+      "questionNumber": 10,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32035970933c47ccd12e"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d135fa461df02f9d589d4"],
+      "questionId": "666d1360a461df02f9d589dc",
+      "questionNumber": 1,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666d13aaa461df02f9d589e2"],
+      "questionId": "666d13aba461df02f9d589ec",
+      "questionNumber": 2,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e02c2ec7ebc2a10c2e37b"],
+      "questionId": "666e02c2ec7ebc2a10c2e381",
+      "questionNumber": 3,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e02daec7ebc2a10c2e385"],
+      "questionId": "666e02dbec7ebc2a10c2e38d",
+      "questionNumber": 4,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e02f7ec7ebc2a10c2e393"],
+      "questionId": "666e02f8ec7ebc2a10c2e399",
+      "questionNumber": 5,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e031b58ebe16c0c9552b1"],
+      "questionId": "666e031c58ebe16c0c9552b7",
+      "questionNumber": 6,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e033858ebe16c0c9552c1"],
+      "questionId": "666e033858ebe16c0c9552c3",
+      "questionNumber": 7,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e035c58ebe16c0c9552d8"],
+      "questionId": "666e035d58ebe16c0c9552de",
+      "questionNumber": 8,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e0373ec7ebc2a10c2e3b5"],
+      "questionId": "666e0373ec7ebc2a10c2e3b9",
+      "questionNumber": 9,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
+    },
+    {
+      "examId": "666e051c1a51a46c75d78ca4",
+      "language": "kz",
+      "optionIds": ["666e038cec7ebc2a10c2e3c1"],
+      "questionId": "666e038dec7ebc2a10c2e3c5",
+      "questionNumber": 10,
+      "studentId": "666e147056d048125cc0c33f",
+      "subjectId": "666c32125970933c47ccd131"
     }
-  }, [selectedSubjectId, currentIndex]);
-
-  const clearLocalStorage = () => {
-    Object.keys(localStorage).forEach((key) => {
-      if (key.startsWith(`${selectedSubjectId}-`)) {
-        localStorage.removeItem(key);
-      }
-    });
-  };
-
-  const handleSubjectSelect = async (subjectId) => {
-    await submitAnswers(); // Submit current answers before changing subject
-    const subject = subjects.find((subject) => subject.id === subjectId);
-    setSelectedSubjectId(subjectId);
-    setSelectedSubjectName(subject?.subjectName || '');
-    setCurrentIndex(0);
-    setSelectedAnswers([]);
-    setAnsweredQuestions([]);
-  };
-
-  const handleNext = async () => {
-    if (currentIndex < selectedQuestions.length - 1) {
-      await submitAnswers();
-      setCurrentIndex((prev) => prev + 1);
-      setSelectedAnswers([]);
-    } else {
-      const currentSubjectIndex = subjects.findIndex((subject) => subject.id === selectedSubjectId);
-      if (currentSubjectIndex < subjects.length - 1) {
-        await submitAnswers();
-        handleSubjectSelect(subjects[currentSubjectIndex + 1].id);
-      }
-    }
-  };
-
-  const handlePrevious = async () => {
-    if (currentIndex > 0) {
-      await submitAnswers();
-      setCurrentIndex((prev) => prev - 1);
-      setSelectedAnswers([]);
-    } else {
-      const currentSubjectIndex = subjects.findIndex((subject) => subject.id === selectedSubjectId);
-      if (currentSubjectIndex > 0) {
-        await submitAnswers();
-        handleSubjectSelect(subjects[currentSubjectIndex - 1].id);
-      }
-    }
-  };
-
-  const handleQuestionButtonClick = async (index) => {
-    await submitAnswers();
-    setCurrentIndex(index);
-    setSelectedAnswers([]);
-  };
-
-  const handleOptionChange = (optionId) => {
-    const currentQuestion = selectedQuestions[currentIndex];
-    let newSelectedAnswers;
-
-    if (currentQuestion.type === 'onePoint') {
-      newSelectedAnswers = [optionId];
-    } else if (currentQuestion.type === 'twoPoints') {
-      newSelectedAnswers = selectedAnswers.includes(optionId)
-        ? selectedAnswers.filter((id) => id !== optionId)
-        : [...selectedAnswers, optionId];
-    }
-
-    setSelectedAnswers(newSelectedAnswers);
-    localStorage.setItem(
-      `${selectedSubjectId}-${currentIndex}`,
-      JSON.stringify(newSelectedAnswers)
-    );
-    setAnsweredQuestions((prev) => [...new Set([...prev, currentIndex])]);
-  };
-
-  const submitAnswers = async () => {
-    if (selectedQuestions.length === 0) return;
-
-    const currentQuestion = selectedQuestions[currentIndex];
-    const answerData = {
-      examId: startExam.examId,
-      studentId: startExam.studentId,
-      subjectId: selectedSubjectId,
-      questionId: currentQuestion._id,
-      optionIds: selectedAnswers,
-      questionNumber: currentQuestion.questionNumber,
-      language: startExam.language
-    };
-
-    console.log('answerData', answerData);
-
-    try {
-      const response = await axios.post(
-        'https://ubt-server.vercel.app/students/submitOrUpdateAnswer',
-        answerData
-      );
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error submitting answer:', error);
-    }
-  };
-
-  const handleConfirm = async () => {
-    await submitAnswers(); // Ensure the current answer is submitted
-
-    const resultData = {
-      examId: startExam.examId,
-      studentId: startExam.studentId
-    };
-
-    try {
-      const response = await axios.post(
-        'https://ubt-server.vercel.app/students/getResult',
-        resultData
-      );
-      console.log(response.data);
-      navigate('/exam_results', { state: { resultData: response.data } });
-    } catch (error) {
-      console.error('Error getting result:', error);
-    }
-  };
-
-  const isAnswered = (index) => {
-    const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${index}`);
-    return savedAnswers && JSON.parse(savedAnswers).length > 0;
-  };
-
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [buttonClicked, setButtonClicked] = useState(false);
-  const [popupVisible2, setPopupVisible2] = useState(false);
-
-  const togglePopup = () => {
-    setPopupVisible(!popupVisible);
-    setButtonClicked(!buttonClicked);
-  };
-
-  const togglePopup2 = async () => {
-    await submitAnswers();
-    setPopupVisible2(!popupVisible2);
-  };
-
-  return (
-    <>
-      {popupVisible2 && (
-        <div className="popupContainer">
-          <WarningOutlined className="warningIcon" />
-          <p>Вы хотите завершить экзамен сейчас?</p>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
-            <button className="confirmButton" onClick={handleConfirm}>
-              Да
-            </button>
-            <button className="cancelButton" onClick={togglePopup2}>
-              Отмена
-            </button>
-          </div>
-        </div>
-      )}
-      <div className={`testContainer ${popupVisible ? 'bgShadow' : ''}`}>
-        <div className="mainContainer">
-          <div className={`responsiveContainer ${popupVisible ? 'hidden' : ''}`}>
-            <QuestionBar
-              subjects={subjects.map((subject) => ({
-                id: subject.id,
-                name: subject.subjectName
-              }))}
-              text={`${answeredQuestions.length} / ${selectedQuestions.length}`}
-              onSelect={(subjectId) => handleSubjectSelect(subjectId)}
-              selectedQuestions={selectedQuestions}
-              handleQuestionButtonClick={handleQuestionButtonClick}
-              isAnswered={isAnswered}
-              currentIndex={currentIndex}
-            />
-          </div>
-          {popupVisible && (
-            <div className="popup-container">
-              <QuestionBar
-                subjects={subjects.map((subject) => ({
-                  id: subject.id,
-                  name: subject.subjectName
-                }))}
-                text={`${answeredQuestions.length} / ${selectedQuestions.length}`}
-                onSelect={(subjectId) => handleSubjectSelect(subjectId)}
-                selectedQuestions={selectedQuestions}
-                handleQuestionButtonClick={handleQuestionButtonClick}
-                isAnswered={isAnswered}
-                currentIndex={currentIndex}
-              />
-              <button onClick={togglePopup}>Close</button>
-            </div>
-          )}
-        </div>
-        {selectedQuestions.length > 0 ? (
-          <div className="mainContent">
-            <div className="givenTaskContainer">
-              <div className="mainInfo">
-                <Text weight="700">{`${selectedSubjectName}. Вопрос ${currentIndex + 1} из ${selectedQuestions.length}`}</Text>
-              </div>
-              <div className="questionContainer">
-                <Text type="large" weight="400">
-                  {selectedQuestions[currentIndex]?.question}
-                </Text>
-                {selectedQuestions[currentIndex]?.image && (
-                  <img src={selectedQuestions[currentIndex].image} alt="Question related" />
-                )}
-              </div>
-            </div>
-            <div className="rightSideInfo">
-              <div className="answerBlock">
-                <div className="prevNextBtnsContainer">
-                  <div className="iconButton">
-                    <LeftCircleOutlined className="btnIcon" onClick={handlePrevious} />
-                    <h5>Предыдущий</h5>
-                  </div>
-                  <button
-                    style={{ width: '40%', height: '40px' }}
-                    className={`popup-button`}
-                    onClick={togglePopup}
-                  >
-                    <AppstoreOutlined className={`${buttonClicked ? 'clicked' : ''}`} />
-                  </button>
-                  <div className="iconButton" onClick={handleNext}>
-                    <h5>Следующий</h5>
-                    <RightCircleOutlined className="btnIcon" />
-                  </div>
-                </div>
-                <div className="choicesContainer">
-                  {selectedQuestions[currentIndex]?.options?.map((option) => (
-                    <label key={option._id} className="radioLabel">
-                      <input
-                        type={
-                          selectedQuestions[currentIndex].type === 'onePoint' ? 'radio' : 'checkbox'
-                        }
-                        value={option._id}
-                        checked={selectedAnswers.includes(option._id)}
-                        onChange={() => handleOptionChange(option._id)}
-                      />
-                      {option.text}
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <button onClick={togglePopup2}>Завершить тест</button>
-            </div>
-          </div>
-        ) : (
-          <div className="noQuestionsContainer">
-            <Text type="testQuestion">Нет доступных вопросов по выбранному предмету.</Text>
-          </div>
-        )}
-      </div>
-    </>
-  );
-};
+  ]
+}

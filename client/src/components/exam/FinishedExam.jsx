@@ -6,14 +6,17 @@ import timeIcon from '../../assets/img/icons/time-icon.svg';
 import dateIcon from '../../assets/img/icons/date-icon.svg';
 import { LanguageContext } from '../../contexts/LanguageContext';
 
-const FinishedExam = ({ time, day, points }) => {
+const FinishedExam = ({
+  // time, day,
+  points
+}) => {
   const { language } = useContext(LanguageContext);
 
   return (
     <>
       <li className="exams__card">
         <div className="exams__card-title">ЕНТ</div>
-        <div className="exams__card__list">
+        {/* <div className="exams__card__list">
           <div className="exams__card__list-text">{language == 'kz' ? 'Уақыты' : 'Время'}</div>
           <div className="exams_card__list-container">
             <img className="exams__card__list-img" src={timeIcon} alt="" />
@@ -26,7 +29,7 @@ const FinishedExam = ({ time, day, points }) => {
             <img className="exams__card__list-img" src={dateIcon} alt="" />
             <p>{day}</p>
           </div>
-        </div>
+        </div> */}
         <div className="exams__card__list">
           <div className="exams__card__list-text">{language == 'kz' ? 'Баллдар' : 'Баллы'}</div>
           <div className="exams_card__list-container">

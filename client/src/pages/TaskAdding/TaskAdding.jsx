@@ -40,7 +40,7 @@ export const TaskAdding = () => {
   const [type, setType] = useState(1); // Default to 1-point question
   const [maxCorrectAnswers, setMaxCorrectAnswers] = useState(1);
 
-  const [language, setLanguage] = useState('kz'); // Language state
+  const [language, setLanguage] = useState('kz');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -129,11 +129,13 @@ export const TaskAdding = () => {
     setLoading(true);
     if (!lastClickedButton) {
       alert(language === 'kz' ? 'Сұрақ түрін таңдаңыз.' : 'Выберите тип вопроса.');
+      setLoading(false);
       return;
     }
 
     if (!selectedTopic) {
       alert(language === 'kz' ? 'Тақырып таңдаңыз.' : 'Выберите тему.');
+      setLoading(false);
       return;
     }
 
@@ -143,6 +145,7 @@ export const TaskAdding = () => {
           ? 'Сұрақ немесе сурет еңгізіңіз.'
           : 'Введите текст вопроса или добавьте изображение.'
       );
+      setLoading(false);
       return;
     }
 
@@ -151,6 +154,7 @@ export const TaskAdding = () => {
       alert(
         language === 'kz' ? 'Барлық жауап нұсқаларын еңгізіңіз.' : 'Заполните все варианты ответов.'
       );
+      setLoading(false);
       return;
     }
 
@@ -161,6 +165,7 @@ export const TaskAdding = () => {
           ? 'Кем дегенде бір дұрыс жауап еңгізіңіз.'
           : 'Выберите хотя бы один правильный ответ.'
       );
+      setLoading(false);
       return;
     }
 

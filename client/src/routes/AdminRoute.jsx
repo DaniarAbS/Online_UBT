@@ -5,7 +5,7 @@ import { AnalysisExam } from '../pages/AnalysisExam/AnalysisExam';
 import GeneralProfile from '../pages/GeneralProfile/GeneralProfile';
 import { Students } from '../pages/StudentsTable/StudentsTable';
 import { Teachers } from '../pages/TeachersTable/TeachersTable';
-import DoneExam from '../pages/DoneExams';
+import DoneExam from '../pages/DoneExams/DoneExams';
 import { ExamAnalyse } from '../pages/ExamAnalyse';
 import AdminLayout from '../layouts/AdminLayout';
 import Subjects from '../pages/Subjects/Subjects';

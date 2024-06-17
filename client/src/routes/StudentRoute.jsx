@@ -4,8 +4,8 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 import { ExamResults } from '../pages/ExamResults/ExamResults';
 import { TestPage } from '../pages/TestPage/TestPage';
 import FilterExam from '../pages/FilterExam/FilterExam';
-import Exams from '../pages/Exams';
-import DoneExam from '../pages/DoneExams';
+import Exams from '../pages/Exams/Exams';
+import DoneExam from '../pages/DoneExams/DoneExams';
 import StudentLayout from '../layouts/StudentLayout';
 
 import GeneralProfile from '../pages/GeneralProfile/GeneralProfile';
