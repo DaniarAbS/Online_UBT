@@ -1,38 +1,12 @@
 import { useEffect, useState, useContext } from 'react';
-import Exam from '../components/exam/Exam';
+import Exam from '../../components/exam/Exam';
 import styled from 'styled-components';
 import axios from 'axios';
 import moment from 'moment';
+import styles from './Exams.module.css';
 
-import { LanguageContext } from '../contexts/LanguageContext';
-import Loader from '../components/organism/Loader/Loader';
-
-const ExamContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-`;
-
-const MainTitle = styled.div`
-  font-size: 36px;
-  font-weight: bold;
-
-  @media screen and (max-width: 1000px) {
-    font-size: 28px;
-  }
-
-  @media screen and (max-width: 500px) {
-    font-size: 24px;
-  }
-`;
-
-const ExamsList = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-`;
+import { LanguageContext } from '../../contexts/LanguageContext';
+import Loader from '../../components/organism/Loader/Loader';
 
 const Exams = () => {
   const [upExams, setUpExams] = useState(null);
@@ -49,6 +23,7 @@ const Exams = () => {
         console.log('exams:', response.data);
       } catch (error) {
         console.error(error);
+        alert(error.message); // Set the error message
       } finally {
         setLoading(false); // Stop loading
       }
@@ -64,9 +39,11 @@ const Exams = () => {
   return (
     <>
       {loading && <Loader />}
-      <ExamContainer>
-        <MainTitle>{language === 'kz' ? 'Алдағы емтихандар' : 'Предстоящие экзамены'}</MainTitle>
-        <ExamsList>
+      <div className={styles.examContainer}>
+        <div className={styles.mainTitle}>
+          {language === 'kz' ? 'Алдағы емтихандар' : 'Предстоящие экзамены'}
+        </div>
+        <div className={styles.examsList}>
           {upExams ? (
             upExams.map((exam) => (
               <Exam
@@ -81,8 +58,8 @@ const Exams = () => {
           ) : (
             <p>{language === 'kz' ? 'Емтихандар жоқ...' : 'Экзаменов нет...'}</p>
           )}
-        </ExamsList>
-      </ExamContainer>
+        </div>
+      </div>
     </>
   );
 };

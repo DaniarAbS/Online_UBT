@@ -48,12 +48,15 @@ export const TestPage = () => {
   useEffect(() => {
     const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${currentIndex}`);
     if (savedAnswers) {
+      setLoading(true);
       try {
         setSelectedAnswers(JSON.parse(savedAnswers));
         setAnsweredQuestions((prev) => [...new Set([...prev, currentIndex])]);
       } catch (error) {
         console.error('Error parsing saved answers:', error);
         setSelectedAnswers([]);
+      } finally {
+        setLoading(false);
       }
     } else {
       setSelectedAnswers([]);
@@ -70,45 +73,71 @@ export const TestPage = () => {
   };
 
   const handleSubjectSelect = async (subjectId) => {
+    setLoading(true);
     await saveAnswerToLocalStorage();
     const subject = subjects.find((subject) => subject.id === subjectId);
     setSelectedSubjectId(subjectId);
     setSelectedSubjectName(subject?.subjectName || '');
     setCurrentIndex(0);
-    setSelectedAnswers([]);
+    const savedAnswers = localStorage.getItem(`${subjectId}-0`);
+    setSelectedAnswers(savedAnswers ? JSON.parse(savedAnswers) : []);
     setAnsweredQuestions([]);
+    setLoading(false);
   };
 
   const handleNext = async () => {
+    setLoading(true);
     await saveAnswerToLocalStorage();
     if (currentIndex < selectedQuestions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
-      setSelectedAnswers([]);
+      const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${currentIndex + 1}`);
+      setSelectedAnswers(savedAnswers ? JSON.parse(savedAnswers) : []);
     } else {
       const currentSubjectIndex = subjects.findIndex((subject) => subject.id === selectedSubjectId);
       if (currentSubjectIndex < subjects.length - 1) {
-        handleSubjectSelect(subjects[currentSubjectIndex + 1].id);
+        const nextSubjectId = subjects[currentSubjectIndex + 1].id;
+        setSelectedSubjectId(nextSubjectId);
+        setSelectedSubjectName(subjects[currentSubjectIndex + 1].subjectName);
+        setCurrentIndex(0);
+        const savedAnswers = localStorage.getItem(`${nextSubjectId}-0`);
+        setSelectedAnswers(savedAnswers ? JSON.parse(savedAnswers) : []);
+        setAnsweredQuestions([]);
       }
     }
+    setLoading(false);
   };
 
   const handlePrevious = async () => {
+    setLoading(true);
     await saveAnswerToLocalStorage();
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
-      setSelectedAnswers([]);
+      const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${currentIndex - 1}`);
+      setSelectedAnswers(savedAnswers ? JSON.parse(savedAnswers) : []);
     } else {
       const currentSubjectIndex = subjects.findIndex((subject) => subject.id === selectedSubjectId);
       if (currentSubjectIndex > 0) {
-        handleSubjectSelect(subjects[currentSubjectIndex - 1].id);
+        const previousSubjectId = subjects[currentSubjectIndex - 1].id;
+        setSelectedSubjectId(previousSubjectId);
+        setSelectedSubjectName(subjects[currentSubjectIndex - 1].subjectName);
+        setCurrentIndex(subjects[currentSubjectIndex - 1].questions.length - 1);
+        const savedAnswers = localStorage.getItem(
+          `${previousSubjectId}-${subjects[currentSubjectIndex - 1].questions.length - 1}`
+        );
+        setSelectedAnswers(savedAnswers ? JSON.parse(savedAnswers) : []);
+        setAnsweredQuestions([]);
       }
     }
+    setLoading(false);
   };
 
   const handleQuestionButtonClick = async (index) => {
+    setLoading(true);
     await saveAnswerToLocalStorage();
     setCurrentIndex(index);
-    setSelectedAnswers([]);
+    const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${index}`);
+    setSelectedAnswers(savedAnswers ? JSON.parse(savedAnswers) : []);
+    setLoading(false);
   };
 
   const handleOptionChange = (optionId) => {
@@ -153,9 +182,11 @@ export const TestPage = () => {
     }
 
     localStorage.setItem('answers', JSON.stringify(answers));
+    localStorage.setItem(`${selectedSubjectId}-${currentIndex}`, JSON.stringify(selectedAnswers));
   };
 
   const submitAnswersToBackend = async (answers) => {
+    setLoading(true);
     try {
       const response = await axios.post(
         'https://ubt-server.vercel.app/students/submitOrUpdateAnswer',
@@ -166,10 +197,13 @@ export const TestPage = () => {
     } catch (error) {
       console.error('Error submitting answers:', error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   const getResultFromBackend = async (resultData) => {
+    setLoading(true);
     try {
       const response = await axios.post(
         'https://ubt-server.vercel.app/students/getResult',
@@ -180,10 +214,13 @@ export const TestPage = () => {
     } catch (error) {
       console.error('Error getting result:', error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleConfirm = async () => {
+    setLoading(true);
     const resultData = {
       examId: startExam.examId,
       studentId: startExam.studentId
@@ -201,6 +238,8 @@ export const TestPage = () => {
       navigate('/exam_results', { state: { resultData: result } });
     } catch (error) {
       console.error('Error in handleConfirm:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -219,6 +258,7 @@ export const TestPage = () => {
   };
 
   const togglePopup2 = async () => {
+    setLoading(true);
     const answers = JSON.parse(localStorage.getItem('answers')) || [];
     console.log('answers are: ', answers);
     await saveAnswerToLocalStorage();
@@ -227,12 +267,15 @@ export const TestPage = () => {
       await submitAnswersToBackend(answers);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
     setPopupVisible2(!popupVisible2);
   };
 
   return (
     <>
+      {loading && <Loader />}
       {popupVisible2 && (
         <div className="popupContainer">
           <WarningOutlined className="warningIcon" />
@@ -261,6 +304,7 @@ export const TestPage = () => {
               handleQuestionButtonClick={handleQuestionButtonClick}
               isAnswered={isAnswered}
               currentIndex={currentIndex}
+              selectedSubjectId={selectedSubjectId} // Pass selectedSubjectId to QuestionBar
             />
           </div>
           {popupVisible && (
@@ -276,6 +320,7 @@ export const TestPage = () => {
                 handleQuestionButtonClick={handleQuestionButtonClick}
                 isAnswered={isAnswered}
                 currentIndex={currentIndex}
+                selectedSubjectId={selectedSubjectId} // Pass selectedSubjectId to QuestionBar
               />
               <button onClick={togglePopup}>Close</button>
             </div>
@@ -299,8 +344,8 @@ export const TestPage = () => {
             <div className="rightSideInfo">
               <div className="answerBlock">
                 <div className="prevNextBtnsContainer">
-                  <div className="iconButton">
-                    <LeftCircleOutlined className="btnIcon" onClick={handlePrevious} />
+                  <div className="iconButton" onClick={handlePrevious}>
+                    <LeftCircleOutlined className="btnIcon" />
                     <h5>Предыдущий</h5>
                   </div>
                   <button
