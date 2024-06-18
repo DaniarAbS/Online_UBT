@@ -14,14 +14,12 @@ const Exam = ({ examId, startedAt, finishedAt, isSelected, onClick }) => {
       <div className="exams__card__list">
         <div className="exams__card__list-text">{language == 'kz' ? 'Басталуы' : 'Начало'}</div>
         <div className="exams_card__list-container">
-          <img className="exams__card__list-img" src={timeIcon} alt="" />
           <p className="exams__card__list-text">{startedAt}</p>
         </div>
       </div>
       <div className="exams__card__list">
         <div className="exams__card__list-text">{language == 'kz' ? 'Аяқталуы' : 'Конец'}</div>
         <div className="exams_card__list-container">
-          <img className="exams__card__list-img" src={dateIcon} alt="" />
           <p className="exams__card__list-text">{finishedAt}</p>
         </div>
       </div>

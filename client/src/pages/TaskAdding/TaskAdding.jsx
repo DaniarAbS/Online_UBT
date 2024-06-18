@@ -264,11 +264,13 @@ export const TaskAdding = () => {
         >
           {language === 'kz' ? 'kz' : 'ru'}
         </button>
-        <div className="container text-center">
-          <div className="row align-items-start add_content">
+        <div className="text-center">
+          <div className={`row align-items-start add_content ${styles.mainContainer}`}>
             <div className="col-3">
               <div className={styles.chooseContainer}>
-                <h4>{language === 'kz' ? 'Сұрақ түрін таңдаңыз:' : 'Выберите тип вопроса:'}</h4>
+                <h4 className={styles.h4}>
+                  {language === 'kz' ? 'Сұрақ түрін таңдаңыз:' : 'Выберите тип вопроса:'}
+                </h4>
                 <div className={styles.pointContainer}>
                   <button
                     className={`${styles.pointBtn} ${lastClickedButton === 1 ? styles.clickedBtn : ''}`}
@@ -284,7 +286,9 @@ export const TaskAdding = () => {
                   </button>
                 </div>
                 <div className={styles.titleSelect}>
-                  <h4>{language === 'kz' ? 'Тақырып таңдаңыз:' : 'Выберите тему:'}</h4>
+                  <h4 className={styles.h4}>
+                    {language === 'kz' ? 'Тақырып таңдаңыз:' : 'Выберите тему:'}
+                  </h4>
                   <select
                     className={styles.themeSelect}
                     value={selectedTopic}
@@ -303,7 +307,9 @@ export const TaskAdding = () => {
               </div>
             </div>
             <div className={`col-6 ${styles.chooseContainer}`}>
-              <h4>{language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите вопрос'}</h4>
+              <h4 className={styles.h4}>
+                {language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите вопрос'}
+              </h4>
               <div className={styles.addingQuestionContainer}>
                 <div className={styles.inputImgRow}>
                   <Input
@@ -346,7 +352,9 @@ export const TaskAdding = () => {
               </div>
             </div>
             <div className={`col-3 ${styles.chooseContainer}`}>
-              <h4>{language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответы'}</h4>
+              <h4 className={styles.h4}>
+                {language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответы'}
+              </h4>
               <div className={styles.choseAnswer}>
                 {answers.map((answer, index) => (
                   <div
