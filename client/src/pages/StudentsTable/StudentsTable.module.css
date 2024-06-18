@@ -86,6 +86,14 @@
     width: 200px; /* Set a fixed width for each table cell */
     padding: 8px; /* Add padding for better spacing */
   }
+
+  .tableHeader {
+    flex-wrap: wrap;
+  }
+
+  .searchContainer {
+    flex-wrap: wrap;
+  }
 }
 
 .input_group {

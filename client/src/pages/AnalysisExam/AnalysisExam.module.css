@@ -225,10 +225,28 @@
   margin-right: -30px;
 }
 
-@media (max-width: 992px) {
-  .first_container {
-    gap: 100px;
+@media screen and (max-width: 1000px) {
+  .tableContainer {
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
   }
+  .headerRow {
+    background-color: #fff;
+    color: #000;
+  }
+
+  .first_container {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .createButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 992px) {
   .participants {
     margin-right: -30px;
   }
@@ -237,15 +255,5 @@
     gap: 5px;
     width: 35px;
     height: 35px;
-  }
-}
-@media (max-width: 768px) {
-  /* .container {
-      width: 100%;
-      margin: 30px;
-      padding: 20px;
-    } */
-  .first_container {
-    gap: 70px;
   }
 }
