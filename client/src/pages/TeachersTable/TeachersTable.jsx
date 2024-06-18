@@ -29,11 +29,15 @@ const ChangePageButton = styled.button`
 
 const ActiveButton = styled.button`
   border-radius: 0.3rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   color: ${(props) => (props.active ? '#fff' : '#000')};
   background-color: ${(props) => (props.active ? '#091' : '#fff')};
   border: solid 1px gray;
   cursor: pointer;
+
+  @media (max-width: 1000px) {
+    width: max-content;
+  }
 `;
 
 export const Teachers = () => {
@@ -343,8 +347,8 @@ export const Teachers = () => {
             rules={[{ required: true, message: 'Please select a subject!' }]}
             className={styles.form_select}
           >
-            <Select
-              style={{ width: '100%' }}
+            {/* <Select
+              style={{ width: '100%', heigth: '100%' }}
               value={selectedSubject}
               onChange={setSelectedSubject}
               placeholder="Выберите предмет"
@@ -355,7 +359,16 @@ export const Teachers = () => {
                   {option.kz_subject}
                 </Option>
               ))}
-            </Select>
+            </Select> */}
+            <Select
+              // size={size}
+              value={selectedSubject}
+              onChange={setSelectedSubject}
+              style={{
+                width: 200
+              }}
+              options={subjects}
+            />
           </Form.Item>
 
           <Form.Item

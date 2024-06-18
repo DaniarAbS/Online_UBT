@@ -8,10 +8,13 @@ import { Button, Form, Input, Space } from 'antd';
 
 import styles from './LoginPage.module.css';
 
+import Loader from '../../components/organism/Loader/Loader';
+
 export const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
@@ -23,6 +26,7 @@ export const LoginPage = ({ onLogin }) => {
   };
 
   async function onFinish() {
+    setLoading(true);
     try {
       const loginData = { email, password }; // Combine email and password
       const response = await axios.post('https://ubt-server.vercel.app/auth', loginData, {
@@ -49,78 +53,90 @@ export const LoginPage = ({ onLogin }) => {
           break;
         default:
           navigate('*');
+          alert('Your role is not defined');
           break;
       }
 
       window.location.reload();
     } catch (error) {
-      console.error(error.response.data); // Log backend error response
-      setErrorMessage(error.response.data.message);
+      if (error.code === 'ERR_NETWORK') {
+        console.error(error.message);
+        setErrorMessage(error.message);
+      } else {
+        console.error(error.response.data.message);
+        setErrorMessage(error.response.data.message);
+      }
+      // Log backend error response
+    } finally {
+      setLoading(false); // Stop loading
     }
   }
 
   return (
-    <div className={styles.login_container}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <h2>Войти</h2>
-        <p className={styles.welcome_text}>Добро пожаловать!</p>
-      </div>
-      <div className="form">
-        {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
-        <Form
-          variant="filled"
-          onFinish={onFinish}
-          style={{
-            maxWidth: 600
-          }}
-        >
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your email!'
-              }
-            ]}
+    <>
+      {loading && <Loader />}
+      <div className={styles.login_container}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <h2>Войти</h2>
+          <p className={styles.welcome_text}>Добро пожаловать!</p>
+        </div>
+        <div className="form">
+          {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
+          <Form
+            variant="filled"
+            onFinish={onFinish}
+            style={{
+              maxWidth: 600
+            }}
           >
-            <div className="input_group">
-              <Input
-                placeholder=""
-                onChange={handleEmailChange}
-                className={styles.form_input}
-                autoComplete="off"
-              />
-              <label className={styles.form_input_label}>Email*</label>
-            </div>
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your password!'
-              }
-            ]}
-          >
-            <div className="input_group">
-              <Input.Password
-                placeholder=""
-                onChange={handlePasswordChange}
-                className={styles.form_input}
-                autoComplete="off"
-              />
-              <label className={styles.form_input_label}>Password*</label>
-            </div>
-          </Form.Item>
-          <Form.Item>
-            <Space>
-              <Button className={styles.submit} type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Space>
-          </Form.Item>
-        </Form>
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your email!'
+                }
+              ]}
+            >
+              <div className="input_group">
+                <Input
+                  placeholder=""
+                  onChange={handleEmailChange}
+                  className={styles.form_input}
+                  autoComplete="off"
+                />
+                <label className={styles.form_input_label}>Email*</label>
+              </div>
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!'
+                }
+              ]}
+            >
+              <div className="input_group">
+                <Input.Password
+                  placeholder=""
+                  onChange={handlePasswordChange}
+                  className={styles.form_input}
+                  autoComplete="off"
+                />
+                <label className={styles.form_input_label}>Password*</label>
+              </div>
+            </Form.Item>
+            <Form.Item>
+              <Space>
+                <Button className={styles.submit} type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Space>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

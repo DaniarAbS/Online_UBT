@@ -323,7 +323,7 @@ const MyClassTable = () => {
   const SubjectsTable = () => (
     <>
       {loading && <Loader />}
-      <div style={{ padding: '0 1rem' }}>
+      <div className={styles.mainCont}>
         <table style={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#fff' }}>
           <thead>
             <tr>
@@ -374,7 +374,7 @@ const MyClassTable = () => {
 
   const ClassesTable = () => (
     <>
-      <div style={{ padding: '0 1rem' }}>
+      <div className={styles.mainCont}>
         <table style={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#fff' }}>
           <thead>
             <tr>
@@ -425,7 +425,7 @@ const MyClassTable = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+      <div className={styles.classSubjectCont}>
         <ActiveButton active={viewMode === 'subjects'} onClick={() => setViewMode('subjects')}>
           {language == 'kz' ? 'Пәндер' : 'Предметы'}
         </ActiveButton>
@@ -434,13 +434,13 @@ const MyClassTable = () => {
         </ActiveButton>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'start', padding: '0 0 2rem 0', gap: '1rem' }}>
+      <div className={styles.searchContainer}>
         <SearchInput
           onChange={handleInputSearchChange}
           placeholder={language == 'kz' ? 'Іздеуде...' : 'В поисках...'}
           value={searchQuery}
         />
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div className={styles.searchBtns}>
           {viewMode === 'subjects' ? (
             <>
               <ActiveButton
@@ -477,18 +477,11 @@ const MyClassTable = () => {
 
       {viewMode === 'subjects' ? <SubjectsTable /> : <ClassesTable />}
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          margin: '1rem 0',
-          padding: '0 1rem'
-        }}
-      >
+      <div className={styles.lastBtns}>
         <Button onClick={showAddModal} className={styles.submit} type="default" htmlType="submit">
           {viewMode === 'subjects' ? 'Добавить предмет' : 'Добавить класс'}
         </Button>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
           <ChangePageButton onClick={handlePrevPage} disabled={currentPage === 0}>
             {language == 'kz' ? 'Алдыңғы' : 'Предыдущий'}
           </ChangePageButton>

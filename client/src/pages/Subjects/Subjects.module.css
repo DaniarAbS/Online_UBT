@@ -8,6 +8,40 @@
   position: relative;
 }
 
+.classSubjectCont {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: start;
+  padding: 0 0 2rem 0;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.searchBtns {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mainCont {
+  padding: 0 1rem;
+}
+
+.lastBtns {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+}
+
 .form_input_label {
   top: -12px;
   left: 10px;
@@ -76,5 +110,11 @@
 
   .pageController {
     padding: 1rem;
+  }
+
+  .mainCont {
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
   }
 }

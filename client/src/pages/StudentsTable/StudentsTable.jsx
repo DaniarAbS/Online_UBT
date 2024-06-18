@@ -31,11 +31,15 @@ const ChangePageButton = styled.button`
 
 const ActiveButton = styled.button`
   border-radius: 0.3rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   color: ${(props) => (props.active ? '#fff' : '#000')};
   background-color: ${(props) => (props.active ? '#091' : '#fff')};
   border: solid 1px gray;
   cursor: pointer;
+
+  @media (max-width: 1000px) {
+    width: max-content;
+  }
 `;
 
 export const Students = () => {
