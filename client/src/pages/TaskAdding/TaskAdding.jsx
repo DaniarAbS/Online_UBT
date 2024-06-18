@@ -170,6 +170,15 @@ export const TaskAdding = () => {
     }
 
     const correctOptions = answers.filter((answer) => answer.isCorrect).map((answer) => answer.id);
+
+    if (type === 2 && correctOptions.length !== 2) {
+      alert(
+        language === 'kz' ? 'Екі дұрыс жауапты таңдаңыз.' : 'Выберите ровно два правильных ответа.'
+      );
+      setLoading(false);
+      return;
+    }
+
     const questionType = type === 1 ? 'onePoint' : 'twoPoints';
     const newQuestion = {
       type: questionType,
