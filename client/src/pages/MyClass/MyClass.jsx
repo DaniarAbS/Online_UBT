@@ -17,11 +17,12 @@ const { Option } = Select;
 
 const ActiveButton = styled.button`
   border-radius: 0.3rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   color: ${(props) => (props.active ? '#fff' : '#000')};
   background-color: ${(props) => (props.active ? '#091' : '#fff')};
   border: solid 1px gray;
   cursor: pointer;
+  text-align: center;
 `;
 
 const SearchInput = styled.input`

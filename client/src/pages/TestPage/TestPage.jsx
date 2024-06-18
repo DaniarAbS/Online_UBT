@@ -276,6 +276,24 @@ export const TestPage = () => {
   return (
     <>
       {loading && <Loader />}
+      {popupVisible && (
+        <div className="popupContainer">
+          <QuestionBar
+            subjects={subjects.map((subject) => ({
+              id: subject.id,
+              name: subject.subjectName
+            }))}
+            text={`${answeredQuestions.length} / ${selectedQuestions.length}`}
+            onSelect={(subjectId) => handleSubjectSelect(subjectId)}
+            selectedQuestions={selectedQuestions}
+            handleQuestionButtonClick={handleQuestionButtonClick}
+            isAnswered={isAnswered}
+            currentIndex={currentIndex}
+            selectedSubjectId={selectedSubjectId} // Pass selectedSubjectId to QuestionBar
+          />
+          <button onClick={togglePopup}>Close</button>
+        </div>
+      )}
       {popupVisible2 && (
         <div className="popupContainer">
           <WarningOutlined className="warningIcon" />
@@ -307,24 +325,6 @@ export const TestPage = () => {
               selectedSubjectId={selectedSubjectId} // Pass selectedSubjectId to QuestionBar
             />
           </div>
-          {popupVisible && (
-            <div className="popup-container">
-              <QuestionBar
-                subjects={subjects.map((subject) => ({
-                  id: subject.id,
-                  name: subject.subjectName
-                }))}
-                text={`${answeredQuestions.length} / ${selectedQuestions.length}`}
-                onSelect={(subjectId) => handleSubjectSelect(subjectId)}
-                selectedQuestions={selectedQuestions}
-                handleQuestionButtonClick={handleQuestionButtonClick}
-                isAnswered={isAnswered}
-                currentIndex={currentIndex}
-                selectedSubjectId={selectedSubjectId} // Pass selectedSubjectId to QuestionBar
-              />
-              <button onClick={togglePopup}>Close</button>
-            </div>
-          )}
         </div>
         {selectedQuestions.length > 0 ? (
           <div className="mainContent">

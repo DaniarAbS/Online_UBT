@@ -183,6 +183,19 @@
   .inputImgRow img {
     width: 20px;
   }
+
+  .h4 {
+    font-size: 1px;
+  }
+
+  .mainContainer {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .mainContainer > div {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 800px) {

@@ -76,6 +76,7 @@ const FilterExam = () => {
       navigate('/test', { state: { examData: response.data, startExam: startExam } });
     } catch (error) {
       console.error(error);
+      alert(error.response.data.message);
     } finally {
       setLoading(false); // Stop loading
     }
