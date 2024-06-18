@@ -299,7 +299,7 @@ export const TaskAdding = () => {
                     </option>
                     {topics.map((topic) => (
                       <option key={topic._id} value={topic._id}>
-                        {topic.kz_title}
+                        {language === 'kz' ? topic.kz_title : topic.ru_title}
                       </option>
                     ))}
                   </select>
