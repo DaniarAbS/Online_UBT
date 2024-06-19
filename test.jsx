@@ -1,454 +1,700 @@
-{
-  "answers": [
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d12bde29afdecce1a49b5"],
-      "questionId": "666d12bde29afdecce1a49bd",
-      "questionNumber": 1,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d12dde29afdecce1a49c1"],
-      "questionId": "666d12dee29afdecce1a49cd",
-      "questionNumber": 2,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d1303e29afdecce1a49de"],
-      "questionId": "666d1304e29afdecce1a49e6",
-      "questionNumber": 3,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dff1a3795d2780db9bd2f"],
-      "questionId": "666dff1b3795d2780db9bd31",
-      "questionNumber": 4,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dff4df352d141ddc530e3"],
-      "questionId": "666dff4ef352d141ddc530e7",
-      "questionNumber": 5,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dff70f352d141ddc530f1"],
-      "questionId": "666dff71f352d141ddc530f7",
-      "questionNumber": 6,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dff9ff352d141ddc53108"],
-      "questionId": "666dff9ff352d141ddc5310e",
-      "questionNumber": 7,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dffbdf352d141ddc53114"],
-      "questionId": "666dffbef352d141ddc5311a",
-      "questionNumber": 8,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dffe0f352d141ddc53122"],
-      "questionId": "666dffe1f352d141ddc53126",
-      "questionNumber": 9,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e003b0707d75d4749c611"],
-      "questionId": "666e003c0707d75d4749c617",
-      "questionNumber": 10,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2efb75d5524604b5bc10"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666c3dfb9ec573c161c409c2"],
-      "questionId": "666c3dfb9ec573c161c409ca",
-      "questionNumber": 1,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666c3e269ec573c161c409ce"],
-      "questionId": "666c3e289ec573c161c409da",
-      "questionNumber": 2,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666c3e399ec573c161c409e2"],
-      "questionId": "666c3e3a9ec573c161c409e6",
-      "questionNumber": 3,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dfc6e78755bf32e786b3d"],
-      "questionId": "666dfc6e78755bf32e786b45",
-      "questionNumber": 4,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dfc8c78755bf32e786b49"],
-      "questionId": "666dfc8d78755bf32e786b51",
-      "questionNumber": 5,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dfcba78755bf32e786b57"],
-      "questionId": "666dfcbb78755bf32e786b5d",
-      "questionNumber": 6,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dfd3178755bf32e786b7a"],
-      "questionId": "666dfd3278755bf32e786b84",
-      "questionNumber": 7,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dfd8878755bf32e786b94"],
-      "questionId": "666dfd8978755bf32e786b9c",
-      "questionNumber": 8,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dfda54bc671b93924425a"],
-      "questionId": "666dfda64bc671b939244260",
-      "questionNumber": 9,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666dfdd14bc671b939244271"],
-      "questionId": "666dfdd24bc671b93924427b",
-      "questionNumber": 10,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c2f0175d5524604b5bc13"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d12216299b2791d762161"],
-      "questionId": "666d12226299b2791d762169",
-      "questionNumber": 1,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d12496299b2791d76216d"],
-      "questionId": "666d124b6299b2791d762179",
-      "questionNumber": 2,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d125d6299b2791d76217d"],
-      "questionId": "666d125e6299b2791d762185",
-      "questionNumber": 3,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e00a0ad3135fa60730a79"],
-      "questionId": "666e00a1ad3135fa60730a81",
-      "questionNumber": 4,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e00d0ad3135fa60730a85"],
-      "questionId": "666e00d1ad3135fa60730a8d",
-      "questionNumber": 5,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e00f3ad3135fa60730a9e"],
-      "questionId": "666e00f4ad3135fa60730aa8",
-      "questionNumber": 6,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e0115ad3135fa60730aac"],
-      "questionId": "666e0116ad3135fa60730ab4",
-      "questionNumber": 7,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e014aad3135fa60730ac5"],
-      "questionId": "666e014cad3135fa60730acf",
-      "questionNumber": 8,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e0171ad3135fa60730ae2"],
-      "questionId": "666e0171ad3135fa60730ae6",
-      "questionNumber": 9,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e018dad3135fa60730aec"],
-      "questionId": "666e018dad3135fa60730af2",
-      "questionNumber": 10,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c31d85970933c47ccd12b"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d118f6299b2791d76212a"],
-      "questionId": "666d11906299b2791d762130",
-      "questionNumber": 1,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d11b96299b2791d76213a"],
-      "questionId": "666d11ba6299b2791d76213e",
-      "questionNumber": 2,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d11e06299b2791d762148"],
-      "questionId": "666d11e16299b2791d76214a",
-      "questionNumber": 3,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e01ca96eef9727be524bd"],
-      "questionId": "666e01ca96eef9727be524c1",
-      "questionNumber": 4,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e01f196eef9727be524cf"],
-      "questionId": "666e01f196eef9727be524d1",
-      "questionNumber": 5,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e021096eef9727be524d5"],
-      "questionId": "666e021196eef9727be524dd",
-      "questionNumber": 6,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e022996eef9727be524e5"],
-      "questionId": "666e022996eef9727be524e9",
-      "questionNumber": 7,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e024796eef9727be524fa"],
-      "questionId": "666e024796eef9727be52500",
-      "questionNumber": 8,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e026696eef9727be52508"],
-      "questionId": "666e026796eef9727be5250e",
-      "questionNumber": 9,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e028496eef9727be5251c"],
-      "questionId": "666e028596eef9727be52524",
-      "questionNumber": 10,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32035970933c47ccd12e"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d135fa461df02f9d589d4"],
-      "questionId": "666d1360a461df02f9d589dc",
-      "questionNumber": 1,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666d13aaa461df02f9d589e2"],
-      "questionId": "666d13aba461df02f9d589ec",
-      "questionNumber": 2,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e02c2ec7ebc2a10c2e37b"],
-      "questionId": "666e02c2ec7ebc2a10c2e381",
-      "questionNumber": 3,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e02daec7ebc2a10c2e385"],
-      "questionId": "666e02dbec7ebc2a10c2e38d",
-      "questionNumber": 4,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e02f7ec7ebc2a10c2e393"],
-      "questionId": "666e02f8ec7ebc2a10c2e399",
-      "questionNumber": 5,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e031b58ebe16c0c9552b1"],
-      "questionId": "666e031c58ebe16c0c9552b7",
-      "questionNumber": 6,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e033858ebe16c0c9552c1"],
-      "questionId": "666e033858ebe16c0c9552c3",
-      "questionNumber": 7,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e035c58ebe16c0c9552d8"],
-      "questionId": "666e035d58ebe16c0c9552de",
-      "questionNumber": 8,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e0373ec7ebc2a10c2e3b5"],
-      "questionId": "666e0373ec7ebc2a10c2e3b9",
-      "questionNumber": 9,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
-    },
-    {
-      "examId": "666e051c1a51a46c75d78ca4",
-      "language": "kz",
-      "optionIds": ["666e038cec7ebc2a10c2e3c1"],
-      "questionId": "666e038dec7ebc2a10c2e3c5",
-      "questionNumber": 10,
-      "studentId": "666e147056d048125cc0c33f",
-      "subjectId": "666c32125970933c47ccd131"
+import React, { useState, useEffect, useContext } from 'react';
+import styled from 'styled-components';
+import { colors } from '../../base/colors';
+import { EditOutlined, DeleteOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Modal, Button, Form, Input, Select } from 'antd';
+import styles from './TeachersTable.module.css';
+import axios from 'axios';
+import config from '../../../config';
+
+import { LanguageContext } from '../../contexts/LanguageContext';
+import Loader from '../../components/organism/Loader/Loader';
+
+const { Option } = Select;
+
+const SearchInput = styled.input`
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid ${colors.gray};
+`;
+
+const ChangePageButton = styled.button`
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: ${colors.white};
+  color: ${colors.black};
+  border: 1px solid ${colors.gray};
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+`;
+
+const ActiveButton = styled.button`
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  color: ${(props) => (props.active ? '#fff' : '#000')};
+  background-color: ${(props) => (props.active ? '#091' : '#fff')};
+  border: solid 1px gray;
+  cursor: pointer;
+
+  @media (max-width: 1000px) {
+    width: max-content;
+  }
+`;
+
+export const Teachers = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+
+  const [teachers, setTeachers] = useState([]);
+  const [selectedTeacherId, setSelectedTeacherId] = useState(null);
+
+  const [subjects, setSubjects] = useState([]);
+
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [email, setEmail] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedLiteral, setSelectedLiteral] = useState('');
+
+  const [searchMode, setSearchMode] = useState('fullname');
+
+  const itemsPerPage = 10;
+
+  const { language } = useContext(LanguageContext);
+  const [loading, setLoading] = useState(false);
+
+  async function fetchTeachers() {
+    setLoading(true);
+    try {
+      const response = await axios.get('https://ubt-server.vercel.app/adminTeacher/');
+      console.log('admin teacher: ', response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return [];
+    } finally {
+      setLoading(false); // Stop loading
     }
-  ]
-}
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchTeachers();
+      setTeachers(data);
+    }
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchSubjects() {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${config.baseURL}/subjects/`);
+        setSubjects(response.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false); // Stop loading
+      }
+    }
+
+    fetchSubjects();
+  }, []);
+
+  async function handleUpdateTeacher() {
+    setLoading(true);
+    const updatedTeacherData = {
+      name: name || teachers.find((teacher) => teacher.id === selectedTeacherId)?.name,
+      surname: surname || teachers.find((teacher) => teacher.id === selectedTeacherId)?.surname,
+      subjectId:
+        selectedSubject || teachers.find((teacher) => teacher.id === selectedTeacherId)?.subjectId,
+      email: email || teachers.find((teacher) => teacher.id === selectedTeacherId)?.email,
+      classNum:
+        selectedGroup || teachers.find((teacher) => teacher.id === selectedTeacherId)?.classNum,
+      literal:
+        selectedLiteral || teachers.find((teacher) => teacher.id === selectedTeacherId)?.literal
+    };
+
+    if (selectedSubject === 'SyntheticBaseEvent') {
+      setLoading(false);
+      return alert('Select a subject');
+    }
+
+    console.log('selectedSubject: ', selectedSubject);
+    console.log('teacherId: ', selectedTeacherId);
+    console.log(updatedTeacherData);
+
+    try {
+      const response = await axios.put(
+        `https://ubt-server.vercel.app/adminTeacher/${selectedTeacherId}`,
+        updatedTeacherData
+      );
+      console.log('Teacher updated successfully', response.data);
+      const updatedData = await fetchTeachers();
+      setTeachers(updatedData);
+      setEditModalVisible(false);
+      setSelectedTeacherId(null);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  }
+
+  const generateClassNumbers = () => {
+    return Array.from({ length: 7 }, (_, index) => ({
+      value: (11 - index).toString(),
+      label: (11 - index).toString()
+    }));
+  };
+
+  const handleReload = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('https://ubt-server.vercel.app/adminTeacher/');
+      setTeachers(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
+
+  async function handleDeleteTeacher(teacherId) {
+    setLoading(true);
+    try {
+      const response = await axios.delete(
+        `https://ubt-server.vercel.app/adminTeacher/${teacherId}`
+      );
+      console.log('Teacher deleted successfully', response.data);
+      const updatedData = await fetchTeachers();
+      setTeachers(updatedData);
+      setEditModalVisible(false);
+      setSelectedTeacherId(null);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  }
+
+  const filteredTeachers = teachers.filter((teacher) => {
+    if (searchMode === 'fullname') {
+      const fullName = `${teacher.name} ${teacher.surname}`.toLowerCase();
+      return fullName.includes(searchQuery.toLowerCase());
+    } else if (searchMode === 'group') {
+      return teacher.group?.toLowerCase().includes(searchQuery.toLowerCase());
+    } else if (searchMode === 'subject') {
+      return teacher.subject?.toLowerCase().includes(searchQuery.toLowerCase());
+    } else if (searchMode === 'gmail') {
+      return teacher.email?.toLowerCase().includes(searchQuery.toLowerCase());
+    }
+  });
+
+  const totalPages = Math.ceil(filteredTeachers.length / itemsPerPage);
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, filteredTeachers.length);
+  const visibleData = filteredTeachers.slice(startIndex, endIndex);
+
+  const searchByMode = (mode) => {
+    setSearchMode(mode);
+  };
+
+  const handleInputSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+  };
+
+  const showAddModal = () => {
+    clearInputFields();
+    setAddModalVisible(true);
+  };
+
+  const handleAddModalCancel = () => {
+    setAddModalVisible(false);
+  };
+
+  const showEditTeacher = (teacherId) => {
+    setSelectedTeacherId(teacherId);
+    setEditModalVisible(true);
+
+    const selectedTeacher = teachers.find((teacher) => teacher.id === teacherId);
+
+    // Update the state with the data of the selected student
+    if (selectedTeacher) {
+      setName(selectedTeacher.name);
+      setSurname(selectedTeacher.surname);
+      setSelectedSubject(selectedTeacher.subjectId);
+      setEmail(selectedTeacher.email);
+      setSelectedGroup(selectedTeacher.classNum);
+      setSelectedLiteral(selectedTeacher.literal);
+    }
+  };
+
+  const handleEditModalCancel = () => {
+    setEditModalVisible(false);
+  };
+
+  async function handleSubmit() {
+    setLoading(true);
+    // Use the state variables to submit the form data or perform other actions
+    const newTeacher = {
+      name: name,
+      surname: surname,
+      subjectId: selectedSubject,
+      email: email,
+      classNum: selectedGroup,
+      literal: selectedLiteral
+    };
+    console.log(newTeacher);
+
+    try {
+      const { data } = await axios.post(
+        'https://ubt-server.vercel.app/adminTeacher/add',
+        newTeacher,
+        {
+          headers: {
+            'Content-Type': 'application/json' // Set content type header
+          }
+        }
+      );
+      const updatedData = await fetchTeachers();
+      setTeachers(updatedData);
+      console.log(data);
+      setAddModalVisible(false);
+      clearInputFields();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const clearInputFields = () => {
+    setName('');
+    setSurname('');
+    setSelectedSubject(null);
+    setEmail('');
+    setSelectedGroup(null);
+    setSelectedLiteral('');
+  };
+
+  console.log(selectedSubject);
+
+  return (
+    <>
+      {loading && <Loader />}
+      <Modal
+        title={language == 'kz' ? 'Мұғалім қосу' : 'Добавить учителя'}
+        visible={addModalVisible}
+        onCancel={handleAddModalCancel}
+        footer={[]}
+      >
+        <Form
+          variant="filled"
+          style={{
+            padding: '2rem 0'
+          }}
+          onFinish={handleSubmit}
+        >
+          <Form.Item
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your full name!'
+              }
+            ]}
+          >
+            <div className={styles.input_group}>
+              <Input
+                id="name_input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder=""
+                className={styles.form_input}
+              />
+              <label htmlFor="name_input" className={styles.form_input_label}>
+                {language == 'kz' ? 'Аты' : 'Имя'}
+              </label>
+            </div>
+          </Form.Item>
+
+          <Form.Item
+            name="surname"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your surname!'
+              }
+            ]}
+          >
+            <div className={styles.input_group}>
+              <Input
+                id="surname_input"
+                value={surname}
+                onChange={(e) => setSurname(e.target.value)}
+                placeholder=""
+                className={styles.form_input}
+              />
+              <label htmlFor="surname_input" className={styles.form_input_label}>
+                {language == 'kz' ? 'Тегі' : 'Фамилия'}
+              </label>
+            </div>
+          </Form.Item>
+          <Form.Item name="Предмет">
+            {/* <Select
+              style={{ width: '100%' }}
+              value={selectedSubject}
+              onChange={setSelectedSubject}
+              placeholder="Выберите предмет"
+              allowClear
+            >
+              {subjects.map((option) => (
+                <Option key={option._id} value={option._id}>
+                  {option.kz_subject}
+                </Option>
+              ))}
+            </Select> */}
+            <select
+              className={styles.subjectSelect}
+              value={selectedSubject}
+              onChange={setSelectedSubject}
+            >
+              <option value="">{language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}</option>
+              {subjects.map((subject) => (
+                <option key={subject._id} value={subject._id}>
+                  {language === 'kz' ? subject.kz_subject : subject.kz_subject}
+                </option>
+              ))}
+            </select>
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your email!'
+              }
+            ]}
+          >
+            <div className={styles.input_group}>
+              <Input
+                id="email_input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder=""
+                className={styles.form_input}
+              />
+              <label htmlFor="email_input" className={styles.form_input_label}>
+                Email*
+              </label>
+            </div>
+          </Form.Item>
+
+          <div className={styles.class_literal}>
+            <Form.Item
+              name="class"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input!'
+                }
+              ]}
+              className={styles.form_select}
+            >
+              <Select
+                style={{ width: '100%' }}
+                value={selectedGroup}
+                onChange={setSelectedGroup}
+                placeholder="Выберите группу"
+                allowClear
+                dropdownStyle={{ maxHeight: 200, overflowY: 'auto' }}
+              >
+                {generateClassNumbers().map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="literal"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input a single letter!'
+                },
+                {
+                  pattern: /^[a-z]$/,
+                  message: 'Literal must be a single lowercase letter!'
+                }
+              ]}
+              className={styles.form_select}
+            >
+              <Input
+                style={{ width: '100%' }}
+                placeholder="Выберите литерал"
+                value={selectedLiteral}
+                onChange={(e) => setSelectedLiteral(e.target.value.toLowerCase())}
+                maxLength={1}
+              />
+            </Form.Item>
+          </div>
+          <Form.Item>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <Button
+                onClick={handleAddModalCancel}
+                className={styles.submit}
+                type=""
+                htmlType="cancel"
+              >
+                {language == 'kz' ? 'Бас тарту' : 'Отмена'}
+              </Button>
+              <Button className={styles.submit} type="primary" htmlType="submit">
+                {language == 'kz' ? 'Қабылдау' : 'Принять'}
+              </Button>
+            </div>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal
+        title={language == 'kz' ? 'Мұғалім өзгерту' : 'Изменить учителя'}
+        visible={editModalVisible}
+        onCancel={handleEditModalCancel}
+        footer={[]}
+      >
+        <Form
+          variant="filled"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '.5rem',
+            padding: '2rem 0'
+          }}
+          onFinish={handleUpdateTeacher}
+        >
+          <Form.Item name="name">
+            <div className={styles.input_group}>
+              <Input
+                id="name_input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder=""
+              />
+              <label htmlFor="name_input" className={styles.form_input_label}>
+                {language == 'kz' ? 'Аты' : 'Имя'}
+              </label>
+            </div>
+          </Form.Item>
+
+          <Form.Item name="surname">
+            <div className={styles.input_group}>
+              <Input
+                id="surname_input"
+                value={surname}
+                onChange={(e) => setSurname(e.target.value)}
+                placeholder=""
+              />
+              <label htmlFor="surname_input" className={styles.form_input_label}>
+                {language == 'kz' ? 'Тегі' : 'Фамилия'}
+              </label>
+            </div>
+          </Form.Item>
+
+          <Form.Item name="Предмет">
+            {/* <Select
+              style={{ width: '100%' }}
+              value={selectedSubject}
+              onChange={setSelectedSubject}
+              placeholder="Выберите предмет"
+              allowClear
+            >
+              {subjects.map((option) => (
+                <Option key={option._id} value={option._id}>
+                  {option.kz_subject}
+                </Option>
+              ))}
+            </Select> */}
+            <select
+              className={styles.subjectSelect}
+              value={selectedSubject}
+              onChange={setSelectedSubject}
+            >
+              <option value="">{language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}</option>
+              {subjects.map((subject) => (
+                <option key={subject._id} value={subject._id}>
+                  {language === 'kz' ? subject.kz_subject : subject.kz_subject}
+                </option>
+              ))}
+            </select>
+          </Form.Item>
+
+          <Form.Item name="email">
+            <div className={styles.input_group}>
+              <Input
+                id="email_input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder=""
+                className={styles.form_input}
+              />
+              <label htmlFor="email_input" className={styles.form_input_label}>
+                Email
+              </label>
+            </div>
+          </Form.Item>
+
+          <div className={styles.class_literal}>
+            <Form.Item name="class">
+              <Select
+                style={{ width: '100%' }}
+                placeholder="Выберите группу"
+                value={selectedGroup}
+                onChange={setSelectedGroup}
+                allowClear
+                dropdownStyle={{ maxHeight: 200, overflowY: 'auto' }}
+              >
+                {generateClassNumbers().map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item name="literal" className={styles.form_select}>
+              <Input
+                style={{ width: '100%' }}
+                placeholder="Выберите литерал"
+                value={selectedLiteral}
+                onChange={(e) => setSelectedLiteral(e.target.value.toLowerCase())}
+                maxLength={1}
+              />
+            </Form.Item>
+          </div>
+          <Form.Item>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'end' }}>
+              <Button
+                onClick={handleAddModalCancel}
+                className={styles.submit}
+                type=""
+                htmlType="cancel"
+              >
+                {language == 'kz' ? 'Бас тарту' : 'Отказаться'}
+              </Button>
+              <Button className={styles.submit} type="primary" htmlType="submit">
+                {language == 'kz' ? 'Қабылдау' : 'Принять'}
+              </Button>
+            </div>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <div>
+        <Button onClick={showAddModal}>
+          {language == 'kz' ? 'Мүғалім қосу' : 'Добавить учителя'}
+        </Button>
+        <div className={styles.tableContainer}>
+          <div className={styles.tableHeader}>
+            <div className={styles.searchContainer}>
+              <SearchInput
+                className={styles.searchInput}
+                type="text"
+                value={searchQuery}
+                onChange={handleInputSearchChange}
+                placeholder={
+                  language == 'kz' ? `${searchMode} арқылы іздеу` : `Искать по ${searchMode}`
+                }
+              />
+              <div className={styles.searchContainer}>
+                <ActiveButton
+                  className={styles.searchBtn}
+                  active={searchMode === 'fullname'} // Check if the button is active
+                  onClick={() => searchByMode('fullname')} // Handle button click
+                >
+                  {language == 'kz' ? 'Толық аты-жөні' : 'Полное имя-фамилия'}
+                </ActiveButton>
+                <ActiveButton
+                  className={styles.searchBtn}
+                  active={searchMode === 'group'}
+                  onClick={() => searchByMode('group')}
+                >
+                  {language == 'kz' ? 'Группа' : 'Группа'}
+                </ActiveButton>
+                <ActiveButton
+                  className={styles.searchBtn}
+                  active={searchMode === 'subject'}
+                  onClick={() => searchByMode('subject')}
+                >
+                  {language == 'kz' ? 'ЖСН' : 'ИИН'}
+                </ActiveButton>
+                <ActiveButton
+                  className={styles.searchBtn}
+                  active={searchMode === 'gmail'}
+                  onClick={() => searchByMode('gmail')}
+                >
+                  Gmail
+                </ActiveButton>
+              </div>
+            </div>
+            <ReloadOutlined onClick={handleReload} />
+          </div>
+          <div className={styles.tableCont}>
+            {teachers.length <= 0 ? (
+              <p>{language == 'kz' ? 'Әлі мұғалім жоқ' : 'Учителей еще нет'}</p>
+            ) : (
+              <div className={`${styles.teacherTable}`}>
+                <div className={`row table_row ${styles.teacherRow}`}>
+                  {/* <div class="col-2 table_items">ID</div> */}
+                  <div className="col-2 table_items">{language == 'kz' ? 'Аты' : 'Имя'}</div>
+                  <div className="col-2 table_items">{language == 'kz' ? 'Тегі' : 'Фамилия'}</div>
+                  <div className="col-1 table_items">Группа</div>
+                  <div className="col-2 table_items">{language == 'kz' ? 'Пән' : 'Предмет'}</div>
+                  <div className="col-3 table_items">Gmail</div>
+                </div>
+                {visibleData.map((teacher, index) => (
+                  <div key={index} className={`row table_row ${styles.studentsRow}`}>
+                    {/* <div class="col-2 table_items">{student.id}</div> */}
+                    <div className="col-2 table_items">{teacher.name}</div>
+                    <div className="col-2 table_items">{teacher.surname}</div>
+                    <div className="col-1 table_items">{teacher.group}</div>
+                    <div className="col-2 table_items">{teacher.kz_subject}</div>
+                    <div className="col-3 table_items">{teacher.email}</div>
+                    <div className="col-1 table_items">
+                      <div style={{ display: 'flex', gap: '2rem' }}>
+                        <EditOutlined onClick={() => showEditTeacher(teacher.id)} />
+                        <DeleteOutlined onClick={() => handleDeleteTeacher(teacher.id)} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className={styles.pageController}>
+            <ChangePageButton onClick={handlePrevPage} disabled={currentPage === 0}>
+              {'<'}
+            </ChangePageButton>
+            <span>{`${currentPage + 1} / ${totalPages}`}</span>
+            <ChangePageButton onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
+              {'>'}
+            </ChangePageButton>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};

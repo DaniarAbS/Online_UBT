@@ -259,23 +259,26 @@ export const Teachers = () => {
     };
     console.log(newTeacher);
 
-    const { data } = await axios.post(
-      'https://ubt-server.vercel.app/adminTeacher/add',
-      newTeacher,
-      {
-        headers: {
-          'Content-Type': 'application/json' // Set content type header
+    try {
+      const { data } = await axios.post(
+        'https://ubt-server.vercel.app/adminTeacher/add',
+        newTeacher,
+        {
+          headers: {
+            'Content-Type': 'application/json' // Set content type header
+          }
         }
-      }
-    );
-    const updatedData = await fetchTeachers();
-    setTeachers(updatedData);
-    console.log(data);
-    setAddModalVisible(false);
-
-    // Clear input fields after submission if needed
-    clearInputFields();
-    setLoading(false);
+      );
+      const updatedData = await fetchTeachers();
+      setTeachers(updatedData);
+      console.log(data);
+      setAddModalVisible(false);
+      clearInputFields();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   const clearInputFields = () => {
@@ -348,33 +351,19 @@ export const Teachers = () => {
               </label>
             </div>
           </Form.Item>
-          <Form.Item
-            name="subject"
-            rules={[{ required: true, message: 'Please select a subject!' }]}
-            className={styles.form_select}
-          >
-            {/* <Select
-              style={{ width: '100%', heigth: '100%' }}
+          <Form.Item>
+            <select
+              style={{ width: '100%' }}
               value={selectedSubject}
-              onChange={setSelectedSubject}
-              placeholder="Выберите предмет"
-              allowClear
+              onChange={(e) => setSelectedSubject(e.target.value)}
             >
+              <option value="">Select Subject</option>
               {subjects.map((option) => (
-                <Option key={option._id} value={option._id}>
+                <option key={option._id} value={option._id}>
                   {option.kz_subject}
-                </Option>
+                </option>
               ))}
-            </Select> */}
-            <Select
-              // size={size}
-              value={selectedSubject}
-              onChange={setSelectedSubject}
-              style={{
-                width: 200
-              }}
-              options={subjects}
-            />
+            </select>
           </Form.Item>
 
           <Form.Item
@@ -511,29 +500,16 @@ export const Teachers = () => {
             </div>
           </Form.Item>
 
-          <Form.Item name="Предмет">
-            {/* <Select
+          <Form.Item>
+            <select
               style={{ width: '100%' }}
               value={selectedSubject}
-              onChange={setSelectedSubject}
-              placeholder="Выберите предмет"
-              allowClear
+              onChange={(e) => setSelectedSubject(e.target.value)}
             >
+              <option value="">Select Subject</option>
               {subjects.map((option) => (
-                <Option key={option._id} value={option._id}>
+                <option key={option._id} value={option._id}>
                   {option.kz_subject}
-                </Option>
-              ))}
-            </Select> */}
-            <select
-              className={styles.subjectSelect}
-              value={selectedSubject}
-              onChange={setSelectedSubject}
-            >
-              <option value="">{language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}</option>
-              {subjects.map((subject) => (
-                <option key={subject._id} value={subject._id}>
-                  {language === 'kz' ? subject.kz_subject : subject.kz_subject}
                 </option>
               ))}
             </select>
