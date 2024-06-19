@@ -16,6 +16,7 @@ export const RoleSelectionForm = ({ onSelect, selectedRole }) => {
     setLoading(true);
     e.preventDefault();
     navigate('/login');
+    navigate('/login', { state: { selectedRole: selectedRole } });
     setLoading(false);
   };
 

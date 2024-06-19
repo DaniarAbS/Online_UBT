@@ -119,6 +119,12 @@ export const Teachers = () => {
         selectedLiteral || teachers.find((teacher) => teacher.id === selectedTeacherId)?.literal
     };
 
+    if (selectedSubject === 'SyntheticBaseEvent') {
+      setLoading(false);
+      return alert('Select a subject');
+    }
+
+    console.log('selectedSubject: ', selectedSubject);
     console.log('teacherId: ', selectedTeacherId);
     console.log(updatedTeacherData);
 
@@ -506,7 +512,7 @@ export const Teachers = () => {
           </Form.Item>
 
           <Form.Item name="Предмет">
-            <Select
+            {/* <Select
               style={{ width: '100%' }}
               value={selectedSubject}
               onChange={setSelectedSubject}
@@ -518,7 +524,19 @@ export const Teachers = () => {
                   {option.kz_subject}
                 </Option>
               ))}
-            </Select>
+            </Select> */}
+            <select
+              className={styles.subjectSelect}
+              value={selectedSubject}
+              onChange={setSelectedSubject}
+            >
+              <option value="">{language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}</option>
+              {subjects.map((subject) => (
+                <option key={subject._id} value={subject._id}>
+                  {language === 'kz' ? subject.kz_subject : subject.kz_subject}
+                </option>
+              ))}
+            </select>
           </Form.Item>
 
           <Form.Item name="email">

@@ -39,8 +39,8 @@ const GeneralProfile = () => {
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [selectedGroup, setSelectedGroup] = useState(null);
-  const [selectedLiteral, setSelectedLiteral] = useState(null);
-  const [subject, setSubject] = useState(null);
+  const [selectedLiteral, setSelectedLiteral] = useState('');
+  const [subject, setSubject] = useState('');
 
   const [loading, setLoading] = useState(false);
 
@@ -142,8 +142,8 @@ const GeneralProfile = () => {
           surname: surname,
           email: email,
           classNum: selectedGroup,
-          literal: selectedLiteral,
-          subject: subject
+          literal: selectedLiteral
+          // subject: subject
         };
         break;
       case 'student':
@@ -156,42 +156,44 @@ const GeneralProfile = () => {
         break;
     }
 
-    console.log(updatedUserData);
+    console.log('updated: ', updatedUserData);
 
     let response;
 
     try {
-      switch (parsedData.role) {
-        case 'admin':
-          response = await axios.put(
-            `https://ubt-server.vercel.app/admins/profile/${profession_id}`,
-            updatedUserData
-          );
-          console.log('Profile updated successfully', response.data);
-          setModalOpen(false);
-          break;
-        case 'teacher':
-          response = await axios.put(
-            `https://ubt-server.vercel.app/adminTeacher/${profession_id}`,
-            updatedUserData
-          );
-          console.log('Profile updated successfully', response.data);
-          setModalOpen(false);
-          break;
-        case 'student':
-          response = await axios.put(
-            `https://ubt-server.vercel.app/adminStudent/${profession_id}`,
-            updatedUserData
-          );
-          console.log('Profile updated successfully', response.data);
-          setModalOpen(false);
-          break;
-        default:
-          console.error('Your role is not defined');
-          break;
-      }
+      // switch (parsedData.role) {
+      //   case 'admin':
+      //     response = await axios.put(
+      //       `https://ubt-server.vercel.app/admins/profile/${profession_id}`,
+      //       updatedUserData
+      //     );
+      //     console.log('Profile updated successfully', response.data);
+      //     setModalOpen(false);
+      //     break;
+      //   case 'teacher':
+      //     response = await axios.put(
+      //       `https://ubt-server.vercel.app/teachers/${profession_id}`,
+      //       updatedUserData
+      //     );
+      //     console.log('Profile updated successfully', response.data);
+      //     setModalOpen(false);
+      //     break;
+      //   case 'student':
+      //     response = await axios.put(
+      //       `https://ubt-server.vercel.app/adminStudent/${profession_id}`,
+      //       updatedUserData
+      //     );
+      //     console.log('Profile updated successfully', response.data);
+      //     setModalOpen(false);
+      //     break;
+      //   default:
+      //     console.error('Your role is not defined');
+      //     alert('Your role is not defined');
+      //     break;
+      // }
     } catch (error) {
       console.error(error);
+      // alert(error);
     } finally {
       setLoading(false); // Stop loading
     }
@@ -249,6 +251,13 @@ const GeneralProfile = () => {
 
   const profileSubmit = () => {
     isModalOpen(false);
+  };
+
+  const generateClassNumbers = () => {
+    return Array.from({ length: 7 }, (_, index) => ({
+      value: (11 - index).toString(),
+      label: (11 - index).toString()
+    }));
   };
 
   return (
@@ -334,16 +343,16 @@ const GeneralProfile = () => {
                     message: 'Please input!'
                   }
                 ]}
-                className="form_select"
               >
                 <Select
                   style={{ width: '100%' }}
-                  placeholder="Выберите группу"
-                  allowClear
                   value={selectedGroup}
                   onChange={setSelectedGroup}
+                  placeholder="Выберите группу"
+                  allowClear
+                  dropdownStyle={{ maxHeight: 200, overflowY: 'auto' }}
                 >
-                  {group.map((option) => (
+                  {generateClassNumbers().map((option) => (
                     <Option key={option.value} value={option.value}>
                       {option.label}
                     </Option>
@@ -355,50 +364,21 @@ const GeneralProfile = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Please input!'
+                    message: 'Please input a single letter!'
+                  },
+                  {
+                    pattern: /^[a-z]$/,
+                    message: 'Literal must be a single lowercase letter!'
                   }
                 ]}
-                className="form_select"
               >
-                <Select
+                <Input
                   style={{ width: '100%' }}
                   placeholder="Выберите литерал"
-                  allowClear
                   value={selectedLiteral}
-                  onChange={setSelectedLiteral}
-                >
-                  {literal.map((option) => (
-                    <Option key={option.value} value={option.value}>
-                      {option.label}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                className="form_item"
-                name="subject1"
-                label="Выберите предмет"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input!'
-                  }
-                ]}
-                labelCol={{ span: 24 }}
-              >
-                <Select
-                  style={{ width: '100%' }}
-                  placeholder="Предмет"
-                  value={subject}
-                  onChange={(value) => setSubject(value)}
-                  allowClear
-                >
-                  {subjects.map((option) => (
-                    <Option key={option} value={option}>
-                      {option}
-                    </Option>
-                  ))}
-                </Select>
+                  onChange={(e) => setSelectedLiteral(e.target.value.toLowerCase())}
+                  maxLength={1}
+                />
               </Form.Item>
             </div>
           ) : (
