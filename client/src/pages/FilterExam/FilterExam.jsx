@@ -41,6 +41,22 @@ const FilterExam = () => {
     fetchSubject();
   }, []);
 
+  useEffect(() => {
+    const mandatorySubjectsIds = subjects
+      .filter(
+        (subject) =>
+          ['Грамотность чтения', 'Математическая грамотность', 'История Қазахстанa'].includes(
+            subject.ru_subject
+          ) ||
+          ['Оқу сауаттылығы', 'Математикалық сауаттылық', 'Қазақстан тарихы'].includes(
+            subject.kz_subject
+          )
+      )
+      .map((subject) => subject._id);
+
+    setSelectedSubjects(mandatorySubjectsIds);
+  }, [subjects]);
+
   const handleLanguageChange = (lang) => {
     setExamLanguage(lang);
   };
@@ -48,15 +64,23 @@ const FilterExam = () => {
   const toggleSubject = (subjectId) => {
     if (selectedSubjects.includes(subjectId)) {
       setSelectedSubjects(selectedSubjects.filter((id) => id !== subjectId));
-    } else {
+    } else if (selectedSubjects.length < 5 || selectedSubjects.slice(3).includes(subjectId)) {
       setSelectedSubjects([...selectedSubjects, subjectId]);
+    } else {
+      alert(
+        language === 'kz'
+          ? 'Тек қана 2 таңдамалы пәнді таңдауға болады.'
+          : 'Вы можете выбрать только 2 выборочных предмета.'
+      );
     }
   };
 
   async function handleSubmit() {
     setLoading(true);
-    if (selectedSubjects.length < 5) {
+
+    if (selectedSubjects.length !== 5) {
       alert('Выберите как минимум пять предметов, включая обязательные и выборочные.');
+      setLoading(false);
       return;
     }
 
@@ -140,7 +164,7 @@ const FilterExam = () => {
               {language === 'kz' ? 'Міндетті пәндер' : 'Обязательные предметы'}
             </h4>
             <div className={`col-8 table_item ${styles.chosingBtns}`}>
-              {mandatorySubjectsRu.map((subject) => (
+              {(language === 'kz' ? mandatorySubjectsKz : mandatorySubjectsRu).map((subject) => (
                 <button
                   key={subject._id}
                   className={styles.subjectButton}
@@ -157,13 +181,11 @@ const FilterExam = () => {
               {language === 'kz' ? 'Таңдамалы пәндер' : 'Выборочные предметы'}
             </h4>
             <div className={`col-8 table_item ${[styles.chosingBtns, styles.btnGap].join(' ')}`}>
-              {optionalSubjectsRu.map((subject) => (
+              {(language === 'kz' ? optionalSubjectsKz : optionalSubjectsRu).map((subject) => (
                 <button
                   key={subject._id}
                   onClick={() => toggleSubject(subject._id)}
-                  disabled={
-                    selectedSubjects.length === 5 && !selectedSubjects.includes(subject._id)
-                  }
+                  disabled={selectedSubjects.length >= 5 && !selectedSubjects.includes(subject._id)}
                   className={`${styles.subjectButton} ${selectedSubjects.includes(subject._id) ? styles.selected : styles.unselected}`}
                 >
                   {language === 'kz' ? subject.kz_subject : subject.ru_subject}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ROLES } from '../../App';
 import { ErrorDisplay } from '../../components/organism/ErrorDisplay/ErrorDisplay';
 import axios from 'axios';
@@ -15,7 +15,10 @@ export const LoginPage = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const selectedRole = location.state?.selectedRole || {};
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -36,6 +39,10 @@ export const LoginPage = ({ onLogin }) => {
       });
       console.log(response.data);
       const userRole = response.data.role;
+
+      if (selectedRole !== userRole) {
+        alert(`You will be redirected to ${userRole} page`);
+      }
 
       localStorage.setItem('user_data', JSON.stringify(response.data));
 
