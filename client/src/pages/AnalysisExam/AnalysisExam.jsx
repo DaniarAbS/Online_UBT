@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ReloadOutlined, FormOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { Input, DatePicker, Modal } from 'antd';
@@ -23,6 +23,7 @@ const ChangeButton = styled.button`
 export const AnalysisExam = () => {
   const { language } = useContext(LanguageContext);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [exams, setExams] = useState([]);
@@ -398,9 +399,13 @@ export const AnalysisExam = () => {
                         style={{ fontSize: '2rem' }}
                         onClick={() => showEditExam(exams._id)}
                       />
-                      <Link to="/exam_analyse">
-                        <img src={exitImg} alt="exit" />
-                      </Link>
+                      {/* <Link to="/exam_analyse"> */}
+                      <img
+                        src={exitImg}
+                        alt="see results"
+                        onClick={() => navigate('/exam_analyse', { state: { examId: exams._id } })}
+                      />
+                      {/* </Link> */}
                     </div>
                   </div>
                 </div>

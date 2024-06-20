@@ -214,7 +214,7 @@ export const ExamResults = () => {
 
   const maxDisplayItems = 10;
 
-  const studentResult = resultData.studentResult || {};
+  const studentResult = resultData.result || {};
   const subjects = studentResult.subjects || [];
 
   return (
@@ -225,6 +225,7 @@ export const ExamResults = () => {
           <Text color={colors.white}>Общий балл</Text>
           <Text type="large2xPlus" color={colors.white} fontWeight="500">
             {studentResult.overallScore}
+            {console.log('studentResult', studentResult.result)}
           </Text>
         </TwoTextButton>
         <TwoTextButton>
@@ -339,7 +340,7 @@ export const ExamResults = () => {
           ))}
         </AnalyseByTheme>
         <AnalyseByTheme style={{ justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+          {/* <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
             <Text>Топ 10 участников</Text>
             {resultData.top10.slice(0, maxDisplayItems).map((student, index) => (
               <AnalyseRow key={index}>
@@ -354,7 +355,7 @@ export const ExamResults = () => {
                 <Text>...</Text>
               </AnalyseRow>
             )}
-          </div>
+          </div> */}
           <AnalyseRow style={{ backgroundColor: '#009172', color: '#fff', padding: '1rem ' }}>
             <Text>
               {resultData.studentRank}. {studentResult.student?.name}{' '}

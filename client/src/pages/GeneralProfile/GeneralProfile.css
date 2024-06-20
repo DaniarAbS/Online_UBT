@@ -463,9 +463,10 @@
     height: 600px;
   }
 
-  .personal-info-container {
+  /* .personal-info-container {
     margin: 0 40px;
-  }
+  } */
+
   .personal {
     margin: 0 50px;
   }
@@ -527,8 +528,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 40px;
-    margin-left: -0px;
+    /* gap: 40px; */
+    margin: 0px;
   }
 
   .personal-info-header {
@@ -612,6 +613,7 @@
   .general {
     overflow-x: auto;
     white-space: nowrap;
+    width: 100%;
   }
 }
 
@@ -624,5 +626,9 @@
   .info-label,
   .info-value {
     font-size: 14px; /* smaller font size */
+  }
+
+  .personal-info-container {
+    padding-left: 30%;
   }
 }

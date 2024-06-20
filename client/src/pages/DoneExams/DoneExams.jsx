@@ -21,6 +21,8 @@ const DoneExam = () => {
           studentId: user_data.secondId
         };
 
+        console.log('studentId: ', studentId);
+
         try {
           const response = await axios.post(
             `https://ubt-server.vercel.app/students/getAllResultsForStudent`,

@@ -29,7 +29,7 @@ export const TestPage = () => {
   const examData = location.state?.examData || {};
   const startExam = location.state?.startExam || {};
 
-  const subjects = examData.questionsBySubject || [];
+  const subjects = examData.exam.subjects || [];
   const [selectedSubjectId, setSelectedSubjectId] = useState(subjects[0]?.id || '');
   const [selectedSubjectName, setSelectedSubjectName] = useState(subjects[0]?.subjectName || '');
   const [currentIndex, setCurrentIndex] = useState(0);
