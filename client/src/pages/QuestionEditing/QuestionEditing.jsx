@@ -1,4 +1,4 @@
-import styles from './TaskAdding.module.css';
+import styles from './QuestionEditing.module.css';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
@@ -7,23 +7,13 @@ import Input from 'antd/es/input/Input';
 import AddImage from '../../assets/icons/add_image_icon.png';
 import axios from 'axios';
 import config from '../../../config';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import Loader from '../../components/organism/Loader/Loader';
 import { LanguageContext } from '../../contexts/LanguageContext';
 
-const TruncatedText = styled.span`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 250px; /* Adjust this width according to your needs */
-  font-size: ${sizes.small};
-`;
-
-export const TaskAdding = () => {
-  const [visibleItemIndex, setVisibleItemIndex] = useState(-1);
-  const [selectedDiv, setSelectedDiv] = useState(null);
+export const QuestionEditing = () => {
   const [lastClickedButton, setLastClickedButton] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
@@ -43,6 +33,19 @@ export const TaskAdding = () => {
 
   const [language, setLanguage] = useState('kz');
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const questionData = location.state?.questionData || {};
+  console.log('questionData', questionData);
+
+  useEffect(() => {
+    setQuestion(questionData.question);
+    setAnswers(questionData.options);
+    setImage(questionData.image);
+    setType(questionData.point);
+    setLastClickedButton(questionData.point);
+    setLanguage(questionData.language);
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -181,22 +184,25 @@ export const TaskAdding = () => {
     }
 
     const questionType = type === 1 ? 'onePoint' : 'twoPoints';
-    const newQuestion = {
-      type: questionType,
-      topicId: selectedTopic,
-      question,
+    const editedQuestion = {
+      question: question,
       image: image ? URL.createObjectURL(image) : '',
       options: answers,
-      correctOptions,
+      type: questionType,
+      topicId: selectedTopic,
       language: language
     };
 
-    console.log('newQuestion', newQuestion);
+    console.log('editedQuestion', editedQuestion);
 
     try {
-      const response = await axios.post(`${config.baseURL}/question/add`, newQuestion);
+      const response = await axios.put(
+        `${config.baseURL}/question/${questionData._id}`,
+        editedQuestion
+      );
       console.log(response.data);
       handleReset();
+      navigate('/question_list');
     } catch (error) {
       console.error(error);
     } finally {

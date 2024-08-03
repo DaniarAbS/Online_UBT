@@ -11,6 +11,7 @@ import QuestionBar from '../../components/organism/QuestionBar/QuestionsBar';
 import { Text } from '../../components/atoms/CustomText/CustomText';
 import axios from 'axios';
 import './TestPage.css';
+import moment from 'moment';
 
 import Loader from '../../components/organism/Loader/Loader';
 
@@ -28,6 +29,7 @@ export const TestPage = () => {
   const navigate = useNavigate();
   const examData = location.state?.examData || {};
   const startExam = location.state?.startExam || {};
+  const startedAt = location.state?.startedAt || {};
 
   const subjects = examData.exam.subjects || [];
   const [selectedSubjectId, setSelectedSubjectId] = useState(subjects[0]?.id || '');
@@ -35,6 +37,7 @@ export const TestPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(3 * 60 * 60);
 
   const [loading, setLoading] = useState(false);
 
@@ -43,6 +46,14 @@ export const TestPage = () => {
 
   useEffect(() => {
     clearLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -88,6 +99,7 @@ export const TestPage = () => {
   const handleNext = async () => {
     setLoading(true);
     await saveAnswerToLocalStorage();
+    console.log(localStorage.getItem('answers'));
     if (currentIndex < selectedQuestions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
       const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${currentIndex + 1}`);
@@ -156,6 +168,17 @@ export const TestPage = () => {
     setAnsweredQuestions((prev) => [...new Set([...prev, currentIndex])]);
   };
 
+  const formatDate = () => {
+    return moment().format('HH:mm DD/MM/YY');
+  };
+
+  const formatTime = (seconds) => {
+    const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    return `${h}:${m}:${s}`;
+  };
+
   const saveAnswerToLocalStorage = async () => {
     const currentQuestion = selectedQuestions[currentIndex];
     const answerData = {
@@ -221,9 +244,14 @@ export const TestPage = () => {
 
   const handleConfirm = async () => {
     setLoading(true);
+    const timeSpent = 3 * 60 * 60 - timeLeft;
+    const finishedAt = formatDate();
     const resultData = {
       examId: startExam.examId,
       studentId: startExam.studentId
+      // startedAt: startedAt,
+      // finishedAt: finishedAt,
+      // timeSpent: timeSpent
     };
 
     console.log('resultData', resultData);
@@ -331,6 +359,9 @@ export const TestPage = () => {
             <div className="givenTaskContainer">
               <div className="mainInfo">
                 <Text weight="700">{`${selectedSubjectName}. Вопрос ${currentIndex + 1} из ${selectedQuestions.length}`}</Text>
+                <div className="timerContainer">
+                  <TextIcon bgColor="white" text={formatTime(timeLeft)} color="black" />
+                </div>
               </div>
               <div className="questionContainer">
                 <Text type="large" weight="400">

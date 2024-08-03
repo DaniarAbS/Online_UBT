@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Link, useNavigate, useParams } from 'react-router-dom';
 import accountCircleImg from '../../assets/imgs/account_circle.png';
 import passwordImg from '../../assets/imgs/password.jpg';
 import navigationImg1 from '../../assets/imgs/navigation.png';
@@ -8,7 +7,7 @@ import navigationImg2 from '../../assets/imgs/navigation.png';
 import editImg from '../../assets/imgs/edit.png';
 import hiddenImg from '../../assets/imgs/hidden.png';
 import visibilityImg from '../../assets/imgs/visibility.png';
-import { subjects, group, literal } from '../../data/data';
+import { LanguageContext } from '../../contexts/LanguageContext';
 import './GeneralProfile.css';
 
 import { Modal, Button, Form, Input, Select } from 'antd';
@@ -43,6 +42,7 @@ const GeneralProfile = () => {
   const [subject, setSubject] = useState('');
 
   const [loading, setLoading] = useState(false);
+  const { language } = useContext(LanguageContext);
 
   let parsed;
   const profession_id = parsedData.secondId;
@@ -69,10 +69,14 @@ const GeneralProfile = () => {
             );
             const { user, class: classInfo } = response.data;
 
-            // const responseSubject = await axios.get(
-            //   `https://ubt-server.vercel.app/subjects/${response.data.subject}`
-            // );
-            // console.log('subject', responseSubject.data);
+            const responseSubject = await axios.get(
+              `https://ubt-server.vercel.app/subjects/${response.data.subject}`
+            );
+            console.log('subject', responseSubject.data);
+            let teacherSubject;
+            language == 'kz'
+              ? (teacherSubject = responseSubject.data.kz_subject)
+              : (teacherSubject = responseSubject.data.ru_subject);
             setData({
               email: user.email,
               name: user.name,
@@ -80,7 +84,7 @@ const GeneralProfile = () => {
               password: user.password,
               class: classInfo.class,
               literal: classInfo.literal,
-              subject: response.data.subject
+              subject: teacherSubject
             });
             localStorage.setItem('teacherSubject', response.data.subject);
             break;
@@ -201,22 +205,74 @@ const GeneralProfile = () => {
 
   async function handleUpdatePassword() {
     setLoading(true);
-    const updatedPassword = {
-      oldPassword: currentPassword,
-      newPassword: newPassword
-    };
+    let updatedPassword;
+    switch (parsedData.role) {
+      case 'admin':
+        updatedPassword = {
+          oldPassword: currentPassword,
+          newPassword: newPassword
+        };
+        break;
+      case 'teacher':
+        updatedPassword = {
+          oldPassword: currentPassword,
+          password: newPassword
+        };
+        break;
+      // case 'student':
+      //   updatedUserData = {
+      //     name: name,
+      //     surname: surname,
+      //     email: email
+      //   };
+      default:
+        break;
+    }
+
+    console.log('updated: ', updatedPassword);
+
+    let response;
 
     try {
-      const response = await axios.put(
-        `https://ubt-server.vercel.app/admins/password/${profession_id}`,
-        updatedPassword
-      );
-      console.log('Password updated successfully', response.data);
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
+      switch (parsedData.role) {
+        case 'admin':
+          response = await axios.put(
+            `https://ubt-server.vercel.app/admins/password/${profession_id}`,
+            updatedPassword
+          );
+          console.log('Password updated successfully', response.data);
+          setCurrentPassword('');
+          setNewPassword('');
+          setConfirmPassword('');
+          setModalOpen(false);
+          break;
+        case 'teacher':
+          response = await axios.put(
+            `https://ubt-server.vercel.app/teachers/password/${profession_id}`,
+            updatedPassword
+          );
+          console.log('Password updated successfully', response.data);
+          setCurrentPassword('');
+          setNewPassword('');
+          setConfirmPassword('');
+          setModalOpen(false);
+          break;
+        // case 'student':
+        //   response = await axios.put(
+        //     `https://ubt-server.vercel.app/adminStudent/${profession_id}`,
+        //     updatedUserData
+        //   );
+        //   console.log('Profile updated successfully', response.data);
+        //   setModalOpen(false);
+        //   break;
+        default:
+          console.error('Your role is not defined');
+          alert('Your role is not defined');
+          break;
+      }
     } catch (error) {
       console.error(error);
+      // alert(error);
     } finally {
       setLoading(false); // Stop loading
     }
@@ -403,14 +459,14 @@ const GeneralProfile = () => {
           <div className="nav1">
             <button onClick={() => setActiveSection('personalInfo')}>
               <img src={accountCircleImg} />
-              <p>Персональная информация</p>
+              <p>{language == 'kz' ? 'Жеке мәліметтер' : 'Персональная информация'}</p>
               <img src={navigationImg1} />
             </button>
           </div>
           <div className="nav2">
             <button onClick={() => setActiveSection('updatePassword')}>
               <img src={passwordImg} />
-              <p>Обновить пароль</p>
+              <p>{language == 'kz' ? 'Құпия сөзді жаңарту' : 'Обновить пароль'}</p>
               <img src={navigationImg2} />
             </button>
           </div>
@@ -422,18 +478,20 @@ const GeneralProfile = () => {
               <hr />
               <div className="personal">
                 <div className="personal-info-header">
-                  <p>Персональная информация</p>
+                  <p>{language == 'kz' ? 'Жеке мәліметтер' : 'Персональная информация'}</p>
                   <img onClick={openModal} src={editImg} />
                 </div>
                 <div className="personal-info-grid">
                   <div className="info-box">
-                    <div className="info-label">Имя-фамилия</div>
+                    <div className="info-label">
+                      {language == 'kz' ? 'Аты-жөні' : 'Имя-фамилия'}
+                    </div>
                     <div className="info-value">
                       {data.name} {data.surname}
                     </div>
                   </div>
                   <div className="info-box">
-                    <div className="info-label">Почта</div>
+                    <div className="info-label">{language == 'kz' ? 'Пошта' : 'Почта'}</div>
                     <div className="info-value">{data.email}</div>
                   </div>
                   {parsedData.role === 'admin' ? (
@@ -444,7 +502,7 @@ const GeneralProfile = () => {
                         ''
                       ) : (
                         <div className="info-box">
-                          <div className="info-label">ИИН</div>
+                          <div className="info-label">{language == 'kz' ? 'ЖСН' : 'ИИН'}</div>
                           <div className="info-value">{data.inn}</div>
                         </div>
                       )}
@@ -456,10 +514,14 @@ const GeneralProfile = () => {
                         <div className="info-label">Литерал</div>
                         <div className="info-value">{data.literal}</div>
                       </div>
-                      <div className="info-box">
-                        <div className="info-label">Предмет</div>
-                        <div className="info-value">{data.subject}</div>
-                      </div>
+                      {parsedData.role === 'student' ? (
+                        ''
+                      ) : (
+                        <div className="info-box">
+                          <div className="info-label">{language == 'kz' ? 'Пән' : 'Предмет'}</div>
+                          <div className="info-value">{data.subject}</div>
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
@@ -472,7 +534,9 @@ const GeneralProfile = () => {
           <div className="updatePasswordGeneral">
             <hr />
             <div className="password-update-container">
-              <p className="password-update-header">Обновить пароль</p>
+              <p className="password-update-header">
+                {language == 'kz' ? 'Құпия сөзді жаңарту' : 'Обновить пароль'}
+              </p>
               <form onSubmit={handleSubmitPassword} className="password-update-form">
                 <div
                   className={`form-group ${
@@ -489,7 +553,9 @@ const GeneralProfile = () => {
                     onClick={() => handleVisibility('pass1')}
                     src={visibility.pass1.visible == false ? hiddenImg : visibilityImg}
                   />
-                  <label htmlFor="current-password">Текущий пароль*</label>
+                  <label htmlFor="current-password">
+                    {language == 'kz' ? 'Қазіргі құпия сөз' : 'Текущий пароль'}*
+                  </label>
                 </div>
                 <div
                   className={`form-group ${focused.newPassword || newPassword ? 'focused' : ''}`}
@@ -504,7 +570,9 @@ const GeneralProfile = () => {
                     onClick={() => handleVisibility('pass2')}
                     src={visibility.pass2.visible == false ? hiddenImg : visibilityImg}
                   />
-                  <label htmlFor="newPassword">Новый пароль*</label>
+                  <label htmlFor="newPassword">
+                    {language == 'kz' ? 'Жаңа құпия сөз' : 'Новый пароль'}*
+                  </label>
                 </div>
                 <div
                   className={`form-group ${
@@ -521,9 +589,11 @@ const GeneralProfile = () => {
                     onClick={() => handleVisibility('pass3')}
                     src={visibility.pass3.visible == false ? hiddenImg : visibilityImg}
                   />
-                  <label htmlFor="confirmPassword">Подтвердите пароль* </label>
+                  <label htmlFor="confirmPassword">
+                    {language == 'kz' ? 'Құпия сөзді қайталау' : 'Потвердите пароль'}*{' '}
+                  </label>
                 </div>
-                <button type="submit">Изменить</button>
+                <button type="submit">{language == 'kz' ? 'Өзгерту' : 'Изменить'}</button>
               </form>
             </div>
           </div>

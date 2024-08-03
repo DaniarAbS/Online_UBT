@@ -354,7 +354,7 @@ export const AnalysisExam = () => {
           <h3>{language == 'kz' ? 'Экзамендер' : 'Экзамены'}</h3>
           <div className={styles.searchBar}>
             <DatePicker
-              placeholder={language == 'kz' ? 'Басталу уаұыт' : 'Поиск по начальной дате'}
+              placeholder={language == 'kz' ? 'Басталу уақыт' : 'Поиск по начальной дате'}
               onChange={handleStartSearchDateChange}
               style={{ marginLeft: '10px' }}
             />

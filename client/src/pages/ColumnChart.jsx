@@ -1,46 +1,52 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto'; // Import Chart from the 'chart.js/auto' module
-import { studentsData } from '../data/data';
 
-export const ColumnChart = () => {
+export const ColumnChart = ({ data }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
     const ctx = chartRef.current.getContext('2d');
 
+    // Sort the data by overallScore in descending order and take the top 10
+    const top10Students = data.sort((a, b) => b.overallScore - a.overallScore).slice(0, 10);
+
     const myChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: studentsData.map(student => student.name),
-        datasets: [{
-          data: studentsData.map(student => student.point),
-          backgroundColor: '#009172',
-          borderWidth: 1,
-        }]
+        labels: top10Students.map(
+          (student) => `${student.student.name} ${student.student.surname}`
+        ),
+        datasets: [
+          {
+            data: top10Students.map((student) => student.overallScore),
+            backgroundColor: '#009172',
+            borderWidth: 1
+          }
+        ]
       },
       options: {
         indexAxis: 'y',
         scales: {
           x: {
             beginAtZero: true,
-            max: 140,
+            max: 140
           },
           y: {
-            beginAtZero: true,
+            beginAtZero: true
           }
         },
         plugins: {
-            legend: {
-              display: false, // Hide the legend
-            },
-            datalabels: {
-              anchor: 'end', // Position the label at the end of the bar
-              align: 'end',
-              color: '#fff', // Label color
-              offset: 4, // Distance from the end of the bar
-              formatter: (value) => value, // Display the value
-            }
+          legend: {
+            display: false // Hide the legend
+          },
+          datalabels: {
+            anchor: 'end', // Position the label at the end of the bar
+            align: 'end',
+            color: '#fff', // Label color
+            offset: 4, // Distance from the end of the bar
+            formatter: (value) => value // Display the value
           }
+        }
       }
     });
 
@@ -48,7 +54,7 @@ export const ColumnChart = () => {
     return () => {
       myChart.destroy();
     };
-  }, []); // Empty dependency array ensures that this effect runs only once after the initial render
+  }, [data]); // Dependency array now includes data to re-render chart when data changes
 
   return (
     <div>

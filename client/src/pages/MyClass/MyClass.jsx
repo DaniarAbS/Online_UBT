@@ -5,6 +5,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Modal, Button, Form, Input, Select } from 'antd';
 import axios from 'axios';
 import styles from './MyClass.module.css';
+import { useNavigate } from 'react-router-dom';
 
 import config from '../../../config';
 
@@ -67,6 +68,7 @@ const MyClassTable = () => {
 
   const [loading, setLoading] = useState(false);
   const { language } = useContext(LanguageContext);
+  const navigate = useNavigate();
 
   async function fetchStudents() {
     setLoading(true);
@@ -274,6 +276,11 @@ const MyClassTable = () => {
     setSurname('');
     setInn('');
     setEmail('');
+  };
+
+  const handleStudentClick = (id) => {
+    localStorage.setItem('studentId', id);
+    navigate('/done_exams');
   };
 
   return (
@@ -554,7 +561,7 @@ const MyClassTable = () => {
               <div className="container">
                 <div className="row table_row">
                   {/* <div className="col-1 table_items">ID</div> */}
-                  <div className="col-2 table_items">{language == 'kz' ? 'И' : 'Фамилия'}</div>
+                  <div className="col-2 table_items">{language == 'kz' ? 'Аты' : 'Имя'}</div>
                   <div className="col-2 table_items">{language == 'kz' ? 'Тегі' : 'Фамилия'}</div>
                   <div className="col-2 table_items">{language == 'kz' ? 'ЖСН' : 'ИИН'}</div>
                   <div className="col-3 table_items">Gmail</div>
@@ -567,7 +574,9 @@ const MyClassTable = () => {
                     <div className="col-2 table_items">{student.inn}</div>
                     <div className="col-3 table_items">{student.email}</div>
                     <div className="col-1 table_items">
-                      <Link to="/done_exams">{language == 'kz' ? 'Толығырақ' : 'Подробнее'}</Link>
+                      <button onClick={() => handleStudentClick(student.id)}>
+                        {language == 'kz' ? 'Толығырақ' : 'Подробнее'}
+                      </button>
                     </div>
                     <div className="col-1 table_items">
                       <div style={{ display: 'flex', gap: '2rem' }}>

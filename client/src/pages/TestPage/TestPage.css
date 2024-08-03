@@ -215,6 +215,12 @@
   border-radius: 50%;
 }
 
+.timerContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0;
+}
+
 @media screen and (max-width: 1400px) {
   .responsiveContainer {
     display: none;

@@ -1,19 +1,49 @@
 import './Exam.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useContext } from 'react';
 import timeIcon from '../../assets/img/icons/time-icon.svg';
 import dateIcon from '../../assets/img/icons/date-icon.svg';
+import axios from 'axios';
+import { useState } from 'react';
 import { LanguageContext } from '../../contexts/LanguageContext';
+import Loader from '../../components/organism/Loader/Loader';
 
 const FinishedExam = ({
   // time, day,
-  points
+  points,
+  studentId,
+  examId
 }) => {
   const { language } = useContext(LanguageContext);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const GetResultByIds = async () => {
+    setLoading(true);
+    const resultData = {
+      studentId: studentId,
+      examId: examId
+    };
+    console.log('results', resultData);
+    try {
+      const response = await axios.post(
+        'https://ubt-server.vercel.app/students/getResult',
+        resultData
+      );
+      console.log('total result: ', response.data);
+      navigate('/exam_results', { state: { resultData: response.data } });
+    } catch (error) {
+      console.error('Error getting result:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
+      {loading && <Loader />}
       <li className="exams__card">
         <div className="exams__card-title">ЕНТ</div>
         {/* <div className="exams__card__list">
@@ -38,7 +68,7 @@ const FinishedExam = ({
           </div>
         </div>
         <div className="exams__card__button">
-          <Link to="/exam_results" className="exams__card__button-btn main__btn">
+          <Link onClick={GetResultByIds} className="exams__card__button-btn main__btn">
             {language == 'kz' ? 'Қосымша' : 'Подробнее'}
           </Link>
         </div>
