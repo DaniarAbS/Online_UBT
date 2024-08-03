@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './FilterExam.module.css';
+import moment from 'moment';
 
 import { LanguageContext } from '../../contexts/LanguageContext';
 import Loader from '../../components/organism/Loader/Loader';
@@ -75,6 +76,10 @@ const FilterExam = () => {
     }
   };
 
+  const formatDate = () => {
+    return moment().format('HH:mm DD/MM/YY');
+  };
+
   async function handleSubmit() {
     setLoading(true);
 
@@ -98,8 +103,12 @@ const FilterExam = () => {
         'https://ubt-server.vercel.app/students/startExam/',
         startExam
       );
+      const startedAt = formatDate();
       console.log('response:', response);
-      navigate('/test', { state: { examData: response.data, startExam: startExam } });
+      console.log('startedAt', startedAt);
+      navigate('/test', {
+        state: { examData: response.data, startExam: startExam, startedAt: startedAt }
+      });
     } catch (error) {
       console.error(error);
       alert(error.response.data.message);

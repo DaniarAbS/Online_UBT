@@ -1,16 +1,12 @@
-// AnalyseTotal.js
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Text } from '../../atoms/CustomText/CustomText';
 import { colors } from '../../../base/colors';
 import { ColumnChart } from '../../../pages/ColumnChart';
-import { studentsData } from '../../../data/data';
 import { CustomButton } from '../../atoms/CustomButton/CustomButton';
 import axios from 'axios';
 import styles from './AnalyseTotal.module.css';
-
 import Loader from '../Loader/Loader';
-
 import { useLocation } from 'react-router-dom';
 
 const ChangeButton = styled.button`
@@ -23,21 +19,31 @@ const ChangeButton = styled.button`
 export const AnalyseTotal = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-
-  const filteredAndSortedStudents = studentsData
-    .filter((student) => student.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    .sort((a, b) => b.point - a.point);
-  const location = useLocation();
   const [loading, setLoading] = useState(false);
-  const [examResults, setExamResults] = useState(false);
+  const [examResults, setExamResults] = useState([]);
+  const [metrics, setMetrics] = useState(null);
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState('');
 
+  const location = useLocation();
   const examId = location.state?.examId || {};
-
   const itemsPerPage = 10;
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, filteredAndSortedStudents.length);
-  const visibleData = filteredAndSortedStudents.slice(startIndex, endIndex);
 
+  // Fetch subjects
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get('https://ubt-server.vercel.app/subjects/');
+        setSubjects(response.data);
+      } catch (error) {
+        console.error('Error fetching subjects:', error);
+      }
+    };
+
+    fetchSubjects();
+  }, []);
+
+  // Fetch exam results
   async function getAllResultForExam() {
     setLoading(true);
     const filterData = {
@@ -50,6 +56,8 @@ export const AnalyseTotal = () => {
         filterData
       );
       console.log(response.data);
+      setExamResults(response.data.results);
+      setMetrics(response.data.metrics);
     } catch (error) {
       console.error(error);
     } finally {
@@ -77,7 +85,38 @@ export const AnalyseTotal = () => {
     setSearchQuery(e.target.value);
   };
 
+  const handleSubjectChange = (e) => {
+    setSelectedSubject(e.target.value);
+  };
+
+  // Filter and sort students
+  const filteredAndSortedStudents = examResults
+    .filter((student) =>
+      `${student.student.name} ${student.student.surname}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => b.overallScore - a.overallScore);
+
+  // Pagination
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, filteredAndSortedStudents.length);
+  const visibleData = filteredAndSortedStudents.slice(startIndex, endIndex);
   const rangeText = `${startIndex + 1}-${endIndex} из ${filteredAndSortedStudents.length}`;
+
+  // Filter top 10 students by selected subject
+  const top10BySubject = selectedSubject
+    ? examResults
+        .filter((student) => student.subjects.some((subject) => subject.name === selectedSubject))
+        .sort((a, b) => {
+          const scoreA =
+            a.subjects.find((subject) => subject.name === selectedSubject)?.totalPoints || 0;
+          const scoreB =
+            b.subjects.find((subject) => subject.name === selectedSubject)?.totalPoints || 0;
+          return scoreB - scoreA;
+        })
+        .slice(0, 10)
+    : examResults.slice(0, 10);
 
   return (
     <>
@@ -87,36 +126,37 @@ export const AnalyseTotal = () => {
           <Text fontSize="30px" weight="bold">
             Анализ экзамена
           </Text>
-          {/* <div className={styles.buttonsContainer}>
-          <div className={styles.buttonContainer}>
-            <Button onClick={() => onPartChange('public')}>Общие</Button>
-            <Button onClick={() => onPartChange('subjects')}>Предметы</Button>
-            <Button onClick={() => onPartChange('themes')}>Темы</Button>
-          </div>
-        </div> */}
         </div>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', padding: '1rem' }}>
-          <div className={styles.twoTextButton}>
-            <Text>Средний балл</Text>
-            <Text>59/140</Text>
+        {metrics ? (
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', padding: '1rem' }}>
+            <div className={styles.twoTextButton}>
+              <Text>Средний балл</Text>
+              <Text>{Math.round(metrics.averageScore)}</Text>
+            </div>
+            <div className={styles.twoTextButton}>
+              <Text>Средний процент</Text>
+              <Text>{Math.round(metrics.averagePercent)}%</Text>
+            </div>
+            <div className={styles.twoTextButton}>
+              <Text>Количество участников</Text>
+              <Text>{metrics.totalStudents}</Text>
+            </div>
           </div>
-          <div className={styles.twoTextButton}>
-            <Text>Средний балл</Text>
-            <Text>59/140</Text>
-          </div>
-          <div className={styles.twoTextButton}>
-            <Text>Средний балл</Text>
-            <Text>59/140</Text>
-          </div>
+        ) : (
+          <Text>Loading metrics...</Text>
+        )}
+        <div>
+          <label htmlFor="subjectFilter">Фильтр по предмету: </label>
+          <select id="subjectFilter" value={selectedSubject} onChange={handleSubjectChange}>
+            <option value="">Все предметы</option>
+            {subjects.map((subject) => (
+              <option key={subject._id} value={subject.kz_subject}>
+                {subject.kz_subject}
+              </option>
+            ))}
+          </select>
         </div>
-        {/* <div className={styles.filterContent}>
-        <Text>Топ 10 по предмету</Text>
-        <ChooseSubject iconWidth="10rem" options={subjectArr} />
-        <Text>и среди классов</Text>
-        <ChooseSubject iconWidth="10rem" options={subjectArr} />
-        <Text>INNOVERSE SCHOOL</Text>
-      </div> */}
-        <ColumnChart />
+        <ColumnChart data={top10BySubject} />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div className={styles.tableHeader}>
             <div className={styles.twoElementContainer}>
@@ -159,18 +199,16 @@ export const AnalyseTotal = () => {
             <div className="container">
               <div className="row table_row">
                 <div className="col-1 table_items">#</div>
-                <div className="col-4 table_items">Имя фамилия</div>
+                <div className="col-6 table_items">Имя фамилия</div>
                 <div className="col-2 table_items">Средний балл</div>
                 <div className="col-2 table_items">Класс</div>
-                <div className="col-2 table_items">Действия</div>
               </div>
-              {visibleData.map((studentsData, index) => (
+              {visibleData.map((studentData, index) => (
                 <div className="row table_row" key={index}>
                   <div className="col-1 table_items">{startIndex + index + 1}</div>
-                  <div className="col-4 table_items">{studentsData.name}</div>
-                  <div className="col-2 table_items">{studentsData.point}</div>
-                  <div className="col-2 table_items">{studentsData.group}</div>
-                  <div className="col-2 table_items">Подробнее</div>
+                  <div className="col-6 table_items">{`${studentData.student.name} ${studentData.student.surname}`}</div>
+                  <div className="col-2 table_items">{studentData.overallScore}</div>
+                  <div className="col-2 table_items">{studentData.student.group}</div>
                 </div>
               ))}
             </div>
@@ -188,7 +226,6 @@ export const AnalyseTotal = () => {
             </div>
           </div>
         </div>
-        {/* <PointChart /> */}
       </div>
     </>
   );

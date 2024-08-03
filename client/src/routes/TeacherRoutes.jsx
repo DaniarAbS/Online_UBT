@@ -8,7 +8,10 @@ import SubjectAnalysisForm from '../pages/SubjectAnalysisForm/SubjectAnaysisForm
 import TeacherLayout from '../layouts/TeacherLayout';
 import DoneExam from '../pages/DoneExams/DoneExams';
 import { ExamResults } from '../pages/ExamResults/ExamResults';
+import { QuestionList } from '../pages/QuestionList/QuestionList';
+import { QuestionEditing } from '../pages/QuestionEditing/QuestionEditing';
 import GeneralProfile from '../pages/GeneralProfile/GeneralProfile';
+import ClassDoneExam from '../pages/ClassDoneExams/ClassDoneExams';
 
 const TeacherRoutes = ({ navigateToLogin }) => {
   return (
@@ -19,7 +22,9 @@ const TeacherRoutes = ({ navigateToLogin }) => {
         <Route path="/question_base" element={<QuestionDatabase />} />
         <Route path="/subject_analyse" element={<SubjectAnalysisForm />} />
         <Route path="/new_task" element={<TaskAdding />} />
-        <Route path="/done_exams" element={<DoneExam />} />
+        <Route path="/question_list" element={<QuestionList />} />
+        <Route path="/question_edit" element={<QuestionEditing />} />
+        <Route path="/done_exams" element={<ClassDoneExam />} />
         <Route path="/exam_results" element={<ExamResults />} />
         <Route path="/profile" element={<GeneralProfile />} />
       </Routes>

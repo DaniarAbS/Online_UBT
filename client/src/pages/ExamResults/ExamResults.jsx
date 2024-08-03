@@ -6,6 +6,7 @@ import styles from './ExamResults.module.css';
 import { CustomButton } from '../../components/atoms/CustomButton/CustomButton';
 import { ArrowDownOutlined } from '@ant-design/icons';
 import { PointChart } from '../PointChart.jsx';
+import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 
 const ResultPoints = styled.div`
@@ -210,7 +211,6 @@ const formatPercentage = (percent) => {
 export const ExamResults = () => {
   const location = useLocation();
   const resultData = location.state?.resultData || {};
-  console.log('resultData', resultData);
 
   const maxDisplayItems = 10;
 
@@ -251,9 +251,9 @@ export const ExamResults = () => {
         <GeneralInfo>
           <InfoRow>
             <Text type="medium">Имя-Фамилия</Text>
-            <Text type="medium">
-              {studentResult.student?.name} {studentResult.student?.surname}
-            </Text>
+            {/* <Text type="medium">
+              {studentResult.student.user?.name} {studentResult.student.user?.surname}
+            </Text> */}
           </InfoRow>
           <InfoRow>
             <Text type="medium">Экзамен</Text>
@@ -261,15 +261,18 @@ export const ExamResults = () => {
           </InfoRow>
           <InfoRow>
             <Text type="medium">Дата начала</Text>
-            <Text type="medium"></Text>
+            <Text type="medium">{moment(studentResult.createdAt).format('YYYY-MM-DD HH:mm')}</Text>
           </InfoRow>
           <InfoRow>
             <Text type="medium">Дата завершения</Text>
-            <Text type="medium"></Text>
+            <Text type="medium">{moment(studentResult.finishedAt).format('YYYY-MM-DD HH:mm')}</Text>
           </InfoRow>
           <InfoRow>
-            <Text type="medium">1 часа 20 минут</Text>
-            <Text type="medium"></Text>
+            <Text type="medium">Продолжительность</Text>
+            <Text type="medium">
+              {studentResult.durationInHours}:{studentResult.durationInMinutes}:
+              {studentResult.durationInSeconds}
+            </Text>
           </InfoRow>
         </GeneralInfo>
         <SuccessIndicator>
@@ -315,7 +318,7 @@ export const ExamResults = () => {
                       backgroundColor: result.isCorrect ? 'green' : 'red'
                     }}
                     key={buttonIndex}
-                  >{`${result.questionNumber}`}</button>
+                  >{`${result.questionNumber ? result.questionNumber : buttonIndex + 1}`}</button>
                 ))}
               </ScrollContainer>
             </div>
@@ -340,26 +343,26 @@ export const ExamResults = () => {
           ))}
         </AnalyseByTheme>
         <AnalyseByTheme style={{ justifyContent: 'space-between' }}>
-          {/* <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
             <Text>Топ 10 участников</Text>
-            {resultData.top10.slice(0, maxDisplayItems).map((student, index) => (
+            {resultData.top10Results.slice(0, maxDisplayItems).map((student, index) => (
               <AnalyseRow key={index}>
                 <Text>
-                  {index + 1}. {student.student.name}
+                  {index + 1}. {student.name}
                 </Text>
-                <Text>{student.overallScore}</Text>
+                <Text>{student.overallPoint}</Text>
               </AnalyseRow>
             ))}
-            {resultData.top10.length > maxDisplayItems && (
+            {resultData.top10Results.length > maxDisplayItems && (
               <AnalyseRow>
                 <Text>...</Text>
               </AnalyseRow>
             )}
-          </div> */}
+          </div>
           <AnalyseRow style={{ backgroundColor: '#009172', color: '#fff', padding: '1rem ' }}>
             <Text>
-              {resultData.studentRank}. {studentResult.student?.name}{' '}
-              {studentResult.student?.surname}
+              {resultData.studentRank}. {studentResult.student.user?.name}{' '}
+              {studentResult.student.user?.surname}
             </Text>
             <Text>{studentResult.overallScore}</Text>
           </AnalyseRow>
