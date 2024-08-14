@@ -20,16 +20,30 @@ export const AnalyseTotal = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [classes, setClasses] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState('');
   const [examResults, setExamResults] = useState([]);
   const [metrics, setMetrics] = useState(null);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
+  const [filterBy, setFilterBy] = useState('subject');
 
   const location = useLocation();
   const examId = location.state?.examId || {};
   const itemsPerPage = 10;
 
-  // Fetch subjects
+  async function fetchClasses() {
+    setLoading(true);
+    try {
+      const response = await axios.get(`https://ubt-server.vercel.app/class`);
+      setClasses(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
@@ -41,21 +55,19 @@ export const AnalyseTotal = () => {
     };
 
     fetchSubjects();
+    fetchClasses();
   }, []);
 
-  // Fetch exam results
   async function getAllResultForExam() {
     setLoading(true);
     const filterData = {
       examId: examId
     };
-
     try {
       const response = await axios.post(
         'https://ubt-server.vercel.app/admins/getAllResultForExam',
         filterData
       );
-      console.log(response.data);
       setExamResults(response.data.results);
       setMetrics(response.data.metrics);
     } catch (error) {
@@ -78,7 +90,7 @@ export const AnalyseTotal = () => {
   };
 
   const handleSearch = () => {
-    setCurrentPage(0); // Reset page when searching
+    setCurrentPage(0);
   };
 
   const handleInputChange = (e) => {
@@ -89,7 +101,10 @@ export const AnalyseTotal = () => {
     setSelectedSubject(e.target.value);
   };
 
-  // Filter and sort students
+  const handleClassChange = (e) => {
+    setSelectedClasses(e.target.value);
+  };
+
   const filteredAndSortedStudents = examResults
     .filter((student) =>
       `${student.student.name} ${student.student.surname}`
@@ -98,13 +113,11 @@ export const AnalyseTotal = () => {
     )
     .sort((a, b) => b.overallScore - a.overallScore);
 
-  // Pagination
   const startIndex = currentPage * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredAndSortedStudents.length);
   const visibleData = filteredAndSortedStudents.slice(startIndex, endIndex);
   const rangeText = `${startIndex + 1}-${endIndex} из ${filteredAndSortedStudents.length}`;
 
-  // Filter top 10 students by selected subject
   const top10BySubject = selectedSubject
     ? examResults
         .filter((student) => student.subjects.some((subject) => subject.name === selectedSubject))
@@ -115,6 +128,13 @@ export const AnalyseTotal = () => {
             b.subjects.find((subject) => subject.name === selectedSubject)?.totalPoints || 0;
           return scoreB - scoreA;
         })
+        .slice(0, 10)
+    : examResults.slice(0, 10);
+
+  const top10ByClass = selectedClasses
+    ? examResults
+        .filter((student) => student.student.className === selectedClasses)
+        .sort((a, b) => b.overallScore - a.overallScore)
         .slice(0, 10)
     : examResults.slice(0, 10);
 
@@ -156,7 +176,18 @@ export const AnalyseTotal = () => {
             ))}
           </select>
         </div>
-        <ColumnChart data={top10BySubject} />
+        <div>
+          <label htmlFor="classFilter">Фильтр по классу: </label>
+          <select id="classFilter" value={selectedClasses} onChange={handleClassChange}>
+            <option value="">Все классы</option>
+            {classes.map((classItem) => (
+              <option key={classItem._id} value={classItem.class + classItem.literal}>
+                {classItem.class + classItem.literal}
+              </option>
+            ))}
+          </select>
+        </div>
+        <ColumnChart data={selectedSubject ? top10BySubject : top10ByClass} />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div className={styles.tableHeader}>
             <div className={styles.twoElementContainer}>
@@ -174,14 +205,6 @@ export const AnalyseTotal = () => {
                 width="7rem"
               >
                 Искать
-              </CustomButton>
-            </div>
-            <div className={styles.twoElementContainer}>
-              <CustomButton bgColor={colors.white} color={colors.black} width="7rem">
-                Общие
-              </CustomButton>
-              <CustomButton bgColor={colors.white} color={colors.black} width="7rem">
-                Детальные баллы
               </CustomButton>
             </div>
           </div>
@@ -208,7 +231,7 @@ export const AnalyseTotal = () => {
                   <div className="col-1 table_items">{startIndex + index + 1}</div>
                   <div className="col-6 table_items">{`${studentData.student.name} ${studentData.student.surname}`}</div>
                   <div className="col-2 table_items">{studentData.overallScore}</div>
-                  <div className="col-2 table_items">{studentData.student.group}</div>
+                  <div className="col-2 table_items">{studentData.student.className}</div>
                 </div>
               ))}
             </div>

@@ -9,6 +9,7 @@ import DoneExam from '../pages/DoneExams/DoneExams';
 import { ExamAnalyse } from '../pages/ExamAnalyse';
 import AdminLayout from '../layouts/AdminLayout';
 import Subjects from '../pages/Subjects/Subjects';
+import ClassDoneExam from '../pages/ClassDoneExams/ClassDoneExams';
 
 const AdminRoutes = ({ navigateToLogin }) => {
   return (
@@ -19,6 +20,7 @@ const AdminRoutes = ({ navigateToLogin }) => {
         <Route path="/profile" element={<GeneralProfile />} />
         <Route path="/exams_admin" element={<AnalysisExam />} />
         <Route path="/students_done_exam" element={<DoneExam />} />
+        <Route path="/done_exams" element={<ClassDoneExam />} />
         <Route path="/profile" element={<GeneralProfile />} />
         <Route path="/students" element={<Students />} />
         <Route path="/subjects" element={<Subjects />} />

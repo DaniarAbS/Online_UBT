@@ -58,6 +58,8 @@ export const QuestionList = () => {
     }
   };
 
+  const getGoogleDriveImageUrl = (fileId) => ` https://drive.google.com/thumbnail?id=${fileId}`;
+
   return (
     <>
       {loading && <Loader />}
@@ -96,16 +98,16 @@ export const QuestionList = () => {
                       >
                         Едит
                       </button>
-                      {/* {question.image && (
-                        <div className={styles.imageContainer}>
-                          <img
-                            src={`http://localhost:5173${question.image}`}
-                            alt="Question"
-                            className={styles.questionImage}
-                          />
-                        </div>
-                      )} */}
                     </div>
+                    {question.image && (
+                      <div className={styles.imageContainer}>
+                        <img
+                          src={getGoogleDriveImageUrl(question.image.split('/')[5])} // Extract file ID from URL
+                          alt="Question"
+                          className={styles.questionImage}
+                        />
+                      </div>
+                    )}
                     <div className={styles.options}>
                       {question.options.map((option, index) => (
                         <div

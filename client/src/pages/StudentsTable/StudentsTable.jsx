@@ -10,7 +10,7 @@ import axios from 'axios';
 import Loader from '../../components/organism/Loader/Loader';
 import { LanguageContext } from '../../contexts/LanguageContext';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 
@@ -67,6 +67,7 @@ export const Students = () => {
 
   const [loading, setLoading] = useState(false);
   const { language } = useContext(LanguageContext);
+  const navigate = useNavigate();
 
   const itemsPerPage = 10;
 
@@ -296,6 +297,11 @@ export const Students = () => {
     setEmail('');
     setSelectedGroup(null);
     setSelectedLiteral(null);
+  };
+
+  const handleStudentClick = (id) => {
+    localStorage.setItem('studentId', id);
+    navigate('/done_exams');
   };
 
   return (
@@ -768,7 +774,9 @@ export const Students = () => {
                     <div className="col-2 table_items">{student.inn}</div>
                     <div className="col-3 table_items">{student.email}</div>
                     <div className="col-1 table_items">
-                      <Link to="/done_exams">{language == 'kz' ? 'Толығырақ' : 'Подробнее'}</Link>
+                      <button onClick={() => handleStudentClick(student.id)}>
+                        {language == 'kz' ? 'Толығырақ' : 'Подробнее'}
+                      </button>
                     </div>
                     <div className="col-1 table_items">
                       <div style={{ display: 'flex', gap: '2rem' }}>
