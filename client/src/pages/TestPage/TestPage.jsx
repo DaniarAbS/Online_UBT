@@ -301,6 +301,8 @@ export const TestPage = () => {
     setPopupVisible2(!popupVisible2);
   };
 
+  const getGoogleDriveImageUrl = (fileId) => ` https://drive.google.com/thumbnail?id=${fileId}`;
+
   return (
     <>
       {loading && <Loader />}
@@ -368,7 +370,12 @@ export const TestPage = () => {
                   {selectedQuestions[currentIndex]?.question}
                 </Text>
                 {selectedQuestions[currentIndex]?.image && (
-                  <img src={selectedQuestions[currentIndex].image} alt="Question related" />
+                  <img
+                    src={getGoogleDriveImageUrl(
+                      selectedQuestions[currentIndex].image.split('/')[5]
+                    )}
+                    alt="Question related"
+                  />
                 )}
               </div>
             </div>

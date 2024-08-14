@@ -6,7 +6,6 @@ import { TaskAdding } from '../pages/TaskAdding/TaskAdding';
 import Table from '../pages/MyClass/MyClass';
 import SubjectAnalysisForm from '../pages/SubjectAnalysisForm/SubjectAnaysisForm';
 import TeacherLayout from '../layouts/TeacherLayout';
-import DoneExam from '../pages/DoneExams/DoneExams';
 import { ExamResults } from '../pages/ExamResults/ExamResults';
 import { QuestionList } from '../pages/QuestionList/QuestionList';
 import { QuestionEditing } from '../pages/QuestionEditing/QuestionEditing';

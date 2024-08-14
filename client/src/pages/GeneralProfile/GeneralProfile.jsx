@@ -23,6 +23,7 @@ const GeneralProfile = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [inn, setInn] = useState('');
   const [visibility, setVisibility] = useState({
     pass1: { visible: false },
     pass2: { visible: false },
@@ -39,13 +40,27 @@ const GeneralProfile = () => {
   const [email, setEmail] = useState('');
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedLiteral, setSelectedLiteral] = useState('');
-  const [subject, setSubject] = useState('');
+  const [subjects, setSubjects] = useState([]);
+  const [subjectId, setSubjectId] = useState('');
 
   const [loading, setLoading] = useState(false);
   const { language } = useContext(LanguageContext);
 
   let parsed;
   const profession_id = parsedData.secondId;
+
+  async function fetchSubjects() {
+    setLoading(true);
+    try {
+      const response = await axios.get('https://ubt-server.vercel.app/subjects/');
+      console.log('Fetched subjects:', response.data); // Added console log for fetched subjects
+      setSubjects(response.data);
+    } catch (error) {
+      console.error('Error fetching subjects:', error); // Improved error handling
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     const user_data = localStorage.getItem('user_data');
@@ -108,14 +123,6 @@ const GeneralProfile = () => {
           default:
             console.error('There is an error when parsing the role');
         }
-
-        // const response = await axios.get(`https://ubt-server.vercel.app/users/${JSON.parse(user_data)._id}`)
-        // setData(response.data)
-
-        // if (parsedData.role === 'teacher') {
-        //   const response2 = await axios.get(`https://ubt-server.vercel.app/adminTeacher/${JSON.parse(user_data)._id}`)
-        //   setData2(response.data)
-        // }
       } catch (error) {
         console.error(error);
       } finally {
@@ -123,6 +130,7 @@ const GeneralProfile = () => {
       }
     }
 
+    fetchSubjects();
     getData();
   }, []);
 
@@ -146,15 +154,18 @@ const GeneralProfile = () => {
           surname: surname,
           email: email,
           classNum: selectedGroup,
-          literal: selectedLiteral
-          // subject: subject
+          literal: selectedLiteral,
+          subjectId: subjectId
         };
         break;
       case 'student':
         updatedUserData = {
           name: name,
           surname: surname,
-          email: email
+          email: email,
+          classNum: data.class,
+          literal: data.literal,
+          inn: data.inn
         };
       default:
         break;
@@ -165,36 +176,36 @@ const GeneralProfile = () => {
     let response;
 
     try {
-      // switch (parsedData.role) {
-      //   case 'admin':
-      //     response = await axios.put(
-      //       `https://ubt-server.vercel.app/admins/profile/${profession_id}`,
-      //       updatedUserData
-      //     );
-      //     console.log('Profile updated successfully', response.data);
-      //     setModalOpen(false);
-      //     break;
-      //   case 'teacher':
-      //     response = await axios.put(
-      //       `https://ubt-server.vercel.app/teachers/${profession_id}`,
-      //       updatedUserData
-      //     );
-      //     console.log('Profile updated successfully', response.data);
-      //     setModalOpen(false);
-      //     break;
-      //   case 'student':
-      //     response = await axios.put(
-      //       `https://ubt-server.vercel.app/adminStudent/${profession_id}`,
-      //       updatedUserData
-      //     );
-      //     console.log('Profile updated successfully', response.data);
-      //     setModalOpen(false);
-      //     break;
-      //   default:
-      //     console.error('Your role is not defined');
-      //     alert('Your role is not defined');
-      //     break;
-      // }
+      switch (parsedData.role) {
+        case 'admin':
+          response = await axios.put(
+            `https://ubt-server.vercel.app/admins/profile/${profession_id}`,
+            updatedUserData
+          );
+          console.log('Profile updated successfully', response.data);
+          setModalOpen(false);
+          break;
+        case 'teacher':
+          response = await axios.put(
+            `https://ubt-server.vercel.app/adminteacher/${profession_id}`,
+            updatedUserData
+          );
+          console.log('Profile updated successfully', response.data);
+          setModalOpen(false);
+          break;
+        case 'student':
+          response = await axios.put(
+            `https://ubt-server.vercel.app/adminStudent/${profession_id}`,
+            updatedUserData
+          );
+          console.log('Profile updated successfully', response.data);
+          setModalOpen(false);
+          break;
+        default:
+          console.error('Your role is not defined');
+          alert('Your role is not defined');
+          break;
+      }
     } catch (error) {
       console.error(error);
       // alert(error);
@@ -219,12 +230,11 @@ const GeneralProfile = () => {
           password: newPassword
         };
         break;
-      // case 'student':
-      //   updatedUserData = {
-      //     name: name,
-      //     surname: surname,
-      //     email: email
-      //   };
+      case 'student':
+        updatedPassword = {
+          inn: inn,
+          password: newPassword
+        };
       default:
         break;
     }
@@ -257,14 +267,16 @@ const GeneralProfile = () => {
           setConfirmPassword('');
           setModalOpen(false);
           break;
-        // case 'student':
-        //   response = await axios.put(
-        //     `https://ubt-server.vercel.app/adminStudent/${profession_id}`,
-        //     updatedUserData
-        //   );
-        //   console.log('Profile updated successfully', response.data);
-        //   setModalOpen(false);
-        //   break;
+        case 'student':
+          response = await axios.put(
+            `https://ubt-server.vercel.app/students/${profession_id}`,
+            updatedPassword
+          );
+          console.log('Password updated successfully');
+          setNewPassword('');
+          setInn('');
+          setModalOpen(false);
+          break;
         default:
           console.error('Your role is not defined');
           alert('Your role is not defined');
@@ -290,7 +302,7 @@ const GeneralProfile = () => {
 
   const handleSubmitPassword = (e) => {
     e.preventDefault();
-    if (newPassword === confirmPassword) {
+    if (newPassword === confirmPassword || parsedData.role === 'student') {
       handleUpdatePassword();
     } else {
       console.log('Passwords do not match!');
@@ -436,6 +448,20 @@ const GeneralProfile = () => {
                   maxLength={1}
                 />
               </Form.Item>
+              <Form.Item label="Предмет" name="subjectId">
+                <Select
+                  placeholder="Выберите предмет"
+                  value={subjectId}
+                  onChange={(value) => setSubjectId(value)}
+                  className="modalSelect"
+                >
+                  {subjects.map((subject) => (
+                    <Option key={subject._id} value={subject._id}>
+                      {language === 'kz' ? subject.kz_subject : subject.ru_subject}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
             </div>
           ) : (
             ''
@@ -538,25 +564,29 @@ const GeneralProfile = () => {
                 {language == 'kz' ? 'Құпия сөзді жаңарту' : 'Обновить пароль'}
               </p>
               <form onSubmit={handleSubmitPassword} className="password-update-form">
-                <div
-                  className={`form-group ${
-                    focused.currentPassword || currentPassword ? 'focused' : ''
-                  }`}
-                >
-                  <input
-                    id="current-password"
-                    type={visibility.pass1.visible ? 'text' : 'password'}
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                  />
-                  <img
-                    onClick={() => handleVisibility('pass1')}
-                    src={visibility.pass1.visible == false ? hiddenImg : visibilityImg}
-                  />
-                  <label htmlFor="current-password">
-                    {language == 'kz' ? 'Қазіргі құпия сөз' : 'Текущий пароль'}*
-                  </label>
-                </div>
+                {parsedData.role === 'student' ? (
+                  ''
+                ) : (
+                  <div
+                    className={`form-group ${
+                      focused.currentPassword || currentPassword ? 'focused' : ''
+                    }`}
+                  >
+                    <input
+                      id="current-password"
+                      type={visibility.pass1.visible ? 'text' : 'password'}
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                    />
+                    <img
+                      onClick={() => handleVisibility('pass1')}
+                      src={visibility.pass1.visible == false ? hiddenImg : visibilityImg}
+                    />
+                    <label htmlFor="current-password">
+                      {language == 'kz' ? 'Қазіргі құпия сөз' : 'Текущий пароль'}*
+                    </label>
+                  </div>
+                )}
                 <div
                   className={`form-group ${focused.newPassword || newPassword ? 'focused' : ''}`}
                 >
@@ -574,25 +604,38 @@ const GeneralProfile = () => {
                     {language == 'kz' ? 'Жаңа құпия сөз' : 'Новый пароль'}*
                   </label>
                 </div>
-                <div
-                  className={`form-group ${
-                    focused.confirmPassword || confirmPassword ? 'focused' : ''
-                  }`}
-                >
-                  <input
-                    id="confirm-password"
-                    type={visibility.pass3.visible ? 'text' : 'password'}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                  <img
-                    onClick={() => handleVisibility('pass3')}
-                    src={visibility.pass3.visible == false ? hiddenImg : visibilityImg}
-                  />
-                  <label htmlFor="confirmPassword">
-                    {language == 'kz' ? 'Құпия сөзді қайталау' : 'Потвердите пароль'}*{' '}
-                  </label>
-                </div>
+                {parsedData.role === 'student' ? (
+                  <div className={`form-group ${focused.inn || inn ? 'focused' : ''}`}>
+                    <input
+                      id="inn"
+                      // type={visibility.pass1.visible ? 'text' : 'password'}
+                      value={inn}
+                      onChange={(e) => setInn(e.target.value)}
+                    />
+                    <label htmlFor="inn">{language == 'kz' ? 'ЖСН' : 'ИИН'}*</label>
+                  </div>
+                ) : (
+                  <div
+                    className={`form-group ${
+                      focused.confirmPassword || confirmPassword ? 'focused' : ''
+                    }`}
+                  >
+                    <input
+                      id="confirm-password"
+                      type={visibility.pass3.visible ? 'text' : 'password'}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                    <img
+                      onClick={() => handleVisibility('pass3')}
+                      src={visibility.pass3.visible == false ? hiddenImg : visibilityImg}
+                    />
+                    <label htmlFor="confirmPassword">
+                      {language == 'kz' ? 'Құпия сөзді қайталау' : 'Потвердите пароль'}*{' '}
+                    </label>
+                  </div>
+                )}
+
                 <button type="submit">{language == 'kz' ? 'Өзгерту' : 'Изменить'}</button>
               </form>
             </div>

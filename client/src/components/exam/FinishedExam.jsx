@@ -32,7 +32,7 @@ const FinishedExam = ({
         resultData
       );
       console.log('total result: ', response.data);
-      navigate('/exam_results', { state: { resultData: response.data } });
+      navigate('/exam_results', { state: { resultData: response.data, studentId: studentId } });
     } catch (error) {
       console.error('Error getting result:', error);
       throw error;

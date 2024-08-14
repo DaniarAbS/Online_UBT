@@ -13,14 +13,6 @@ import { v4 as uuidv4 } from 'uuid';
 import Loader from '../../components/organism/Loader/Loader';
 import { LanguageContext } from '../../contexts/LanguageContext';
 
-const TruncatedText = styled.span`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 250px; /* Adjust this width according to your needs */
-  font-size: ${sizes.small};
-`;
-
 export const TaskAdding = () => {
   const [visibleItemIndex, setVisibleItemIndex] = useState(-1);
   const [selectedDiv, setSelectedDiv] = useState(null);
@@ -28,7 +20,7 @@ export const TaskAdding = () => {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
   const [question, setQuestion] = useState('');
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState('');
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
   const [topics, setTopics] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -43,22 +35,6 @@ export const TaskAdding = () => {
 
   const [language, setLanguage] = useState('kz');
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    async function fetchSubjects() {
-      try {
-        const response = await axios.get(`${config.baseURL}/subjects/`);
-        setSubjects(response.data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false); // Stop loading
-      }
-    }
-
-    fetchSubjects();
-  }, []);
 
   useEffect(() => {
     const teachersSubject = localStorage.getItem('teachersSubject');
@@ -170,9 +146,7 @@ export const TaskAdding = () => {
       return;
     }
 
-    const correctOptions = answers.filter((answer) => answer.isCorrect).map((answer) => answer.id);
-
-    if (type === 2 && correctOptions.length !== 2) {
+    if (type === 2 && answers.filter((answer) => answer.isCorrect).length !== 2) {
       alert(
         language === 'kz' ? 'Екі дұрыс жауапты таңдаңыз.' : 'Выберите ровно два правильных ответа.'
       );
@@ -181,20 +155,32 @@ export const TaskAdding = () => {
     }
 
     const questionType = type === 1 ? 'onePoint' : 'twoPoints';
-    const newQuestion = {
-      type: questionType,
-      topicId: selectedTopic,
-      question,
-      image: image ? URL.createObjectURL(image) : '',
-      options: answers,
-      correctOptions,
-      language: language
-    };
 
-    console.log('newQuestion', newQuestion);
+    // Create a FormData object
+    const formData = new FormData();
+    formData.append('type', questionType);
+    formData.append('topicId', selectedTopic);
+    formData.append('question', question);
+    formData.append('language', language);
+
+    // Append answers array as JSON string
+    formData.append('options', JSON.stringify(answers));
+
+    // Append image if it exists
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
-      const response = await axios.post(`${config.baseURL}/question/add`, newQuestion);
+      const response = await axios.post(
+        `${config.baseURL}/question/createQuestionWithImage`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
       console.log(response.data);
       handleReset();
     } catch (error) {

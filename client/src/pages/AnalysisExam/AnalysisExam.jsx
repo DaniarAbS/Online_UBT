@@ -87,22 +87,24 @@ export const AnalysisExam = () => {
       started_at: moment(examToEdit.startedAt),
       finished_at: moment(examToEdit.finishedAt)
     });
-    setStartDateTime(moment(examToEdit.startedAt));
-    setEndDateTime(moment(examToEdit.finishedAt));
+    // setStartDateTime(moment(examToEdit.startedAt));
+    // setEndDateTime(moment(examToEdit.finishedAt));
     setEditExamVisible(true);
   };
 
   async function handleUpdateExam(event) {
     event.preventDefault();
     setLoading(true);
-    const formattedStartDate = startDateTime.toISOString();
-    const formattedEndDate = endDateTime.toISOString();
+    const formattedStartDate = startDateTime.format('YYYY-MM-DDTHH:mm:ss');
+    const formattedEndDate = endDateTime.format('YYYY-MM-DDTHH:mm:ss');
 
     const updatedExamData = {
       examType: exam.examType,
       started_at: formattedStartDate,
       finished_at: formattedEndDate
     };
+
+    console.log('updateExam', updatedExamData, 'exam id', selectedExamId);
 
     try {
       const response = await axios.put(
@@ -112,6 +114,8 @@ export const AnalysisExam = () => {
       console.log('Exam updated successfully', response.data);
       setEditExamVisible(false);
       setSelectedExamId(null);
+      setStartDateTime(null);
+      setEndDateTime(null);
       handleReload(); // Reload the exams after updating
     } catch (error) {
       console.error(error);
@@ -197,6 +201,8 @@ export const AnalysisExam = () => {
 
     console.log(data);
     handleCreateExamCancel();
+    setStartDateTime(null);
+    setEndDateTime(null);
     handleReload(); // Reload the exams after creating a new one
     setLoading(false);
   }
@@ -207,10 +213,14 @@ export const AnalysisExam = () => {
 
   const handleCreateExamCancel = () => {
     setCreateExamVisible(false);
+    setStartDateTime(null);
+    setEndDateTime(null);
   };
 
   const handleEditExamCancel = () => {
     setEditExamVisible(false);
+    setStartDateTime(null);
+    setEndDateTime(null);
   };
 
   const itemsPerPage = 10;
@@ -312,14 +322,14 @@ export const AnalysisExam = () => {
           <form onSubmit={handleUpdateExam} className={styles.form}>
             <DatePicker
               showTime={{ format: 'HH:mm' }}
-              placeholder="Начало дата/время*"
+              placeholder={language == 'kz' ? 'Күн/уақыт бастауы' : 'Начало дата/время'}
               onChange={handleStartDateTimeChange}
               format="YYYY-MM-DD HH:mm"
               value={startDateTime}
             />
             <DatePicker
               showTime={{ format: 'HH:mm' }}
-              placeholder="Конец дата/время*"
+              placeholder={language == 'kz' ? 'Күн/уақыт соңы' : 'Конец дата/время'}
               onChange={handleEndDateTimeChange}
               format="YYYY-MM-DD HH:mm"
               value={endDateTime}
