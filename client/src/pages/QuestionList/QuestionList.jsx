@@ -40,23 +40,23 @@ export const QuestionList = () => {
     navigate('/question_edit', { state: { questionData: questionData } });
   };
 
-  const handleDeleteQuestion = async (questionId) => {
-    try {
-      const response = await axios.delete(`https://ubt-server.vercel.app/question/${questionId}`);
-      console.log('Delete response:', response.data);
+  // const handleDeleteQuestion = async (questionId) => {
+  //   try {
+  //     const response = await axios.delete(`https://ubt-server.vercel.app/question/${questionId}`);
+  //     console.log('Delete response:', response.data);
 
-      // Update the topics state to remove the deleted question
-      setTopics((prevTopics) =>
-        prevTopics.map((topic) => ({
-          ...topic,
-          kzQuestionsInfo: topic.kzQuestionsInfo.filter((q) => q._id !== questionId),
-          ruQuestionsInfo: topic.ruQuestionsInfo.filter((q) => q._id !== questionId)
-        }))
-      );
-    } catch (error) {
-      console.error('Error deleting question:', error);
-    }
-  };
+  //     // Update the topics state to remove the deleted question
+  //     setTopics((prevTopics) =>
+  //       prevTopics.map((topic) => ({
+  //         ...topic,
+  //         kzQuestionsInfo: topic.kzQuestionsInfo.filter((q) => q._id !== questionId),
+  //         ruQuestionsInfo: topic.ruQuestionsInfo.filter((q) => q._id !== questionId)
+  //       }))
+  //     );
+  //   } catch (error) {
+  //     console.error('Error deleting question:', error);
+  //   }
+  // };
 
   const getGoogleDriveImageUrl = (fileId) => ` https://drive.google.com/thumbnail?id=${fileId}`;
 

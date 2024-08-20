@@ -184,22 +184,24 @@ export const QuestionEditing = () => {
     }
 
     const questionType = type === 1 ? 'onePoint' : 'twoPoints';
-    const editedQuestion = {
-      question: question,
-      image: image ? URL.createObjectURL(image) : '',
-      options: answers,
-      type: questionType,
-      topicId: selectedTopic,
-      language: language
-    };
 
-    console.log('editedQuestion', editedQuestion);
+    // Create a FormData object
+    const formData = new FormData();
+    formData.append('type', questionType);
+    formData.append('topicId', selectedTopic);
+    formData.append('question', question);
+    formData.append('language', language);
+
+    // Append answers array as JSON string
+    formData.append('options', JSON.stringify(answers));
+
+    // Append image if it exists
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
-      const response = await axios.put(
-        `${config.baseURL}/question/${questionData._id}`,
-        editedQuestion
-      );
+      const response = await axios.put(`${config.baseURL}/question/${questionData._id}`, formData);
       console.log(response.data);
       handleReset();
       navigate('/question_list');
@@ -261,6 +263,8 @@ export const QuestionEditing = () => {
       </div>
     );
   };
+
+  const getGoogleDriveImageUrl = (fileId) => ` https://drive.google.com/thumbnail?id=${fileId}`;
 
   return (
     <>
@@ -351,7 +355,8 @@ export const QuestionEditing = () => {
                     <img src={AddImage} alt="Add image icon" />
                   </label>
                 </div>
-                {imagePreviewUrl && (
+
+                {imagePreviewUrl ? (
                   <div className={styles.imagePreview}>
                     <img
                       src={imagePreviewUrl}
@@ -359,6 +364,10 @@ export const QuestionEditing = () => {
                       style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
                     />
                   </div>
+                ) : image ? (
+                  <img src={getGoogleDriveImageUrl(image.split('/')[5])} alt={image} />
+                ) : (
+                  <div></div>
                 )}
                 <div className={styles.approveCancelContent}>
                   <CheckOutlined
