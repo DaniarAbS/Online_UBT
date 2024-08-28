@@ -35,7 +35,9 @@ const QuestionDatabase = () => {
     const teachersSubject = localStorage.getItem('teachersSubject');
     console.log('teachersSubject', teachersSubject);
     try {
-      const response = await axios.get(`https://ubt-server.vercel.app/subjects/${teachersSubject}`);
+      const response = await axios.get(
+        `https://ubt-server.vercel.app/subjects/v2/${teachersSubject}`
+      );
       console.log('topics: ', response.data.topics);
       setTopics(response.data.topics);
     } catch (error) {
@@ -246,10 +248,12 @@ const QuestionDatabase = () => {
                 <div className="col-6 table_items">
                   {language == 'kz' ? 'Тақырып аты' : 'Имя темы'}
                 </div>
-                <div className="col-2 table_items">{language == 'kz' ? 'Сұрақтар' : 'Вопросы'}</div>
-                {/* <div className="col-2 table_items">
+                <div className="col-2 table_items">
+                  {language == 'kz' ? '1 баллдық сұрақтар' : 'Вопросы 1 балл'}
+                </div>
+                <div className="col-2 table_items">
                   {language == 'kz' ? '2 баллдық сұрақтар' : 'Вопросы 2 балл'}
-                </div> */}
+                </div>
               </div>
               {visibleData.map((topic, index) => (
                 <div className="row table_row" key={index}>
@@ -259,14 +263,14 @@ const QuestionDatabase = () => {
                   </div>
                   <div className="col-2 table_items">
                     {topicLanguage === 'kz'
-                      ? topic.kz_questions?.length ?? 0
-                      : topic.ru_questions?.length ?? 0}
+                      ? topic.kz_onePointQuestionIds?.length ?? 0
+                      : topic.ru_onePointQuestionIds?.length ?? 0}
                   </div>
-                  {/* <div className="col-2 table_items">
+                  <div className="col-2 table_items">
                     {topicLanguage === 'kz'
                       ? topic.kz_twoPointsQuestionIds?.length ?? 0
                       : topic.ru_twoPointsQuestionIds?.length ?? 0}
-                  </div> */}
+                  </div>
                 </div>
               ))}
             </div>

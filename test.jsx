@@ -1,97 +1,55 @@
-import React, { useState, useEffect, useContext } from 'react';
+import styles from './QuestionEditing.module.css';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { colors } from '../../base/colors';
-import { EditOutlined, DeleteOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Modal, Button, Form, Input, Select } from 'antd';
-import styles from './TeachersTable.module.css';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { sizes } from '../../base/sizes';
+import Input from 'antd/es/input/Input';
+import AddImage from '../../assets/icons/add_image_icon.png';
 import axios from 'axios';
 import config from '../../../config';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
-import { LanguageContext } from '../../contexts/LanguageContext';
 import Loader from '../../components/organism/Loader/Loader';
+import { LanguageContext } from '../../contexts/LanguageContext';
 
-const { Option } = Select;
-
-const SearchInput = styled.input`
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid ${colors.gray};
-`;
-
-const ChangePageButton = styled.button`
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  background-color: ${colors.white};
-  color: ${colors.black};
-  border: 1px solid ${colors.gray};
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-`;
-
-const ActiveButton = styled.button`
-  border-radius: 0.3rem;
-  padding: 0.5rem;
-  color: ${(props) => (props.active ? '#fff' : '#000')};
-  background-color: ${(props) => (props.active ? '#091' : '#fff')};
-  border: solid 1px gray;
-  cursor: pointer;
-
-  @media (max-width: 1000px) {
-    width: max-content;
-  }
-`;
-
-export const Teachers = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const [addModalVisible, setAddModalVisible] = useState(false);
-  const [editModalVisible, setEditModalVisible] = useState(false);
-
-  const [teachers, setTeachers] = useState([]);
-  const [selectedTeacherId, setSelectedTeacherId] = useState(null);
-
+export const QuestionEditing = () => {
+  const [lastClickedButton, setLastClickedButton] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedTopic, setSelectedTopic] = useState('');
+  const [question, setQuestion] = useState('');
+  const [image, setImage] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
+  const [topics, setTopics] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [answers, setAnswers] = useState([
+    { id: uuidv4(), text: '', isCorrect: false },
+    { id: uuidv4(), text: '', isCorrect: false },
+    { id: uuidv4(), text: '', isCorrect: false },
+    { id: uuidv4(), text: '', isCorrect: false }
+  ]);
+  const [type, setType] = useState(1); // Default to 1-point question
+  const [maxCorrectAnswers, setMaxCorrectAnswers] = useState(1);
 
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState(null);
-  const [email, setEmail] = useState('');
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const [selectedLiteral, setSelectedLiteral] = useState('');
-
-  const [searchMode, setSearchMode] = useState('fullname');
-
-  const itemsPerPage = 10;
-
-  const { language } = useContext(LanguageContext);
+  const [language, setLanguage] = useState('kz');
   const [loading, setLoading] = useState(false);
-
-  async function fetchTeachers() {
-    setLoading(true);
-    try {
-      const response = await axios.get('https://ubt-server.vercel.app/adminTeacher/');
-      console.log('admin teacher: ', response.data);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      return [];
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  }
+  const location = useLocation();
+  const navigate = useNavigate();
+  const questionData = location.state?.questionData || {};
+  console.log('questionData', questionData);
 
   useEffect(() => {
-    async function fetchData() {
-      const data = await fetchTeachers();
-      setTeachers(data);
-    }
-
-    fetchData();
+    setQuestion(questionData.question);
+    setAnswers(questionData.options);
+    setImage(questionData.image);
+    setType(questionData.point);
+    setLastClickedButton(questionData.point);
+    setLanguage(questionData.language);
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     async function fetchSubjects() {
-      setLoading(true);
       try {
         const response = await axios.get(`${config.baseURL}/subjects/`);
         setSubjects(response.data);
@@ -105,593 +63,356 @@ export const Teachers = () => {
     fetchSubjects();
   }, []);
 
-  async function handleUpdateTeacher() {
-    setLoading(true);
-    const updatedTeacherData = {
-      name: name || teachers.find((teacher) => teacher.id === selectedTeacherId)?.name,
-      surname: surname || teachers.find((teacher) => teacher.id === selectedTeacherId)?.surname,
-      subjectId:
-        selectedSubject || teachers.find((teacher) => teacher.id === selectedTeacherId)?.subjectId,
-      email: email || teachers.find((teacher) => teacher.id === selectedTeacherId)?.email,
-      classNum:
-        selectedGroup || teachers.find((teacher) => teacher.id === selectedTeacherId)?.classNum,
-      literal:
-        selectedLiteral || teachers.find((teacher) => teacher.id === selectedTeacherId)?.literal
-    };
+  useEffect(() => {
+    const teachersSubject = localStorage.getItem('teachersSubject');
+    console.log('teachersSubject', teachersSubject);
+    if (teachersSubject) {
+      async function fetchTopics() {
+        setLoading(true);
+        try {
+          const response = await axios.get(`${config.baseURL}/subjects/${teachersSubject}`);
+          console.log('topics: ', response.data.topics);
+          setTopics(response.data.topics);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false); // Stop loading
+        }
+      }
 
-    if (selectedSubject === 'SyntheticBaseEvent') {
+      fetchTopics();
+    } else {
+      setTopics([]);
+    }
+  }, [selectedSubject]);
+
+  const handleButtonClick = (buttonNumber) => {
+    setLastClickedButton(buttonNumber);
+    setType(buttonNumber);
+    const updatedAnswers = answers.map((answer) => ({ ...answer, isCorrect: false }));
+    setAnswers(updatedAnswers);
+    setMaxCorrectAnswers(buttonNumber === 1 ? 1 : answers.length);
+    if (buttonNumber === 1 && answers.length > 4) {
+      setAnswers(answers.slice(0, 4));
+    }
+  };
+
+  const handleAnswerChange = (index, text) => {
+    const updatedAnswers = [...answers];
+    updatedAnswers[index].text = text;
+    setAnswers(updatedAnswers);
+  };
+
+  const handleToggleCorrectAnswer = (index) => {
+    const updatedAnswers = [...answers];
+    if (type === 1) {
+      updatedAnswers.forEach((answer, idx) => {
+        answer.isCorrect = idx === index;
+      });
+    } else {
+      updatedAnswers[index].isCorrect = !updatedAnswers[index].isCorrect;
+      const numCorrectAnswers = updatedAnswers.filter((ans) => ans.isCorrect).length;
+      if (numCorrectAnswers > maxCorrectAnswers) {
+        updatedAnswers[index].isCorrect = false;
+      }
+    }
+    setAnswers(updatedAnswers);
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    if (!lastClickedButton) {
+      alert(language === 'kz' ? 'Сұрақ түрін таңдаңыз.' : 'Выберите тип вопроса.');
       setLoading(false);
-      return alert('Select a subject');
+      return;
     }
 
-    console.log('selectedSubject: ', selectedSubject);
-    console.log('teacherId: ', selectedTeacherId);
-    console.log(updatedTeacherData);
+    if (!selectedTopic) {
+      alert(language === 'kz' ? 'Тақырып таңдаңыз.' : 'Выберите тему.');
+      setLoading(false);
+      return;
+    }
+
+    if (!question && !image) {
+      alert(
+        language === 'kz'
+          ? 'Сұрақ немесе сурет еңгізіңіз.'
+          : 'Введите текст вопроса или добавьте изображение.'
+      );
+      setLoading(false);
+      return;
+    }
+
+    const allAnswersFilled = answers.every((answer) => answer.text.trim() !== '');
+    if (!allAnswersFilled) {
+      alert(
+        language === 'kz' ? 'Барлық жауап нұсқаларын еңгізіңіз.' : 'Заполните все варианты ответов.'
+      );
+      setLoading(false);
+      return;
+    }
+
+    const atLeastOneCorrect = answers.some((answer) => answer.isCorrect);
+    if (!atLeastOneCorrect) {
+      alert(
+        language === 'kz'
+          ? 'Кем дегенде бір дұрыс жауап еңгізіңіз.'
+          : 'Выберите хотя бы один правильный ответ.'
+      );
+      setLoading(false);
+      return;
+    }
+
+    const correctOptions = answers.filter((answer) => answer.isCorrect).map((answer) => answer.id);
+
+    if (type === 2 && correctOptions.length !== 2) {
+      alert(
+        language === 'kz' ? 'Екі дұрыс жауапты таңдаңыз.' : 'Выберите ровно два правильных ответа.'
+      );
+      setLoading(false);
+      return;
+    }
+
+    const questionType = type === 1 ? 'onePoint' : 'twoPoints';
+    const formData = new FormData();
+    formData.append('type', questionType);
+    formData.append('topicId', selectedTopic);
+    formData.append('question', question);
+    formData.append('language', language);
+
+    // Append answers array as JSON string
+    formData.append('options', JSON.stringify(answers));
+
+    // Append image if it exists
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
       const response = await axios.put(
-        `https://ubt-server.vercel.app/adminTeacher/${selectedTeacherId}`,
-        updatedTeacherData
-      );
-      console.log('Teacher updated successfully', response.data);
-      const updatedData = await fetchTeachers();
-      setTeachers(updatedData);
-      setEditModalVisible(false);
-      setSelectedTeacherId(null);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  }
-
-  const generateClassNumbers = () => {
-    return Array.from({ length: 7 }, (_, index) => ({
-      value: (11 - index).toString(),
-      label: (11 - index).toString()
-    }));
-  };
-
-  const handleReload = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get('https://ubt-server.vercel.app/adminTeacher/');
-      setTeachers(response.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  };
-
-  async function handleDeleteTeacher(teacherId) {
-    setLoading(true);
-    try {
-      const response = await axios.delete(
-        `https://ubt-server.vercel.app/adminTeacher/${teacherId}`
-      );
-      console.log('Teacher deleted successfully', response.data);
-      const updatedData = await fetchTeachers();
-      setTeachers(updatedData);
-      setEditModalVisible(false);
-      setSelectedTeacherId(null);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  }
-
-  const filteredTeachers = teachers.filter((teacher) => {
-    if (searchMode === 'fullname') {
-      const fullName = `${teacher.name} ${teacher.surname}`.toLowerCase();
-      return fullName.includes(searchQuery.toLowerCase());
-    } else if (searchMode === 'group') {
-      return teacher.group?.toLowerCase().includes(searchQuery.toLowerCase());
-    } else if (searchMode === 'subject') {
-      return teacher.subject?.toLowerCase().includes(searchQuery.toLowerCase());
-    } else if (searchMode === 'gmail') {
-      return teacher.email?.toLowerCase().includes(searchQuery.toLowerCase());
-    }
-  });
-
-  const totalPages = Math.ceil(filteredTeachers.length / itemsPerPage);
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, filteredTeachers.length);
-  const visibleData = filteredTeachers.slice(startIndex, endIndex);
-
-  const searchByMode = (mode) => {
-    setSearchMode(mode);
-  };
-
-  const handleInputSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
-  };
-
-  const showAddModal = () => {
-    clearInputFields();
-    setAddModalVisible(true);
-  };
-
-  const handleAddModalCancel = () => {
-    setAddModalVisible(false);
-  };
-
-  const showEditTeacher = (teacherId) => {
-    setSelectedTeacherId(teacherId);
-    setEditModalVisible(true);
-
-    const selectedTeacher = teachers.find((teacher) => teacher.id === teacherId);
-
-    // Update the state with the data of the selected student
-    if (selectedTeacher) {
-      setName(selectedTeacher.name);
-      setSurname(selectedTeacher.surname);
-      setSelectedSubject(selectedTeacher.subjectId);
-      setEmail(selectedTeacher.email);
-      setSelectedGroup(selectedTeacher.classNum);
-      setSelectedLiteral(selectedTeacher.literal);
-    }
-  };
-
-  const handleEditModalCancel = () => {
-    setEditModalVisible(false);
-  };
-
-  async function handleSubmit() {
-    setLoading(true);
-    // Use the state variables to submit the form data or perform other actions
-    const newTeacher = {
-      name: name,
-      surname: surname,
-      subjectId: selectedSubject,
-      email: email,
-      classNum: selectedGroup,
-      literal: selectedLiteral
-    };
-    console.log(newTeacher);
-
-    try {
-      const { data } = await axios.post(
-        'https://ubt-server.vercel.app/adminTeacher/add',
-        newTeacher,
+        `${config.baseURL}/question/${questionData._id}`,
+        formData,
         {
           headers: {
-            'Content-Type': 'application/json' // Set content type header
+            'Content-Type': 'multipart/form-data'
           }
         }
       );
-      const updatedData = await fetchTeachers();
-      setTeachers(updatedData);
-      console.log(data);
-      setAddModalVisible(false);
-      clearInputFields();
+      console.log(response.data);
+      handleReset();
+      navigate('/question_list');
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading
     }
-  }
-
-  const clearInputFields = () => {
-    setName('');
-    setSurname('');
-    setSelectedSubject(null);
-    setEmail('');
-    setSelectedGroup(null);
-    setSelectedLiteral('');
   };
 
-  console.log(selectedSubject);
+  const handleReset = () => {
+    setLastClickedButton(null);
+    setType(1);
+    setSelectedSubject('');
+    setSelectedTopic('');
+    setQuestion('');
+    setImage(null);
+    setImagePreviewUrl('');
+    setAnswers([
+      { id: uuidv4(), text: '', isCorrect: false },
+      { id: uuidv4(), text: '', isCorrect: false },
+      { id: uuidv4(), text: '', isCorrect: false },
+      { id: uuidv4(), text: '', isCorrect: false }
+    ]);
+  };
+
+  const handleLanguageToggle = () => {
+    setLanguage((prevLanguage) => (prevLanguage === 'kz' ? 'ru' : 'kz'));
+  };
+
+  const addNewOption = () => {
+    if (answers.length < 8) {
+      setAnswers([...answers, { id: uuidv4(), text: '', isCorrect: false }]);
+    } else {
+      alert(language === 'kz' ? 'Ең көп жауап 8 болуы мүмкін.' : 'Максимум 8 ответов.');
+    }
+  };
+
+  const removeOption = (index) => {
+    if (answers.length > 4) {
+      const updatedAnswers = answers.filter((_, i) => i !== index);
+      setAnswers(updatedAnswers);
+    } else {
+      alert(
+        language === 'kz'
+          ? 'Төрт жауаптан кем болуы мүмкін емес.'
+          : 'Нельзя иметь меньше четырех ответов.'
+      );
+    }
+  };
+
+  const renderCorrectAnswerToggle = (index) => {
+    return (
+      <div
+        className={`${styles.correctAnswerToggle} ${answers[index].isCorrect ? styles.correct : ''}`}
+        onClick={() => handleToggleCorrectAnswer(index)}
+      >
+        {answers[index].isCorrect ? <CheckOutlined /> : <CloseOutlined />}
+      </div>
+    );
+  };
 
   return (
     <>
       {loading && <Loader />}
-      <Modal
-        title={language == 'kz' ? 'Мұғалім қосу' : 'Добавить учителя'}
-        visible={addModalVisible}
-        onCancel={handleAddModalCancel}
-        footer={[]}
-      >
-        <Form
-          variant="filled"
+      <div className={styles.outContainer}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h2>{language === 'kz' ? 'Сұрақ қосу' : 'Добавление вопроса'}</h2>
+          <Link to={'/question_list'}>
+            <h5>{language === 'kz' ? 'Сұрақтар тізбесі' : 'Список вопросов'}</h5>
+          </Link>
+        </div>
+
+        <button
           style={{
-            padding: '2rem 0'
+            padding: '.7rem 1rem',
+            backgroundColor: '#009172',
+            color: '#fff',
+            width: '3rem',
+            borderRadius: '.5rem'
           }}
-          onFinish={handleSubmit}
+          onClick={handleLanguageToggle}
         >
-          <Form.Item
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your full name!'
-              }
-            ]}
-          >
-            <div className={styles.input_group}>
-              <Input
-                id="name_input"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder=""
-                className={styles.form_input}
-              />
-              <label htmlFor="name_input" className={styles.form_input_label}>
-                {language == 'kz' ? 'Аты' : 'Имя'}
-              </label>
-            </div>
-          </Form.Item>
-
-          <Form.Item
-            name="surname"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your surname!'
-              }
-            ]}
-          >
-            <div className={styles.input_group}>
-              <Input
-                id="surname_input"
-                value={surname}
-                onChange={(e) => setSurname(e.target.value)}
-                placeholder=""
-                className={styles.form_input}
-              />
-              <label htmlFor="surname_input" className={styles.form_input_label}>
-                {language == 'kz' ? 'Тегі' : 'Фамилия'}
-              </label>
-            </div>
-          </Form.Item>
-          <Form.Item name="Предмет">
-            {/* <Select
-              style={{ width: '100%' }}
-              value={selectedSubject}
-              onChange={setSelectedSubject}
-              placeholder="Выберите предмет"
-              allowClear
-            >
-              {subjects.map((option) => (
-                <Option key={option._id} value={option._id}>
-                  {option.kz_subject}
-                </Option>
-              ))}
-            </Select> */}
-            <select
-              className={styles.subjectSelect}
-              value={selectedSubject}
-              onChange={setSelectedSubject}
-            >
-              <option value="">{language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}</option>
-              {subjects.map((subject) => (
-                <option key={subject._id} value={subject._id}>
-                  {language === 'kz' ? subject.kz_subject : subject.kz_subject}
-                </option>
-              ))}
-            </select>
-          </Form.Item>
-
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your email!'
-              }
-            ]}
-          >
-            <div className={styles.input_group}>
-              <Input
-                id="email_input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder=""
-                className={styles.form_input}
-              />
-              <label htmlFor="email_input" className={styles.form_input_label}>
-                Email*
-              </label>
-            </div>
-          </Form.Item>
-
-          <div className={styles.class_literal}>
-            <Form.Item
-              name="class"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input!'
-                }
-              ]}
-              className={styles.form_select}
-            >
-              <Select
-                style={{ width: '100%' }}
-                value={selectedGroup}
-                onChange={setSelectedGroup}
-                placeholder="Выберите группу"
-                allowClear
-                dropdownStyle={{ maxHeight: 200, overflowY: 'auto' }}
-              >
-                {generateClassNumbers().map((option) => (
-                  <Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name="literal"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input a single letter!'
-                },
-                {
-                  pattern: /^[a-z]$/,
-                  message: 'Literal must be a single lowercase letter!'
-                }
-              ]}
-              className={styles.form_select}
-            >
-              <Input
-                style={{ width: '100%' }}
-                placeholder="Выберите литерал"
-                value={selectedLiteral}
-                onChange={(e) => setSelectedLiteral(e.target.value.toLowerCase())}
-                maxLength={1}
-              />
-            </Form.Item>
-          </div>
-          <Form.Item>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <Button
-                onClick={handleAddModalCancel}
-                className={styles.submit}
-                type=""
-                htmlType="cancel"
-              >
-                {language == 'kz' ? 'Бас тарту' : 'Отмена'}
-              </Button>
-              <Button className={styles.submit} type="primary" htmlType="submit">
-                {language == 'kz' ? 'Қабылдау' : 'Принять'}
-              </Button>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      <Modal
-        title={language == 'kz' ? 'Мұғалім өзгерту' : 'Изменить учителя'}
-        visible={editModalVisible}
-        onCancel={handleEditModalCancel}
-        footer={[]}
-      >
-        <Form
-          variant="filled"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '.5rem',
-            padding: '2rem 0'
-          }}
-          onFinish={handleUpdateTeacher}
-        >
-          <Form.Item name="name">
-            <div className={styles.input_group}>
-              <Input
-                id="name_input"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder=""
-              />
-              <label htmlFor="name_input" className={styles.form_input_label}>
-                {language == 'kz' ? 'Аты' : 'Имя'}
-              </label>
-            </div>
-          </Form.Item>
-
-          <Form.Item name="surname">
-            <div className={styles.input_group}>
-              <Input
-                id="surname_input"
-                value={surname}
-                onChange={(e) => setSurname(e.target.value)}
-                placeholder=""
-              />
-              <label htmlFor="surname_input" className={styles.form_input_label}>
-                {language == 'kz' ? 'Тегі' : 'Фамилия'}
-              </label>
-            </div>
-          </Form.Item>
-
-          <Form.Item name="Предмет">
-            {/* <Select
-              style={{ width: '100%' }}
-              value={selectedSubject}
-              onChange={setSelectedSubject}
-              placeholder="Выберите предмет"
-              allowClear
-            >
-              {subjects.map((option) => (
-                <Option key={option._id} value={option._id}>
-                  {option.kz_subject}
-                </Option>
-              ))}
-            </Select> */}
-            <select
-              className={styles.subjectSelect}
-              value={selectedSubject}
-              onChange={setSelectedSubject}
-            >
-              <option value="">{language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}</option>
-              {subjects.map((subject) => (
-                <option key={subject._id} value={subject._id}>
-                  {language === 'kz' ? subject.kz_subject : subject.kz_subject}
-                </option>
-              ))}
-            </select>
-          </Form.Item>
-
-          <Form.Item name="email">
-            <div className={styles.input_group}>
-              <Input
-                id="email_input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder=""
-                className={styles.form_input}
-              />
-              <label htmlFor="email_input" className={styles.form_input_label}>
-                Email
-              </label>
-            </div>
-          </Form.Item>
-
-          <div className={styles.class_literal}>
-            <Form.Item name="class">
-              <Select
-                style={{ width: '100%' }}
-                placeholder="Выберите группу"
-                value={selectedGroup}
-                onChange={setSelectedGroup}
-                allowClear
-                dropdownStyle={{ maxHeight: 200, overflowY: 'auto' }}
-              >
-                {generateClassNumbers().map((option) => (
-                  <Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="literal" className={styles.form_select}>
-              <Input
-                style={{ width: '100%' }}
-                placeholder="Выберите литерал"
-                value={selectedLiteral}
-                onChange={(e) => setSelectedLiteral(e.target.value.toLowerCase())}
-                maxLength={1}
-              />
-            </Form.Item>
-          </div>
-          <Form.Item>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'end' }}>
-              <Button
-                onClick={handleAddModalCancel}
-                className={styles.submit}
-                type=""
-                htmlType="cancel"
-              >
-                {language == 'kz' ? 'Бас тарту' : 'Отказаться'}
-              </Button>
-              <Button className={styles.submit} type="primary" htmlType="submit">
-                {language == 'kz' ? 'Қабылдау' : 'Принять'}
-              </Button>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      <div>
-        <Button onClick={showAddModal}>
-          {language == 'kz' ? 'Мүғалім қосу' : 'Добавить учителя'}
-        </Button>
-        <div className={styles.tableContainer}>
-          <div className={styles.tableHeader}>
-            <div className={styles.searchContainer}>
-              <SearchInput
-                className={styles.searchInput}
-                type="text"
-                value={searchQuery}
-                onChange={handleInputSearchChange}
-                placeholder={
-                  language == 'kz' ? `${searchMode} арқылы іздеу` : `Искать по ${searchMode}`
-                }
-              />
-              <div className={styles.searchContainer}>
-                <ActiveButton
-                  className={styles.searchBtn}
-                  active={searchMode === 'fullname'} // Check if the button is active
-                  onClick={() => searchByMode('fullname')} // Handle button click
-                >
-                  {language == 'kz' ? 'Толық аты-жөні' : 'Полное имя-фамилия'}
-                </ActiveButton>
-                <ActiveButton
-                  className={styles.searchBtn}
-                  active={searchMode === 'group'}
-                  onClick={() => searchByMode('group')}
-                >
-                  {language == 'kz' ? 'Группа' : 'Группа'}
-                </ActiveButton>
-                <ActiveButton
-                  className={styles.searchBtn}
-                  active={searchMode === 'subject'}
-                  onClick={() => searchByMode('subject')}
-                >
-                  {language == 'kz' ? 'ЖСН' : 'ИИН'}
-                </ActiveButton>
-                <ActiveButton
-                  className={styles.searchBtn}
-                  active={searchMode === 'gmail'}
-                  onClick={() => searchByMode('gmail')}
-                >
-                  Gmail
-                </ActiveButton>
+          {language === 'kz' ? 'kz' : 'ru'}
+        </button>
+        <div className="text-center">
+          <div className={`row align-items-start add_content ${styles.mainContainer}`}>
+            <div className="col-3">
+              <div className={styles.chooseContainer}>
+                <h4 className={styles.h4}>
+                  {language === 'kz' ? 'Сұрақ түрін таңдаңыз:' : 'Выберите тип вопроса:'}
+                </h4>
+                <div className={styles.pointContainer}>
+                  <button
+                    className={`${styles.pointBtn} ${lastClickedButton === 1 ? styles.clickedBtn : ''}`}
+                    onClick={() => handleButtonClick(1)}
+                  >
+                    1 {language === 'kz' ? 'балл' : 'балл'}
+                  </button>
+                  <button
+                    className={`${styles.pointBtn} ${lastClickedButton === 2 ? styles.clickedBtn : ''}`}
+                    onClick={() => handleButtonClick(2)}
+                  >
+                    2 {language === 'kz' ? 'балл' : 'балла'}
+                  </button>
+                </div>
+                <div className={styles.titleSelect}>
+                  <h4 className={styles.h4}>
+                    {language === 'kz' ? 'Тақырып таңдаңыз:' : 'Выберите тему:'}
+                  </h4>
+                  <select
+                    className={styles.themeSelect}
+                    value={selectedTopic}
+                    onChange={(e) => setSelectedTopic(e.target.value)}
+                  >
+                    <option value="">
+                      {language === 'kz' ? 'Тақырып таңдаңыз' : 'Выберите тему'}
+                    </option>
+                    {topics.map((topic) => (
+                      <option key={topic._id} value={topic._id}>
+                        {language === 'kz' ? topic.kz_title : topic.ru_title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
-            <ReloadOutlined onClick={handleReload} />
-          </div>
-          <div className={styles.tableCont}>
-            {teachers.length <= 0 ? (
-              <p>{language == 'kz' ? 'Әлі мұғалім жоқ' : 'Учителей еще нет'}</p>
-            ) : (
-              <div className={`${styles.teacherTable}`}>
-                <div className={`row table_row ${styles.teacherRow}`}>
-                  {/* <div class="col-2 table_items">ID</div> */}
-                  <div className="col-2 table_items">{language == 'kz' ? 'Аты' : 'Имя'}</div>
-                  <div className="col-2 table_items">{language == 'kz' ? 'Тегі' : 'Фамилия'}</div>
-                  <div className="col-1 table_items">Группа</div>
-                  <div className="col-2 table_items">{language == 'kz' ? 'Пән' : 'Предмет'}</div>
-                  <div className="col-3 table_items">Gmail</div>
+            <div className={`col-6 ${styles.chooseContainer}`}>
+              <h4 className={styles.h4}>
+                {language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите вопрос'}
+              </h4>
+              <div className={styles.addingQuestionContainer}>
+                <div className={styles.inputImgRow}>
+                  <Input
+                    placeholder={language === 'kz' ? 'Сұрақ енгізіңіз' : 'Введите текст'}
+                    variant="borderless"
+                    style={{ borderBottom: 'solid 2px #acacac', borderRadius: '0', width: '100%' }}
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                  />
+                  <input
+                    type="file"
+                    id="imageUpload"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handleImageUpload}
+                  />
+                  <label htmlFor="imageUpload">
+                    <img src={AddImage} alt="Add image icon" />
+                  </label>
                 </div>
-                {visibleData.map((teacher, index) => (
-                  <div key={index} className={`row table_row ${styles.studentsRow}`}>
-                    {/* <div class="col-2 table_items">{student.id}</div> */}
-                    <div className="col-2 table_items">{teacher.name}</div>
-                    <div className="col-2 table_items">{teacher.surname}</div>
-                    <div className="col-1 table_items">{teacher.group}</div>
-                    <div className="col-2 table_items">{teacher.kz_subject}</div>
-                    <div className="col-3 table_items">{teacher.email}</div>
-                    <div className="col-1 table_items">
-                      <div style={{ display: 'flex', gap: '2rem' }}>
-                        <EditOutlined onClick={() => showEditTeacher(teacher.id)} />
-                        <DeleteOutlined onClick={() => handleDeleteTeacher(teacher.id)} />
-                      </div>
-                    </div>
+                {imagePreviewUrl && (
+                  <div className={styles.imagePreview}>
+                    <img
+                      src={imagePreviewUrl}
+                      alt="Preview"
+                      style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
+                    />
+                  </div>
+                )}
+                <div className={styles.approveCancelContent}>
+                  <CheckOutlined
+                    style={{ fontSize: '24px', fontWeight: 'bold' }}
+                    onClick={handleSubmit}
+                  />
+                  <CloseOutlined
+                    style={{ fontSize: '24px', fontWeight: 'bold' }}
+                    onClick={handleReset}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={`col-3 ${styles.chooseContainer}`}>
+              <h4 className={styles.h4}>
+                {language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответы'}
+              </h4>
+              <div className={styles.choseAnswer}>
+                {answers.map((answer, index) => (
+                  <div
+                    key={answer.id}
+                    style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
+                  >
+                    {renderCorrectAnswerToggle(index)}
+                    <input
+                      className={`${styles.graduation} ${styles.file_input}`}
+                      type="text"
+                      placeholder={language === 'kz' ? 'Жауап енгізіңіз' : 'Введите ответ'}
+                      value={answer.text}
+                      onChange={(e) => handleAnswerChange(index, e.target.value)}
+                    />
+                    {type === 2 && answers.length > 4 && (
+                      <CloseOutlined
+                        className={styles.removeOption}
+                        onClick={() => removeOption(index)}
+                      />
+                    )}
                   </div>
                 ))}
+                {type === 2 && answers.length < 8 && (
+                  <button onClick={addNewOption} className={styles.addOptionButton}>
+                    {language === 'kz' ? 'Қосымша жауап қосу' : 'Добавить еще один ответ'}
+                  </button>
+                )}
               </div>
-            )}
-          </div>
-          <div className={styles.pageController}>
-            <ChangePageButton onClick={handlePrevPage} disabled={currentPage === 0}>
-              {'<'}
-            </ChangePageButton>
-            <span>{`${currentPage + 1} / ${totalPages}`}</span>
-            <ChangePageButton onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
-              {'>'}
-            </ChangePageButton>
+            </div>
           </div>
         </div>
       </div>
