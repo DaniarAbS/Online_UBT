@@ -169,6 +169,7 @@ export const TaskAdding = () => {
     // Append image if it exists
     if (image) {
       formData.append('image', image);
+      console.log('image', image);
     }
 
     try {

@@ -36,11 +36,11 @@ export const QuestionEditing = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const questionData = location.state?.questionData || {};
-  console.log('questionData', questionData);
+  // console.log(answers);
 
   useEffect(() => {
     setQuestion(questionData.question);
-    setAnswers(questionData.options);
+    // setAnswers(questionData.options);
     setImage(questionData.image);
     setType(questionData.point);
     setLastClickedButton(questionData.point);
@@ -173,7 +173,7 @@ export const QuestionEditing = () => {
       return;
     }
 
-    const correctOptions = answers.filter((answer) => answer.isCorrect).map((answer) => answer.id);
+    // const correctOptions = answers.filter((answer) => answer.isCorrect).map((answer) => answer.id);
 
     if (type === 2 && correctOptions.length !== 2) {
       alert(
@@ -184,24 +184,22 @@ export const QuestionEditing = () => {
     }
 
     const questionType = type === 1 ? 'onePoint' : 'twoPoints';
+    const editedQuestion = {
+      question: question,
+      image: image,
+      options: answers,
+      type: questionType,
+      topicId: selectedTopic,
+      language: language
+    };
 
-    // Create a FormData object
-    const formData = new FormData();
-    formData.append('type', questionType);
-    formData.append('topicId', selectedTopic);
-    formData.append('question', question);
-    formData.append('language', language);
-
-    // Append answers array as JSON string
-    formData.append('options', JSON.stringify(answers));
-
-    // Append image if it exists
-    if (image) {
-      formData.append('image', image);
-    }
+    console.log('editedQuestion', editedQuestion);
 
     try {
-      const response = await axios.put(`${config.baseURL}/question/${questionData._id}`, formData);
+      const response = await axios.put(
+        `${config.baseURL}/question/${questionData._id}`,
+        editedQuestion
+      );
       console.log(response.data);
       handleReset();
       navigate('/question_list');
@@ -264,14 +262,12 @@ export const QuestionEditing = () => {
     );
   };
 
-  const getGoogleDriveImageUrl = (fileId) => ` https://drive.google.com/thumbnail?id=${fileId}`;
-
   return (
     <>
       {loading && <Loader />}
       <div className={styles.outContainer}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2>{language === 'kz' ? 'Сұрақ қосу' : 'Добавление вопроса'}</h2>
+          <h2>{language === 'kz' ? 'Сұрақ өзгерту' : 'Изменение вопроса'}</h2>
           <Link to={'/question_list'}>
             <h5>{language === 'kz' ? 'Сұрақтар тізбесі' : 'Список вопросов'}</h5>
           </Link>
@@ -355,8 +351,7 @@ export const QuestionEditing = () => {
                     <img src={AddImage} alt="Add image icon" />
                   </label>
                 </div>
-
-                {imagePreviewUrl ? (
+                {imagePreviewUrl && (
                   <div className={styles.imagePreview}>
                     <img
                       src={imagePreviewUrl}
@@ -364,10 +359,6 @@ export const QuestionEditing = () => {
                       style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
                     />
                   </div>
-                ) : image ? (
-                  <img src={getGoogleDriveImageUrl(image.split('/')[5])} alt={image} />
-                ) : (
-                  <div></div>
                 )}
                 <div className={styles.approveCancelContent}>
                   <CheckOutlined
