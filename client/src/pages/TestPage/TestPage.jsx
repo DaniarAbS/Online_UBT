@@ -57,6 +57,12 @@ export const TestPage = () => {
   }, []);
 
   useEffect(() => {
+    if (timeLeft === 0) {
+      handleConfirm();
+    }
+  }, [timeLeft]);
+
+  useEffect(() => {
     const savedAnswers = localStorage.getItem(`${selectedSubjectId}-${currentIndex}`);
     if (savedAnswers) {
       setLoading(true);

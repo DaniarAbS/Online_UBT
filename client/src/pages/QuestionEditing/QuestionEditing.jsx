@@ -40,7 +40,7 @@ export const QuestionEditing = () => {
 
   useEffect(() => {
     setQuestion(questionData.question);
-    // setAnswers(questionData.options);
+    setAnswers(questionData.options);
     setImage(questionData.image);
     setType(questionData.point);
     setLastClickedButton(questionData.point);
@@ -173,32 +173,59 @@ export const QuestionEditing = () => {
       return;
     }
 
-    // const correctOptions = answers.filter((answer) => answer.isCorrect).map((answer) => answer.id);
+    const correctOptions = answers.filter((answer) => answer.isCorrect).map((answer) => answer.id);
 
-    if (type === 2 && correctOptions.length !== 2) {
+    if (
+      type === 2 &&
+      (answers.filter((answer) => answer.isCorrect).length < 1 ||
+        answers.filter((answer) => answer.isCorrect).length > 3)
+    ) {
       alert(
-        language === 'kz' ? 'Екі дұрыс жауапты таңдаңыз.' : 'Выберите ровно два правильных ответа.'
+        language === 'kz'
+          ? 'Дұрыс жауаптар саны сай емес! 1 ден 3 ке дейін'
+          : 'Количество правильных ответов не соответсвует! От 1 до 3'
       );
       setLoading(false);
       return;
     }
 
     const questionType = type === 1 ? 'onePoint' : 'twoPoints';
-    const editedQuestion = {
-      question: question,
-      image: image,
-      options: answers,
-      type: questionType,
-      topicId: selectedTopic,
-      language: language
-    };
+    // const editedQuestion = {
+    //   question: question,
+    //   image: image,
+    //   options: answers,
+    //   type: questionType,
+    //   topicId: selectedTopic,
+    //   language: language
+    // };
 
-    console.log('editedQuestion', editedQuestion);
+    // console.log('editedQuestion', editedQuestion);
+
+    const formData = new FormData();
+    formData.append('type', questionType);
+    formData.append('topicId', selectedTopic);
+    formData.append('question', question);
+    formData.append('language', language);
+
+    // Append answers array as JSON string
+    formData.append('options', JSON.stringify(answers));
+    console.log('formData', formData);
+
+    // Append image if it exists
+    if (image) {
+      formData.append('image', image);
+      console.log('image', image);
+    }
 
     try {
       const response = await axios.put(
-        `${config.baseURL}/question/${questionData._id}`,
-        editedQuestion
+        `${config.baseURL}/question/updateQuestionWithImage/${questionData._id}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
       );
       console.log(response.data);
       handleReset();

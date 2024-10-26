@@ -19,7 +19,16 @@ const Exams = () => {
       setLoading(true);
       try {
         const response = await axios.get('https://ubt-server.vercel.app/exams/');
-        setUpExams(response.data);
+        const currentDate = moment(); // Get the current date
+
+        // Filter exams where the current date is between startedAt and finishedAt
+        const ongoingExams = response.data.filter((exam) => {
+          const startedAt = moment(exam.startedAt);
+          const finishedAt = moment(exam.finishedAt);
+          return currentDate.isBetween(startedAt, finishedAt, null, '[]'); // Inclusive of start and end dates
+        });
+
+        setUpExams(ongoingExams);
         console.log('exams:', response.data);
       } catch (error) {
         console.error(error);
@@ -44,7 +53,7 @@ const Exams = () => {
           {language === 'kz' ? 'Алдағы емтихандар' : 'Предстоящие экзамены'}
         </div>
         <div className={styles.examsList}>
-          {upExams ? (
+          {upExams && upExams.length > 0 ? (
             upExams.map((exam) => (
               <Exam
                 key={exam._id}

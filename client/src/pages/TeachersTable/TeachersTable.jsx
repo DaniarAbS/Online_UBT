@@ -55,6 +55,7 @@ export const Teachers = () => {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const [selectedSubjectName, setSelectedSubjectName] = useState({});
   const [email, setEmail] = useState('');
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedLiteral, setSelectedLiteral] = useState('');
@@ -80,6 +81,19 @@ export const Teachers = () => {
     }
   }
 
+  async function fetchSubjects() {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${config.baseURL}/subjects/`);
+      setSubjects(response.data);
+      console.log('subjects', response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  }
+
   useEffect(() => {
     async function fetchData() {
       const data = await fetchTeachers();
@@ -87,53 +101,123 @@ export const Teachers = () => {
     }
 
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    async function fetchSubjects() {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${config.baseURL}/subjects/`);
-        setSubjects(response.data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false); // Stop loading
-      }
-    }
-
     fetchSubjects();
   }, []);
 
   async function handleUpdateTeacher() {
     setLoading(true);
+
+    const originalTeacher = teachers.find((teacher) => teacher.id === selectedTeacherId);
+
+    // Original teacher data
+    const originalName = originalTeacher?.name || '';
+    const originalSurname = originalTeacher?.surname || '';
+    const originalFullName = `${originalName} ${originalSurname}`.trim();
+    const originalSubjectId = originalTeacher?.subjectId;
+
+    // New teacher data
+    const newName = name || originalName;
+    const newSurname = surname || originalSurname;
+    const newFullName = `${newName} ${newSurname}`.trim();
+    const newSubjectId = selectedSubject || originalSubjectId;
+
+    const isNameChanged = newName !== originalName || newSurname !== originalSurname;
+    const isSubjectChanged = newSubjectId !== originalSubjectId;
+
     const updatedTeacherData = {
-      name: name || teachers.find((teacher) => teacher.id === selectedTeacherId)?.name,
-      surname: surname || teachers.find((teacher) => teacher.id === selectedTeacherId)?.surname,
-      subjectId:
-        selectedSubject || teachers.find((teacher) => teacher.id === selectedTeacherId)?.subjectId,
-      email: email || teachers.find((teacher) => teacher.id === selectedTeacherId)?.email,
-      classNum:
-        selectedGroup || teachers.find((teacher) => teacher.id === selectedTeacherId)?.classNum,
-      literal:
-        selectedLiteral || teachers.find((teacher) => teacher.id === selectedTeacherId)?.literal
+      name: newName,
+      surname: newSurname,
+      subjectId: newSubjectId,
+      email: email || originalTeacher.email,
+      classNum: selectedGroup || originalTeacher.classNum,
+      literal: selectedLiteral || originalTeacher.literal
     };
 
-    if (selectedSubject === 'SyntheticBaseEvent') {
+    if (!newSubjectId) {
       setLoading(false);
       return alert('Select a subject');
     }
 
-    console.log('selectedSubject: ', selectedSubject);
-    console.log('teacherId: ', selectedTeacherId);
-    console.log(updatedTeacherData);
-
     try {
-      const response = await axios.put(
+      // Update teacher data
+      await axios.put(
         `https://ubt-server.vercel.app/adminTeacher/${selectedTeacherId}`,
         updatedTeacherData
       );
-      console.log('Teacher updated successfully', response.data);
+      console.log('Teacher updated successfully');
+
+      // Fetch the original subject data
+      const originalSubject = subjects.find((subject) => subject._id === originalSubjectId);
+      const originalKzSubject = originalSubject?.kz_subject || '';
+      const originalRuSubject = originalSubject?.ru_subject || '';
+
+      // Check if the teacher's name is included in the subject's name
+      const isTeacherNameInKzSubject = originalKzSubject.includes(`(${originalFullName})`);
+      const isTeacherNameInRuSubject = originalRuSubject.includes(`(${originalFullName})`);
+
+      // If the teacher's name is changed and it's included in the subject's name
+      if (isNameChanged && (isTeacherNameInKzSubject || isTeacherNameInRuSubject)) {
+        // Update the subject's name to include the new teacher's name
+        const updatedKzSubject = originalKzSubject.replace(
+          `(${originalFullName})`,
+          `(${newFullName})`
+        );
+        const updatedRuSubject = originalRuSubject.replace(
+          `(${originalFullName})`,
+          `(${newFullName})`
+        );
+
+        const updatedSubjectData = {
+          kz_subject: updatedKzSubject,
+          ru_subject: updatedRuSubject
+        };
+
+        await axios.put(
+          `https://ubt-server.vercel.app/subjects/${originalSubjectId}`,
+          updatedSubjectData
+        );
+        console.log('Subject updated successfully with new teacher name');
+      }
+
+      // If the subject is changed, and the original subject includes the teacher's name,
+      // update the original subject to remove the teacher's name
+      if (isSubjectChanged && (isTeacherNameInKzSubject || isTeacherNameInRuSubject)) {
+        const updatedKzSubject = originalKzSubject.replace(`(${originalFullName})`, '').trim();
+        const updatedRuSubject = originalRuSubject.replace(`(${originalFullName})`, '').trim();
+
+        const updatedSubjectData = {
+          kz_subject: updatedKzSubject,
+          ru_subject: updatedRuSubject
+        };
+
+        await axios.put(
+          `https://ubt-server.vercel.app/subjects/${originalSubjectId}`,
+          updatedSubjectData
+        );
+        console.log('Original subject updated to remove teacher name');
+      }
+
+      // If the subject is changed, update the new subject to include the teacher's name
+      if (isSubjectChanged) {
+        const newSubject = subjects.find((subject) => subject._id === newSubjectId);
+        const newKzSubject = newSubject?.kz_subject || '';
+        const newRuSubject = newSubject?.ru_subject || '';
+
+        const updatedKzSubject = `${newKzSubject} (${newFullName})`;
+        const updatedRuSubject = `${newRuSubject} (${newFullName})`;
+
+        const updatedSubjectData = {
+          kz_subject: updatedKzSubject,
+          ru_subject: updatedRuSubject
+        };
+
+        await axios.put(
+          `https://ubt-server.vercel.app/subjects/${newSubjectId}`,
+          updatedSubjectData
+        );
+        console.log('New subject updated with teacher name');
+      }
+
       const updatedData = await fetchTeachers();
       setTeachers(updatedData);
       setEditModalVisible(false);
@@ -141,9 +225,31 @@ export const Teachers = () => {
     } catch (error) {
       console.error(error);
     } finally {
+      setLoading(false);
+    }
+  }
+
+  async function fetchSubject(subjectId) {
+    setLoading(true);
+    try {
+      const response = await axios.get(`https://ubt-server.vercel.app/subjects/${subjectId}`);
+      console.log('selectedSubject', response.data);
+      setSelectedSubjectName({
+        kzName: response.data.kz_subject,
+        ruName: response.data.ru_subject
+      });
+    } catch (error) {
+      console.error(error);
+      return [];
+    } finally {
       setLoading(false); // Stop loading
     }
   }
+
+  const selectSubject = (subjectId) => {
+    fetchSubject(subjectId);
+    setSelectedSubject(subjectId);
+  };
 
   const generateClassNumbers = () => {
     return Array.from({ length: 7 }, (_, index) => ({
@@ -304,7 +410,6 @@ export const Teachers = () => {
           style={{
             padding: '2rem 0'
           }}
-          onFinish={handleSubmit}
         >
           <Form.Item
             name="name"
@@ -350,20 +455,6 @@ export const Teachers = () => {
                 {language == 'kz' ? 'Тегі' : 'Фамилия'}
               </label>
             </div>
-          </Form.Item>
-          <Form.Item>
-            <select
-              style={{ width: '100%' }}
-              value={selectedSubject}
-              onChange={(e) => setSelectedSubject(e.target.value)}
-            >
-              <option value="">Select Subject</option>
-              {subjects.map((option) => (
-                <option key={option._id} value={option._id}>
-                  {option.kz_subject}
-                </option>
-              ))}
-            </select>
           </Form.Item>
 
           <Form.Item
@@ -438,6 +529,21 @@ export const Teachers = () => {
               />
             </Form.Item>
           </div>
+
+          <Form.Item>
+            <select
+              style={{ width: '100%' }}
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+            >
+              <option value="">Select Subject</option>
+              {subjects.map((option) => (
+                <option key={option._id} value={option._id}>
+                  {option.kz_subject}
+                </option>
+              ))}
+            </select>
+          </Form.Item>
           <Form.Item>
             <div style={{ display: 'flex', gap: '1rem' }}>
               <Button
@@ -448,7 +554,12 @@ export const Teachers = () => {
               >
                 {language == 'kz' ? 'Бас тарту' : 'Отмена'}
               </Button>
-              <Button className={styles.submit} type="primary" htmlType="submit">
+              <Button
+                onClick={handleSubmit}
+                className={styles.submit}
+                type="primary"
+                htmlType="submit"
+              >
                 {language == 'kz' ? 'Қабылдау' : 'Принять'}
               </Button>
             </div>
@@ -504,7 +615,7 @@ export const Teachers = () => {
             <select
               style={{ width: '100%' }}
               value={selectedSubject}
-              onChange={(e) => setSelectedSubject(e.target.value)}
+              onChange={(e) => selectSubject(e.target.value)}
             >
               <option value="">Select Subject</option>
               {subjects.map((option) => (
@@ -530,7 +641,7 @@ export const Teachers = () => {
             </div>
           </Form.Item>
 
-          <div className={styles.class_literal}>
+          {/* <div className={styles.class_literal}>
             <Form.Item name="class">
               <Select
                 style={{ width: '100%' }}
@@ -556,7 +667,7 @@ export const Teachers = () => {
                 maxLength={1}
               />
             </Form.Item>
-          </div>
+          </div> */}
           <Form.Item>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'end' }}>
               <Button
