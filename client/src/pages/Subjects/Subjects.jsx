@@ -50,6 +50,7 @@ const MyClassTable = () => {
   const [ruName, setRuName] = useState('');
   const [classNumber, setClassNumber] = useState('');
   const [classLiteral, setClassLiteral] = useState('');
+  const [teacher, setTeacher] = useState('');
 
   const [subjectSearchMode, setSubjectSearchMode] = useState('kz_subject');
   const [classSearchMode, setClassSearchMode] = useState('class');
@@ -525,7 +526,15 @@ const MyClassTable = () => {
             <>
               <Form.Item
                 name="kz_subject"
-                rules={[{ required: true, message: 'Please input the Kazakh subject name!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message:
+                      language == 'kz'
+                        ? 'Қазақша пән атауын қосыңыз!'
+                        : 'Добавьте казахское название предмета'
+                  }
+                ]}
               >
                 <div className={styles.input_group}>
                   <Input
@@ -543,7 +552,15 @@ const MyClassTable = () => {
 
               <Form.Item
                 name="ru_subject"
-                rules={[{ required: true, message: 'Please input the Russian subject name!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message:
+                      language == 'kz'
+                        ? 'Орысша пән атауын қосыңыз!'
+                        : 'Добавьте русское название предмета'
+                  }
+                ]}
               >
                 <div className={styles.input_group}>
                   <Input

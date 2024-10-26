@@ -68,6 +68,7 @@ export const AnalyseTotal = () => {
         'https://ubt-server.vercel.app/admins/getAllResultForExam',
         filterData
       );
+      console.log(response.data);
       setExamResults(response.data.results);
       setMetrics(response.data.metrics);
     } catch (error) {
@@ -151,11 +152,14 @@ export const AnalyseTotal = () => {
           <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', padding: '1rem' }}>
             <div className={styles.twoTextButton}>
               <Text>Средний балл</Text>
-              <Text>{Math.round(metrics.averageScore)}</Text>
+              <Text>{!isNaN(metrics.averageScore) ? Math.round(metrics.averageScore) : `0`}</Text>
+              {console.log('metrics', metrics)}
             </div>
             <div className={styles.twoTextButton}>
               <Text>Средний процент</Text>
-              <Text>{Math.round(metrics.averagePercent)}%</Text>
+              <Text>
+                {!isNaN(metrics.averagePercent) ? Math.round(metrics.averagePercent) : `0`}%
+              </Text>
             </div>
             <div className={styles.twoTextButton}>
               <Text>Количество участников</Text>
@@ -222,19 +226,31 @@ export const AnalyseTotal = () => {
             <div className="container">
               <div className="row table_row">
                 <div className="col-1 table_items">#</div>
-                <div className="col-6 table_items">Имя фамилия</div>
+                <div className="col-3 table_items">Имя фамилия</div>
                 <div className="col-2 table_items">Средний балл</div>
                 <div className="col-2 table_items">Класс</div>
+                <div className="col-4 table_items">Баллы по предметам</div>
               </div>
               {visibleData.map((studentData, index) => (
-                <div className="row table_row" key={index}>
-                  <div className="col-1 table_items">{startIndex + index + 1}</div>
-                  <div className="col-6 table_items">{`${studentData.student.name} ${studentData.student.surname}`}</div>
-                  <div className="col-2 table_items">{studentData.overallScore}</div>
-                  <div className="col-2 table_items">{studentData.student.className}</div>
-                </div>
+                <React.Fragment key={index}>
+                  <div className="row table_row">
+                    <div className="col-1 table_items">{startIndex + index + 1}</div>
+                    <div className="col-3 table_items">{`${studentData.student.name} ${studentData.student.surname}`}</div>
+                    <div className="col-2 table_items">{studentData.overallScore}</div>
+                    <div className="col-2 table_items">{studentData.student.className}</div>
+                    <div className="col-4 table_items">
+                      {studentData.subjects.map((subject, subIndex) => (
+                        <div key={subIndex} className={styles.subject_item}>
+                          <strong>{subject.name}:</strong>{' '}
+                          <span className={styles.subject_points}>{subject.totalPoints}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </React.Fragment>
               ))}
             </div>
+
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
               <Text>{rangeText}</Text>
               <ChangeButton onClick={handlePrevPage} disabled={currentPage === 0}>

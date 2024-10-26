@@ -146,9 +146,15 @@ export const TaskAdding = () => {
       return;
     }
 
-    if (type === 2 && answers.filter((answer) => answer.isCorrect).length !== 2) {
+    if (
+      type === 2 &&
+      (answers.filter((answer) => answer.isCorrect).length < 1 ||
+        answers.filter((answer) => answer.isCorrect).length > 3)
+    ) {
       alert(
-        language === 'kz' ? 'Екі дұрыс жауапты таңдаңыз.' : 'Выберите ровно два правильных ответа.'
+        language === 'kz'
+          ? 'Дұрыс жауаптар саны сай емес! 1 ден 3 ке дейін'
+          : 'Количество правильных ответов не соответсвует! От 1 до 3'
       );
       setLoading(false);
       return;

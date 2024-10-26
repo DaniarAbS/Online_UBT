@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Modal, Input } from 'antd';
 import axios from 'axios';
 import styles from './FilterExam.module.css';
 import moment from 'moment';
@@ -12,6 +13,8 @@ const FilterExam = () => {
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [secondId, setSecondId] = useState('');
+  const [password, setPassword] = useState(''); // Add state for password
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -60,6 +63,38 @@ const FilterExam = () => {
 
   const handleLanguageChange = (lang) => {
     setExamLanguage(lang);
+  };
+
+  const showPasswordModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = async () => {
+    setLoading(true);
+
+    const examPassword = {
+      password: password
+    };
+
+    console.log('password is: ', examPassword);
+
+    try {
+      const response = await axios.post(
+        `https://ubt-server.vercel.app/exams/${selectedExamId}/access`,
+        examPassword
+      );
+      handleSubmit();
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error(error);
+      alert(error.response.data.message);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   const toggleSubject = (subjectId) => {
@@ -144,6 +179,18 @@ const FilterExam = () => {
   return (
     <>
       {loading && <Loader />}
+      <Modal
+        title={language === 'kz' ? 'Құпия сөзді енгізіңіз' : 'Введите пароль'}
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Input.Password
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder={language === 'kz' ? 'Құпия сөз' : 'Пароль'}
+        />
+      </Modal>
       <div className={styles.wholeContainer}>
         <div className={styles.heading}>
           <h1>{language === 'kz' ? 'Емтихан тапсыру' : 'Сдать экзамен'}</h1>
@@ -204,7 +251,7 @@ const FilterExam = () => {
           </div>
         </div>
         <div className={styles.btnCont}>
-          <button className={styles.startButton} onClick={handleSubmit}>
+          <button className={styles.startButton} onClick={showPasswordModal}>
             {language === 'kz' ? 'Бастау' : 'Начать'}
           </button>
         </div>
