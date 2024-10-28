@@ -506,7 +506,9 @@ const MyClassTable = () => {
               : 'Add Class'
         }
         visible={addModalVisible || editModalVisible}
-        onCancel={handleAddModalCancel}
+        onCancel={
+          selectedSubjectId || selectedClassId ? handleEditModalCancel : handleAddModalCancel
+        }
         footer={null}
       >
         <Form
@@ -623,7 +625,11 @@ const MyClassTable = () => {
           <Form.Item>
             <div style={{ display: 'flex', gap: '1rem' }}>
               <Button
-                onClick={handleAddModalCancel}
+                onClick={
+                  selectedSubjectId || selectedClassId
+                    ? handleEditModalCancel
+                    : handleAddModalCancel
+                }
                 className={styles.submit}
                 type=""
                 htmlType="cancel"
