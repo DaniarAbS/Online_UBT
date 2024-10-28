@@ -382,40 +382,44 @@ export const AnalysisExam = () => {
           ) : (
             <div className="container" style={{ padding: '0' }}>
               <div className={`row table_row ${styles.headerRow}`}>
-                <div className="col-3 table_items">{language == 'kz' ? 'Атауы' : 'Название'}</div>
-                <div className="col-3 table_items">
+                <div className="col-2 table_items">{language == 'kz' ? 'Атауы' : 'Название'}</div>
+                <div className="col-2 table_items">
                   {language == 'kz' ? 'Басталу күні' : 'Дата начала'}
                 </div>
-                <div className="col-3 table_items">
+                <div className="col-2 table_items">
                   {language == 'kz' ? 'Біту күні' : 'Дата окончания'}
                 </div>
-                <div className="col-1 table_items">
+                <div className="col-2 table_items">
                   {language == 'kz' ? 'Тапсырағандар' : 'Сдавших'}
+                </div>
+                <div className="col-2 table_items">{language == 'kz' ? 'Құпия сөз' : 'Пароль'}</div>
+                <div className="col-1 table_items">
+                  {language == 'kz' ? 'Әрекеттер' : 'Действия'}
                 </div>
               </div>
               {visibleData.map((exams, index) => (
                 <div className="row table_row" key={index}>
-                  <div className="col-3 table_items">Online UBT</div>
-                  <div className="col-3 table_items">
+                  <div className="col-2 table_items">Online UBT</div>
+                  <div className="col-2 table_items">
                     {moment(exams.startedAt).format('YYYY-MM-DD HH:mm')}
                   </div>
-                  <div className="col-3 table_items">
+                  <div className="col-2 table_items">
                     {moment(exams.finishedAt).format('YYYY-MM-DD HH:mm')}
                   </div>
-                  <div className="col-1 table_items">{exams.amountOfPassed}</div>
-                  <div className="col-2 table_items">
+                  <div className="col-2 table_items">{exams.amountOfPassed}</div>
+                  <div className="col-2 table_items">{exams.password || '-'}</div>{' '}
+                  {/* Password Column */}
+                  <div className="col-1 table_items">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <FormOutlined
                         style={{ fontSize: '2rem' }}
                         onClick={() => showEditExam(exams._id)}
                       />
-                      {/* <Link to="/exam_analyse"> */}
                       <img
                         src={exitImg}
                         alt="see results"
                         onClick={() => navigate('/exam_analyse', { state: { examId: exams._id } })}
                       />
-                      {/* </Link> */}
                     </div>
                   </div>
                 </div>
