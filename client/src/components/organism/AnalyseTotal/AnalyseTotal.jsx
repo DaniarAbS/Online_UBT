@@ -27,6 +27,7 @@ export const AnalyseTotal = () => {
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
   const [filterBy, setFilterBy] = useState('subject');
+  const [searchBy, setSearchBy] = useState('name');
 
   const location = useLocation();
   const examId = location.state?.examId || {};
@@ -90,6 +91,10 @@ export const AnalyseTotal = () => {
     setCurrentPage((prevPage) => Math.max(0, prevPage - 1));
   };
 
+  const handleSearchTypeChange = (type) => {
+    setSearchBy(type);
+  };
+
   const handleSearch = () => {
     setCurrentPage(0);
   };
@@ -107,11 +112,17 @@ export const AnalyseTotal = () => {
   };
 
   const filteredAndSortedStudents = examResults
-    .filter((student) =>
-      `${student.student.name} ${student.student.surname}`
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
-    )
+    .filter((student) => {
+      if (searchBy === 'name') {
+        return `${student.student.name} ${student.student.surname}`
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+      }
+      if (searchBy === 'className') {
+        return student.student.className.toLowerCase().includes(searchQuery.toLowerCase());
+      }
+      return true;
+    })
     .sort((a, b) => b.overallScore - a.overallScore);
 
   const startIndex = currentPage * itemsPerPage;
@@ -210,8 +221,33 @@ export const AnalyseTotal = () => {
               >
                 Искать
               </CustomButton>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                  onClick={() => handleSearchTypeChange('name')}
+                  style={{
+                    backgroundColor: searchBy === 'name' ? colors.primary : colors.lightGray,
+                    padding: '0.5rem',
+                    borderRadius: '0.5rem',
+                    color: colors.white
+                  }}
+                >
+                  Имя
+                </button>
+                <button
+                  onClick={() => handleSearchTypeChange('className')}
+                  style={{
+                    backgroundColor: searchBy === 'className' ? colors.primary : colors.lightGray,
+                    padding: '0.5rem',
+                    borderRadius: '0.5rem',
+                    color: colors.white
+                  }}
+                >
+                  Класс
+                </button>
+              </div>
             </div>
           </div>
+
           <div
             style={{
               display: 'flex',
